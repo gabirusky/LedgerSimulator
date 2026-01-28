@@ -44,6 +44,21 @@ This document contains essential context, conventions, and gotchas for AI coding
 | `V2__create_transactions_table.sql` | Transactions table with idempotency support |
 | `V3__create_ledger_entries_table.sql` | Ledger entries for double-entry bookkeeping |
 
+### ✅ Phase 3: Domain Entities (Complete)
+
+**Enums:**
+| File | Purpose |
+|------|---------|
+| `EntryType.java` | DEBIT/CREDIT enum for ledger entries |
+| `TransactionStatus.java` | PENDING/COMPLETED/FAILED transaction states |
+
+**JPA Entities:**
+| File | Purpose |
+|------|---------|
+| `Account.java` | Account entity with UUID, document, name, timestamps |
+| `Transaction.java` | Transaction with idempotency key, source/target accounts, amount |
+| `LedgerEntry.java` | Immutable ledger entry for double-entry bookkeeping |
+
 ### 🔧 Fixes Applied During Implementation
 
 1. **Removed invalid `flyway-database-postgresql:9.22.3`** - Not compatible with Flyway 9.x in Spring Boot 3.2

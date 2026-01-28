@@ -96,45 +96,45 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### Enums
 
-- [ ] **TASK-041**: Create `domain/entity/EntryType.java` enum (DEBIT, CREDIT)
-- [ ] **TASK-042**: Create `domain/entity/TransactionStatus.java` enum (PENDING, COMPLETED, FAILED)
+- [x] **TASK-041**: Create `domain/entity/EntryType.java` enum (DEBIT, CREDIT)
+- [x] **TASK-042**: Create `domain/entity/TransactionStatus.java` enum (PENDING, COMPLETED, FAILED)
 
 ### Account Entity
 
-- [ ] **TASK-043**: Create `domain/entity/Account.java` class
-- [ ] **TASK-044**: Add `@Entity` and `@Table(name = "accounts")` annotations
-- [ ] **TASK-045**: Add `id` field with UUID and @Id annotation
-- [ ] **TASK-046**: Add `@GeneratedValue(strategy = GenerationType.UUID)` to id
-- [ ] **TASK-047**: Add `document` field with unique constraint
-- [ ] **TASK-048**: Add `name` field with @NotBlank validation
-- [ ] **TASK-049**: Add `createdAt` field with @CreationTimestamp
-- [ ] **TASK-050**: Add `updatedAt` field with @UpdateTimestamp
-- [ ] **TASK-051**: Add no-args constructor (required by JPA)
-- [ ] **TASK-052**: Add all-args constructor
-- [ ] **TASK-053**: Add getters and setters for all fields
-- [ ] **TASK-054**: Override `equals()` using id only
-- [ ] **TASK-055**: Override `hashCode()` using id only
+- [x] **TASK-043**: Create `domain/entity/Account.java` class
+- [x] **TASK-044**: Add `@Entity` and `@Table(name = "accounts")` annotations
+- [x] **TASK-045**: Add `id` field with UUID and @Id annotation
+- [x] **TASK-046**: Add `@GeneratedValue(strategy = GenerationType.UUID)` to id
+- [x] **TASK-047**: Add `document` field with unique constraint
+- [x] **TASK-048**: Add `name` field with @NotBlank validation
+- [x] **TASK-049**: Add `createdAt` field with @CreationTimestamp
+- [x] **TASK-050**: Add `updatedAt` field with @UpdateTimestamp
+- [x] **TASK-051**: Add no-args constructor (required by JPA)
+- [x] **TASK-052**: Add all-args constructor
+- [x] **TASK-053**: Add getters and setters for all fields
+- [x] **TASK-054**: Override `equals()` using id only
+- [x] **TASK-055**: Override `hashCode()` using id only
 
 ### Transaction Entity
 
-- [ ] **TASK-056**: Create `domain/entity/Transaction.java` class
-- [ ] **TASK-057**: Add `@Entity` and `@Table` annotations
-- [ ] **TASK-058**: Add `id` field (UUID, PK)
-- [ ] **TASK-059**: Add `idempotencyKey` field (unique)
-- [ ] **TASK-060**: Add `sourceAccountId` field (UUID)
-- [ ] **TASK-061**: Add `targetAccountId` field (UUID)
-- [ ] **TASK-062**: Add `amount` field (BigDecimal with precision 19, scale 2)
-- [ ] **TASK-063**: Add `status` field (enum TransactionStatus)
-- [ ] **TASK-064**: Add `createdAt` field with @CreationTimestamp
-- [ ] **TASK-065**: Add constructors, getters, setters, equals, hashCode
+- [x] **TASK-056**: Create `domain/entity/Transaction.java` class
+- [x] **TASK-057**: Add `@Entity` and `@Table` annotations
+- [x] **TASK-058**: Add `id` field (UUID, PK)
+- [x] **TASK-059**: Add `idempotencyKey` field (unique)
+- [x] **TASK-060**: Add `sourceAccountId` field (UUID)
+- [x] **TASK-061**: Add `targetAccountId` field (UUID)
+- [x] **TASK-062**: Add `amount` field (BigDecimal with precision 19, scale 2)
+- [x] **TASK-063**: Add `status` field (enum TransactionStatus)
+- [x] **TASK-064**: Add `createdAt` field with @CreationTimestamp
+- [x] **TASK-065**: Add constructors, getters, setters, equals, hashCode
 
 ### LedgerEntry Entity
 
-- [ ] **TASK-066**: Create `domain/entity/LedgerEntry.java` class
-- [ ] **TASK-067**: Add `id`, `transactionId`, `accountId` fields
-- [ ] **TASK-068**: Add `entryType` field (enum EntryType)
-- [ ] **TASK-069**: Add `amount`, `balanceAfter` fields (BigDecimal)
-- [ ] **TASK-070**: Add `createdAt` field and all constructors/accessors
+- [x] **TASK-066**: Create `domain/entity/LedgerEntry.java` class
+- [x] **TASK-067**: Add `id`, `transactionId`, `accountId` fields
+- [x] **TASK-068**: Add `entryType` field (enum EntryType)
+- [x] **TASK-069**: Add `amount`, `balanceAfter` fields (BigDecimal)
+- [x] **TASK-070**: Add `createdAt` field and all constructors/accessors
 
 ---
 
