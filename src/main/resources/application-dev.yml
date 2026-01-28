@@ -1,0 +1,34 @@
+# ====================================================================
+# TASK-019: Development Profile Configuration
+# ====================================================================
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  # Development Database
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ledger_db
+    username: ledger_user
+    password: ledger_pass
+
+  # More verbose JPA for development
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Flyway in dev mode
+  flyway:
+    clean-disabled: false
+
+# Development Logging (more verbose)
+logging:
+  level:
+    com.fintech.ledger: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.transaction: DEBUG
