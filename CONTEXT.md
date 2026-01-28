@@ -59,6 +59,37 @@ This document contains essential context, conventions, and gotchas for AI coding
 | `Transaction.java` | Transaction with idempotency key, source/target accounts, amount |
 | `LedgerEntry.java` | Immutable ledger entry for double-entry bookkeeping |
 
+### ✅ Phase 4: DTOs & Mappers (Complete)
+
+**Request DTOs (`domain/dto/request/`):**
+| File | Purpose |
+|------|---------|
+| `CreateAccountRequest.java` | Account creation DTO with @NotBlank validation |
+| `TransferRequest.java` | Transfer DTO with @NotNull, @Positive, @DecimalMin("0.01"), @DifferentAccounts |
+
+**Response DTOs (`domain/dto/response/`):**
+| File | Purpose |
+|------|---------|
+| `AccountResponse.java` | Account with calculated balance response |
+| `TransferResponse.java` | Transaction/transfer details response |
+| `LedgerEntryResponse.java` | Individual ledger entry response |
+| `AccountStatementResponse.java` | Account statement with list of entries |
+| `ErrorResponse.java` | RFC 7807 Problem Details format with factory methods |
+| `FieldError.java` | Validation field error details |
+
+**Custom Validation (`validation/`):**
+| File | Purpose |
+|------|---------|
+| `DifferentAccounts.java` | Annotation ensuring source ≠ target account |
+| `DifferentAccountsValidator.java` | Validator implementation for @DifferentAccounts |
+
+**Mappers (`mapper/`):**
+| File | Purpose |
+|------|---------|
+| `AccountMapper.java` | Entity↔DTO conversion with null safety, @Component |
+| `TransactionMapper.java` | Transaction→Response mapping, @Component |
+| `LedgerEntryMapper.java` | Entry→Response + list mapping, @Component |
+
 ### 🔧 Fixes Applied During Implementation
 
 1. **Removed invalid `flyway-database-postgresql:9.22.3`** - Not compatible with Flyway 9.x in Spring Boot 3.2

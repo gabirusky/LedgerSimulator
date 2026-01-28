@@ -142,41 +142,41 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### Request DTOs
 
-- [ ] **TASK-071**: Create `dto/request` package
-- [ ] **TASK-072**: Create `CreateAccountRequest.java` record
+- [x] **TASK-071**: Create `dto/request` package
+- [x] **TASK-072**: Create `CreateAccountRequest.java` record
   - document (String, @NotBlank)
   - name (String, @NotBlank)
-- [ ] **TASK-073**: Create `TransferRequest.java` record
+- [x] **TASK-073**: Create `TransferRequest.java` record
   - sourceAccountId (UUID, @NotNull)
   - targetAccountId (UUID, @NotNull)
   - amount (BigDecimal, @NotNull, @Positive)
-- [ ] **TASK-074**: Add `@DecimalMin("0.01")` to transfer amount
-- [ ] **TASK-075**: Add custom validation: sourceId != targetId
+- [x] **TASK-074**: Add `@DecimalMin("0.01")` to transfer amount
+- [x] **TASK-075**: Add custom validation: sourceId != targetId
 
 ### Response DTOs
 
-- [ ] **TASK-076**: Create `dto/response` package
-- [ ] **TASK-077**: Create `AccountResponse.java` record
+- [x] **TASK-076**: Create `dto/response` package
+- [x] **TASK-077**: Create `AccountResponse.java` record
   - id (UUID)
   - document (String)
   - name (String)
   - balance (BigDecimal)
   - createdAt (Instant)
-- [ ] **TASK-078**: Create `TransferResponse.java` record
+- [x] **TASK-078**: Create `TransferResponse.java` record
   - transactionId (UUID)
   - sourceAccountId (UUID)
   - targetAccountId (UUID)
   - amount (BigDecimal)
   - status (String)
   - createdAt (Instant)
-- [ ] **TASK-079**: Create `LedgerEntryResponse.java` record
+- [x] **TASK-079**: Create `LedgerEntryResponse.java` record
   - id (UUID)
   - transactionId (UUID)
   - entryType (String)
   - amount (BigDecimal)
   - balanceAfter (BigDecimal)
   - createdAt (Instant)
-- [ ] **TASK-080**: Create `AccountStatementResponse.java` record
+- [x] **TASK-080**: Create `AccountStatementResponse.java` record
   - accountId (UUID)
   - accountName (String)
   - currentBalance (BigDecimal)
@@ -184,29 +184,29 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### Error DTOs
 
-- [ ] **TASK-081**: Create `ErrorResponse.java` record (RFC 7807)
+- [x] **TASK-081**: Create `ErrorResponse.java` record (RFC 7807)
   - type (String)
   - title (String)
   - status (int)
   - detail (String)
   - instance (String)
-- [ ] **TASK-082**: Add timestamp field to ErrorResponse
-- [ ] **TASK-083**: Add errors field (List<FieldError>) for validation errors
-- [ ] **TASK-084**: Create `FieldError.java` record (field, message)
+- [x] **TASK-082**: Add timestamp field to ErrorResponse
+- [x] **TASK-083**: Add errors field (List<FieldError>) for validation errors
+- [x] **TASK-084**: Create `FieldError.java` record (field, message)
 
 ### Mapper Classes
 
-- [ ] **TASK-085**: Create `mapper` package
-- [ ] **TASK-086**: Create `AccountMapper.java` class
-- [ ] **TASK-087**: Add `toResponse(Account, BigDecimal balance)` method
-- [ ] **TASK-088**: Add `toEntity(CreateAccountRequest)` method
-- [ ] **TASK-089**: Create `TransactionMapper.java` class
-- [ ] **TASK-090**: Add `toResponse(Transaction)` method
-- [ ] **TASK-091**: Create `LedgerEntryMapper.java` class
-- [ ] **TASK-092**: Add `toResponse(LedgerEntry)` method
-- [ ] **TASK-093**: Add `toResponseList(List<LedgerEntry>)` method
-- [ ] **TASK-094**: Make all mappers Spring `@Component` beans
-- [ ] **TASK-095**: Add null safety checks in all mapper methods
+- [x] **TASK-085**: Create `mapper` package
+- [x] **TASK-086**: Create `AccountMapper.java` class
+- [x] **TASK-087**: Add `toResponse(Account, BigDecimal balance)` method
+- [x] **TASK-088**: Add `toEntity(CreateAccountRequest)` method
+- [x] **TASK-089**: Create `TransactionMapper.java` class
+- [x] **TASK-090**: Add `toResponse(Transaction)` method
+- [x] **TASK-091**: Create `LedgerEntryMapper.java` class
+- [x] **TASK-092**: Add `toResponse(LedgerEntry)` method
+- [x] **TASK-093**: Add `toResponseList(List<LedgerEntry>)` method
+- [x] **TASK-094**: Make all mappers Spring `@Component` beans
+- [x] **TASK-095**: Add null safety checks in all mapper methods
 
 ---
 
