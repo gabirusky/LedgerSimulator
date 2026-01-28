@@ -11,9 +11,11 @@ com\fintech\ledger\LedgerSimulatorApplication.class
 com\fintech\ledger\domain\entity\package-info.class
 com\fintech\ledger\domain\entity\Account.class
 com\fintech\ledger\controller\package-info.class
+com\fintech\ledger\mapper\TransactionMapperImpl.class
 com\fintech\ledger\domain\dto\response\ErrorResponse.class
 com\fintech\ledger\validation\package-info.class
 com\fintech\ledger\mapper\TransactionMapper.class
+com\fintech\ledger\mapper\LedgerEntryMapperImpl.class
 com\fintech\ledger\domain\dto\request\TransferRequest.class
 com\fintech\ledger\domain\entity\Transaction.class
 com\fintech\ledger\repository\package-info.class
@@ -22,6 +24,7 @@ com\fintech\ledger\domain\dto\request\package-info.class
 com\fintech\ledger\domain\dto\response\LedgerEntryResponse.class
 com\fintech\ledger\domain\entity\LedgerEntry.class
 com\fintech\ledger\mapper\package-info.class
+com\fintech\ledger\mapper\AccountMapperImpl.class
 com\fintech\ledger\domain\dto\response\AccountResponse.class
 com\fintech\ledger\mapper\AccountMapper.class
 com\fintech\ledger\domain\entity\EntryType.class

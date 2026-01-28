@@ -194,19 +194,19 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 - [x] **TASK-083**: Add errors field (List<FieldError>) for validation errors
 - [x] **TASK-084**: Create `FieldError.java` record (field, message)
 
-### Mapper Classes
+### Mapper Interfaces (MapStruct)
 
 - [x] **TASK-085**: Create `mapper` package
-- [x] **TASK-086**: Create `AccountMapper.java` class
-- [x] **TASK-087**: Add `toResponse(Account, BigDecimal balance)` method
+- [x] **TASK-086**: Create `AccountMapper.java` interface with `@Mapper(componentModel = "spring")`
+- [x] **TASK-087**: Add `toResponse(Account, BigDecimal balance)` method with `@Mapping` annotations
 - [x] **TASK-088**: Add `toEntity(CreateAccountRequest)` method
-- [x] **TASK-089**: Create `TransactionMapper.java` class
-- [x] **TASK-090**: Add `toResponse(Transaction)` method
-- [x] **TASK-091**: Create `LedgerEntryMapper.java` class
-- [x] **TASK-092**: Add `toResponse(LedgerEntry)` method
+- [x] **TASK-089**: Create `TransactionMapper.java` interface with `@Mapper(componentModel = "spring")`
+- [x] **TASK-090**: Add `toResponse(Transaction)` method with enum→String conversion
+- [x] **TASK-091**: Create `LedgerEntryMapper.java` interface with `@Mapper(componentModel = "spring")`
+- [x] **TASK-092**: Add `toResponse(LedgerEntry)` method with enum→String conversion
 - [x] **TASK-093**: Add `toResponseList(List<LedgerEntry>)` method
-- [x] **TASK-094**: Make all mappers Spring `@Component` beans
-- [x] **TASK-095**: Add null safety checks in all mapper methods
+- [x] **TASK-094**: Configure MapStruct annotation processor in `pom.xml`
+- [x] **TASK-095**: Verify MapStruct generates Spring beans at compile time
 
 ---
 

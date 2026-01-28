@@ -83,18 +83,69 @@ This document contains essential context, conventions, and gotchas for AI coding
 | `DifferentAccounts.java` | Annotation ensuring source ≠ target account |
 | `DifferentAccountsValidator.java` | Validator implementation for @DifferentAccounts |
 
-**Mappers (`mapper/`):**
+**Mappers (`mapper/`) - Using MapStruct:**
 | File | Purpose |
 |------|---------|
-| `AccountMapper.java` | Entity↔DTO conversion with null safety, @Component |
-| `TransactionMapper.java` | Transaction→Response mapping, @Component |
-| `LedgerEntryMapper.java` | Entry→Response + list mapping, @Component |
+| `AccountMapper.java` | MapStruct interface: `toEntity()`, `toResponse()` with balance parameter |
+| `TransactionMapper.java` | MapStruct interface: `toResponse()` with enum→String conversion |
+| `LedgerEntryMapper.java` | MapStruct interface: `toResponse()`, `toResponseList()` |
 
 ### 🔧 Fixes Applied During Implementation
 
 1. **Removed invalid `flyway-database-postgresql:9.22.3`** - Not compatible with Flyway 9.x in Spring Boot 3.2
 2. **Removed `--enable-preview` compiler flags** - Not needed for Java 21 standard features
 3. **Fixed default DB password** - Matched `.env.example` values in `application.yml`
+
+---
+
+## 🗺️ MapStruct Usage Guidelines
+
+MapStruct is used for type-safe bean mapping with Spring integration.
+
+### Dependencies (pom.xml)
+```xml
+<dependency>
+    <groupId>org.mapstruct</groupId>
+    <artifactId>mapstruct</artifactId>
+    <version>${mapstruct.version}</version>
+</dependency>
+<!-- Annotation processor configured in maven-compiler-plugin -->
+```
+
+### Define Mapper Interface
+```java
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+@Mapper(componentModel = "spring")
+public interface CarMapper {
+
+    @Mapping(source = "seatConfiguration", target = "seats")
+    CarDto carToCarDto(Car car);
+}
+```
+
+During compilation, MapStruct generates an implementation class (e.g., `CarMapperImpl`) in `target/generated-sources` marked with `@Component` for Spring's component scanning.
+
+### Inject and Use
+```java
+@Service
+public class CarService {
+
+    private final CarMapper carMapper;
+
+    @Autowired
+    public CarService(CarMapper carMapper) {
+        this.carMapper = carMapper;
+    }
+
+    public CarDto getCarDto(Car car) {
+        return carMapper.carToCarDto(car);
+    }
+}
+```
+
+This eliminates manual instantiation and integrates with Spring IoC container.
 
 ---
 
