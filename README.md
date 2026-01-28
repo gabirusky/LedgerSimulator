@@ -1,69 +1,260 @@
 # 💳 Fintech Ledger Simulator
 
 ![Java](https://img.shields.io/badge/Java-21-orange)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-green)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.2-green)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
 
 ## 📖 Introduction
+
 A high-performance, **Double-Entry Bookkeeping** backend service designed to handle atomic financial transactions with high integrity and auditability.
 
 In modern fintech environments, data integrity is non-negotiable. This service simulates a core banking ledger where money is never simply "updated" in a column, but moved through immutable transaction logs. It is designed to be resilient against race conditions, network failures, and double-spending attacks.
 
 ---
 
-## 🎯 Requirements Specification
+## 📦 Implementation Progress
 
-To ensure the system mimics a real-world financial environment, the following requirements were defined and implemented:
+| Phase | Status | Description |
+|-------|--------|-------------|
+| 1. Project Setup | ✅ Complete | Maven, dependencies, application config |
+| 2. Infrastructure | ✅ Complete | Docker, PostgreSQL, Flyway migrations |
+| 3. Domain Entities | ✅ Complete | Enums, JPA entities (Account, Transaction, LedgerEntry) |
+| 4. DTOs & Mappers | ⏳ Pending | Request/Response DTOs, mappers |
+| 5. Repositories | ⏳ Pending | Data access layer with custom queries |
+| 6. Services | ⏳ Pending | Business logic, transfer service |
+| 7. Controllers | ⏳ Pending | REST API endpoints |
+| 8. Exception Handling | ⏳ Pending | Custom exceptions, global handler |
+| 9-11. Tests | ⏳ Pending | Unit, integration, concurrency tests |
+| 12-13. DevOps & Docs | ⏳ Pending | CI/CD, documentation |
 
-### 1. Functional Requirements (FR)
-These define the specific behaviors and functions of the system.
+---
 
-* **FR-01 Create Account:** The system must allow the creation of a financial account (wallet) associated with a user.
-* **FR-02 Money Transfer:** The system must execute transfers between two accounts (P2P). This operation is atomic—either both debit and credit succeed, or the entire transaction fails.
-* **FR-03 Balance Retrieval:** Users must be able to retrieve the current calculated balance of an account in real-time.
-* **FR-04 Transaction History:** The system must provide a statement (ledger) of all transactions for a specific account, including timestamps and transaction types.
-* **FR-05 Idempotency:** The API must accept a unique `Idempotency-Key` header for mutation requests to prevent duplicate processing of the same transaction in case of network retries.
+## 🛠 Tech Stack
 
-### 2. Non-Functional Requirements (NFR)
-These define the quality attributes and constraints.
-
-* **NFR-01 Data Consistency (ACID):** All financial operations must adhere to strict ACID properties using a Relational Database (PostgreSQL).
-* **NFR-02 Concurrency Control:** The system must handle high-concurrency scenarios (e.g., multiple concurrent transfers on the same account) without data corruption (Lost Updates), using **Pessimistic Locking**.
-* **NFR-03 Auditability:** The ledger must be **immutable**. Records can only be inserted, never updated or deleted (Append-Only).
-* **NFR-04 Precision:** All monetary values must be stored and calculated using `BigDecimal` (or integer cents) to avoid floating-point errors.
-* **NFR-05 Error Handling:** The API must return standardized error codes (e.g., `422 Unprocessable Entity` for insufficient funds) consistent with RFC 7807.
-
-### 3. Business Rules (BR)
-* **BR-01 Conservation of Value:** The sum of Debits must equal the sum of Credits for every transaction.
-* **BR-02 No Overdraft:** An account balance cannot go below zero (unless configured otherwise). Transfers with insufficient funds must be rejected immediately.
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Java | 21+ | Language (Records, Pattern Matching) |
+| Spring Boot | 3.2.2 | Framework |
+| PostgreSQL | 16 | Database |
+| Spring Data JPA | - | ORM/Persistence |
+| Hibernate | - | JPA Implementation |
+| Flyway | - | Database Migrations |
+| Jakarta Validation | - | Bean Validation |
+| Lombok | 1.18.30 | Boilerplate Reduction |
+| JUnit 5 | - | Unit Testing |
+| Testcontainers | - | Integration Testing |
+| AssertJ | - | Fluent Assertions |
+| Mockito | - | Mocking |
 
 ---
 
 ## 🏗 Architecture & Design Patterns
 
 ### Double-Entry Bookkeeping
-Instead of a simple `balance` column update, every transfer generates two `LedgerEntry` records:
-1.  **Debit** from the Sender.
-2.  **Credit** to the Receiver.
 
-The balance is effectively `SUM(credits) - SUM(debits)`.
+Instead of a simple `balance` column update, every transfer generates two `LedgerEntry` records:
+1. **Debit** from the Sender (money out)
+2. **Credit** to the Receiver (money in)
+
+The balance is calculated as: `SUM(credits) - SUM(debits)`
+
+### Domain Model
+
+```
+Account
+├── id: UUID (PK)
+├── document: String (unique, indexed)
+├── name: String
+├── createdAt: Instant
+└── updatedAt: Instant
+
+Transaction
+├── id: UUID (PK)
+├── idempotencyKey: String (unique, indexed)
+├── sourceAccountId: UUID (FK)
+├── targetAccountId: UUID (FK)
+├── amount: BigDecimal(19,2)
+├── status: TransactionStatus (PENDING/COMPLETED/FAILED)
+└── createdAt: Instant
+
+LedgerEntry
+├── id: UUID (PK)
+├── transactionId: UUID (FK)
+├── accountId: UUID (FK)
+├── entryType: EntryType (DEBIT/CREDIT)
+├── amount: BigDecimal(19,2)
+├── balanceAfter: BigDecimal(19,2)
+└── createdAt: Instant
+```
 
 ### Concurrency Strategy: Pessimistic Locking
+
 To prevent race conditions where two threads try to spend the same balance simultaneously, we use `SELECT ... FOR UPDATE` (Pessimistic Write Lock) on the account rows during the transaction window.
 
 ```java
-// Example of Repository Layer Strategy
 @Lock(LockModeType.PESSIMISTIC_WRITE)
 @Query("SELECT a FROM Account a WHERE a.id = :id")
 Optional<Account> findByIdForUpdate(@Param("id") UUID id);
 ```
 
-## 🏗 Architecture & Transaction Flow
+### Deadlock Prevention
 
-The core of this application is the `TransferService`, which handles atomic transactions. Below is the sequence diagram illustrating how we guarantee data integrity using **Pessimistic Locking** and **Idempotency checks**.
+Account IDs are **sorted before locking** to ensure consistent lock ordering:
 
-### Transaction Sequence Diagram
+```java
+UUID firstId = sourceId.compareTo(targetId) < 0 ? sourceId : targetId;
+UUID secondId = sourceId.compareTo(targetId) < 0 ? targetId : sourceId;
+```
+
+---
+
+## 🎯 Requirements Specification
+
+### Functional Requirements (FR)
+
+| ID | Requirement | Status |
+|----|-------------|--------|
+| FR-01 | Create Account - Create financial account associated with a user | ⏳ |
+| FR-02 | Money Transfer - Atomic P2P transfers (both succeed or fail) | ⏳ |
+| FR-03 | Balance Retrieval - Real-time calculated balance | ⏳ |
+| FR-04 | Transaction History - Ledger statement with timestamps | ⏳ |
+| FR-05 | Idempotency - Unique `Idempotency-Key` header support | ⏳ |
+
+### Non-Functional Requirements (NFR)
+
+| ID | Requirement | Status |
+|----|-------------|--------|
+| NFR-01 | ACID compliance using PostgreSQL | ✅ |
+| NFR-02 | Pessimistic locking for concurrency control | ⏳ |
+| NFR-03 | Immutable append-only ledger | ✅ |
+| NFR-04 | BigDecimal for monetary precision | ✅ |
+| NFR-05 | RFC 7807 error responses | ⏳ |
+
+### Business Rules (BR)
+
+| ID | Rule | Status |
+|----|------|--------|
+| BR-01 | Conservation of Value - Debits = Credits | ⏳ |
+| BR-02 | No Overdraft - Balance cannot go negative | ⏳ |
+
+---
+
+## 🚦 API Endpoints
+
+| Method | Endpoint | Description | Request Body |
+|--------|----------|-------------|--------------|
+| POST | `/api/v1/accounts` | Create new account | `{ "document": "123", "name": "John" }` |
+| GET | `/api/v1/accounts/{id}` | Get account & balance | - |
+| GET | `/api/v1/accounts` | List accounts (paginated) | - |
+| POST | `/api/v1/transfers` | Execute atomic transfer | `{ "sourceAccountId": "...", "targetAccountId": "...", "amount": 100.00 }` |
+| GET | `/api/v1/transfers/{id}` | Get transfer details | - |
+| GET | `/api/v1/ledger/{accountId}` | Get account statement | - |
+
+### Headers
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `Idempotency-Key` | Yes (POST) | Unique key to prevent duplicate processing |
+
+---
+
+## 🏃 How to Run
+
+### Prerequisites
+
+- Java 21+
+- Docker & Docker Compose
+- Maven 3.9+
+
+### Quick Start
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/fintech-ledger-simulator.git
+   cd fintech-ledger-simulator
+   ```
+
+2. **Configure environment:**
+   ```bash
+   cp .env.example .env
+   # Edit .env if needed
+   ```
+
+3. **Start PostgreSQL:**
+   ```bash
+   docker-compose up -d
+   ```
+
+4. **Run the application:**
+   ```bash
+   ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+   ```
+
+5. **Access the API:**
+   - Application: http://localhost:8080
+   - Swagger UI: http://localhost:8080/swagger-ui.html (when implemented)
+
+### Running Tests
+
+```bash
+# Unit tests
+./mvnw test
+
+# Integration tests (requires Docker)
+./mvnw verify -P integration-tests
+```
+
+---
+
+## 📁 Project Structure
+
+```
+src/main/java/com/fintech/ledger/
+├── LedgerSimulatorApplication.java  # Main application class
+├── config/                          # Spring configuration
+├── controller/                      # REST controllers
+├── service/                         # Business logic
+├── repository/                      # Data access layer
+├── domain/
+│   ├── entity/                      # JPA entities
+│   │   ├── Account.java
+│   │   ├── Transaction.java
+│   │   ├── LedgerEntry.java
+│   │   ├── EntryType.java           # DEBIT/CREDIT enum
+│   │   └── TransactionStatus.java   # PENDING/COMPLETED/FAILED enum
+│   └── dto/                         # Request/Response DTOs
+├── exception/                       # Custom exceptions & handlers
+├── mapper/                          # Entity <-> DTO mappers
+└── validation/                      # Custom validators
+
+src/main/resources/
+├── application.yml                  # Base configuration
+├── application-dev.yml              # Development profile
+├── application-test.yml             # Test profile
+├── banner.txt                       # Custom startup banner
+└── db/migration/                    # Flyway migrations
+    ├── V1__create_accounts_table.sql
+    ├── V2__create_transactions_table.sql
+    └── V3__create_ledger_entries_table.sql
+```
+
+---
+
+## 🧪 Testing Strategy
+
+This project follows the **Testing Pyramid** approach:
+
+| Type | Description | Tools |
+|------|-------------|-------|
+| Unit Tests | Domain logic validation | JUnit 5, Mockito, AssertJ |
+| Integration Tests | Repository & controller tests | Testcontainers, @DataJpaTest |
+| Concurrency Tests | 100+ thread stress tests | ExecutorService, CountDownLatch |
+
+---
+
+## 📊 Transaction Flow Diagram
 
 ```mermaid
 sequenceDiagram
@@ -101,12 +292,11 @@ sequenceDiagram
             Note over Service, DB: Rollback Transaction
             Controller-->>Client: 422 Unprocessable Entity
         else Sufficient Funds
-            Service->>Service: Update Balances (Memory)
-            Service->>Repo: save(SourceAccount)
-            Service->>Repo: save(TargetAccount)
-            Service->>Repo: save(LedgerEntry)
+            Service->>Repo: Create DEBIT LedgerEntry (Source)
+            Service->>Repo: Create CREDIT LedgerEntry (Target)
+            Service->>Repo: Save Transaction (COMPLETED)
             
-            Repo->>DB: INSERT/UPDATE Statements
+            Repo->>DB: INSERT Statements
             Note over Service, DB: Commit Transaction (Release Locks)
             
             Service-->>Controller: Transaction Details
@@ -115,66 +305,26 @@ sequenceDiagram
     end
 ```
 
-## 🛠 Tech Stack
-
-    Language: Java 21+ (utilizing Records and Pattern Matching)
-
-    Framework: Spring Boot 3.x
-
-    Database: PostgreSQL
-
-    Persistence: Spring Data JPA / Hibernate
-
-    Validation: Jakarta Bean Validation
-
-    Testing: JUnit 5, AssertJ, Mockito, Testcontainers
-
-## 🚦 Core Endpoints
-Method	Endpoint	Description	Payload Example
-POST	/api/v1/accounts	Create a new financial account.	{ "document": "123", "name": "John Doe" }
-GET	/api/v1/accounts/{id}	Retrieve account details & balance.	-
-POST	/api/v1/transfers	Execute atomic transfer.	{ "sourceId": "...", "targetId": "...", "amount": 100.00 }
-GET	/api/v1/ledger/{id}	Fetch full transaction history.	-
-🧪 Testing Strategy
-
-## This project follows the Testing Pyramid approach:
-
-    Unit Tests: Validate domain logic (e.g., checking for insufficient funds, ensuring non-negative amounts).
-
-    Integration Tests: Use @DataJpaTest to verify SQL queries and database constraints.
-
-    Concurrency Tests: Specialized tests using ExecutorService to simulate 100+ concurrent threads trying to withdraw from the same account to verify thread safety.
-
-## 🏃 How to Run
-Prerequisites
-
-    Java 21+
-
-    Docker (for PostgreSQL container)
-
-Steps
-
-    Clone the repo:
-    Bash
-
-    git clone [https://github.com/your-username/fintech-ledger-simulator.git](https://github.com/your-username/fintech-ledger-simulator.git)
-
-    Start Database:
-    Bash
-
-    docker-compose up -d
-
-    Run Application:
-    Bash
-
-    ./mvnw spring-boot:run
+---
 
 ## 💡 Roadmap & Extensions
 
-    [ ] Integration with a Mock Central Bank API.
+- [ ] Complete API implementation (Phases 4-8)
+- [ ] Full test coverage (Phases 9-11)
+- [ ] Dockerization and CI/CD Pipeline (GitHub Actions)
+- [ ] Integration with a Mock Central Bank API
+- [ ] Implementation of Spring Security (OAuth2/JWT)
+- [ ] Prometheus & Grafana metrics for transaction throughput
+- [ ] Rate limiting and circuit breakers
 
-    [ ] Implementation of Spring Security (OAuth2/JWT).
+---
 
-    [ ] Dockerization and CI/CD Pipeline (GitHub Actions).
+## 📄 License
 
-    [ ] Prometheus & Grafana metrics for transaction throughput.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines.
