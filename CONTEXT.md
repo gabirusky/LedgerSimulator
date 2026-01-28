@@ -7,10 +7,48 @@ This document contains essential context, conventions, and gotchas for AI coding
 ## 📁 Project Type
 
 - **Language**: Java 21+ (use Records, Pattern Matching, sealed classes where appropriate)
-- **Framework**: Spring Boot 3.x
+- **Framework**: Spring Boot 3.2.2
 - **Build Tool**: Maven
 - **Database**: PostgreSQL 16
 - **ORM**: Spring Data JPA / Hibernate
+
+---
+
+## 📦 Implementation Progress
+
+### ✅ Phase 1: Project Setup (Complete)
+
+| File | Description |
+|------|-------------|
+| `pom.xml` | Spring Boot 3.2.2, Java 21, all dependencies |
+| `LedgerSimulatorApplication.java` | Main application class |
+| `application.yml` | Base config (datasource, JPA, Flyway) |
+| `application-dev.yml` | Dev profile (verbose logging) |
+| `application-test.yml` | Test profile (Testcontainers) |
+| `banner.txt` | Custom startup banner |
+| 9x `package-info.java` | Package structure placeholders |
+
+### ✅ Phase 2: Infrastructure (Complete)
+
+**Docker Configuration:**
+| File | Purpose |
+|------|---------|
+| `docker-compose.yml` | PostgreSQL 16 service with health checks |
+| `docker-compose.override.yml` | Local dev overrides |
+| `.env.example` | Sample environment variables |
+
+**Database Migrations:**
+| File | Purpose |
+|------|---------|
+| `V1__create_accounts_table.sql` | Accounts table with UUID PK, unique document |
+| `V2__create_transactions_table.sql` | Transactions table with idempotency support |
+| `V3__create_ledger_entries_table.sql` | Ledger entries for double-entry bookkeeping |
+
+### 🔧 Fixes Applied During Implementation
+
+1. **Removed invalid `flyway-database-postgresql:9.22.3`** - Not compatible with Flyway 9.x in Spring Boot 3.2
+2. **Removed `--enable-preview` compiler flags** - Not needed for Java 21 standard features
+3. **Fixed default DB password** - Matched `.env.example` values in `application.yml`
 
 ---
 

@@ -52,24 +52,24 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### Docker Setup
 
-- [ ] **TASK-026**: Create `docker-compose.yml` file
-- [ ] **TASK-027**: Configure PostgreSQL 16 service in docker-compose
-- [ ] **TASK-028**: Add volume for PostgreSQL data persistence
-- [ ] **TASK-029**: Configure environment variables for DB credentials
-- [ ] **TASK-030**: Add health check for PostgreSQL service
-- [ ] **TASK-031**: Create `.env.example` with sample environment variables
-- [ ] **TASK-032**: Add `docker-compose.override.yml` for local overrides
+- [x] **TASK-026**: Create `docker-compose.yml` file
+- [x] **TASK-027**: Configure PostgreSQL 16 service in docker-compose
+- [x] **TASK-028**: Add volume for PostgreSQL data persistence
+- [x] **TASK-029**: Configure environment variables for DB credentials
+- [x] **TASK-030**: Add health check for PostgreSQL service
+- [x] **TASK-031**: Create `.env.example` with sample environment variables
+- [x] **TASK-032**: Add `docker-compose.override.yml` for local overrides
 
 ### Database Migrations
 
-- [ ] **TASK-033**: Create `db/migration` directory structure
-- [ ] **TASK-034**: Create `V1__create_accounts_table.sql` migration
+- [x] **TASK-033**: Create `db/migration` directory structure
+- [x] **TASK-034**: Create `V1__create_accounts_table.sql` migration
   - id (UUID, PK)
   - document (VARCHAR, UNIQUE, NOT NULL)
   - name (VARCHAR, NOT NULL)
   - created_at (TIMESTAMP, NOT NULL)
   - updated_at (TIMESTAMP)
-- [ ] **TASK-035**: Create `V2__create_transactions_table.sql` migration
+- [x] **TASK-035**: Create `V2__create_transactions_table.sql` migration
   - id (UUID, PK)
   - idempotency_key (VARCHAR, UNIQUE, NOT NULL)
   - source_account_id (UUID, FK)
@@ -77,7 +77,7 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
   - amount (DECIMAL(19,2), NOT NULL)
   - status (VARCHAR, NOT NULL)
   - created_at (TIMESTAMP, NOT NULL)
-- [ ] **TASK-036**: Create `V3__create_ledger_entries_table.sql` migration
+- [x] **TASK-036**: Create `V3__create_ledger_entries_table.sql` migration
   - id (UUID, PK)
   - transaction_id (UUID, FK)
   - account_id (UUID, FK)
@@ -85,10 +85,10 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
   - amount (DECIMAL(19,2), NOT NULL)
   - balance_after (DECIMAL(19,2), NOT NULL)
   - created_at (TIMESTAMP, NOT NULL)
-- [ ] **TASK-037**: Add index on `accounts.document` column
-- [ ] **TASK-038**: Add index on `transactions.idempotency_key` column
-- [ ] **TASK-039**: Add index on `ledger_entries.account_id` column
-- [ ] **TASK-040**: Add index on `ledger_entries.transaction_id` column
+- [x] **TASK-037**: Add index on `accounts.document` column
+- [x] **TASK-038**: Add index on `transactions.idempotency_key` column
+- [x] **TASK-039**: Add index on `ledger_entries.account_id` column
+- [x] **TASK-040**: Add index on `ledger_entries.transaction_id` column
 
 ---
 
