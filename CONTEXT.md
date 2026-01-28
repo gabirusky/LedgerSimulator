@@ -84,17 +84,43 @@ This document contains essential context, conventions, and gotchas for AI coding
 | `DifferentAccountsValidator.java` | Validator implementation for @DifferentAccounts |
 
 **Mappers (`mapper/`) - Using MapStruct:**
-| File | Purpose |
-|------|---------|
-| `AccountMapper.java` | MapStruct interface: `toEntity()`, `toResponse()` with balance parameter |
-| `TransactionMapper.java` | MapStruct interface: `toResponse()` with enum→String conversion |
-| `LedgerEntryMapper.java` | MapStruct interface: `toResponse()`, `toResponseList()` |
+
+MapStruct is configured with `@Mapper(componentModel = "spring")` for automatic Spring bean generation at compile time.
+
+| File | Methods | Notes |
+|------|---------|-------|
+| `AccountMapper.java` | `toEntity(CreateAccountRequest)`, `toResponse(Account, BigDecimal balance)` | Balance passed separately (calculated from ledger) |
+| `TransactionMapper.java` | `toResponse(Transaction)` | Uses `@Mapping` expression for enum→String: `transaction.getStatus().name()` |
+| `LedgerEntryMapper.java` | `toResponse(LedgerEntry)`, `toResponseList(List<LedgerEntry>)` | Enum→String conversion for `entryType` |
+
+**MapStruct Configuration (`pom.xml`):**
+```xml
+<properties>
+    <mapstruct.version>1.5.5.Final</mapstruct.version>
+</properties>
+
+<dependency>
+    <groupId>org.mapstruct</groupId>
+    <artifactId>mapstruct</artifactId>
+    <version>${mapstruct.version}</version>
+</dependency>
+
+<!-- In maven-compiler-plugin annotationProcessorPaths -->
+<path>
+    <groupId>org.mapstruct</groupId>
+    <artifactId>mapstruct-processor</artifactId>
+    <version>${mapstruct.version}</version>
+</path>
+```
+
+Generated implementations are created in `target/generated-sources/annotations/` during compilation and registered as Spring `@Component` beans.
 
 ### 🔧 Fixes Applied During Implementation
 
 1. **Removed invalid `flyway-database-postgresql:9.22.3`** - Not compatible with Flyway 9.x in Spring Boot 3.2
 2. **Removed `--enable-preview` compiler flags** - Not needed for Java 21 standard features
 3. **Fixed default DB password** - Matched `.env.example` values in `application.yml`
+4. **Removed Lombok from annotation processor paths** - Project uses Java records for DTOs (no Lombok needed); removed to avoid Java 25 compatibility issues with Lombok's javac integration
 
 ---
 
