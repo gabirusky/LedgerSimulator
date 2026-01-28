@@ -123,7 +123,7 @@ Generated implementations are created in `target/generated-sources/annotations/`
 |------|---------|-------------|
 | `AccountRepository.java` | `JpaRepository<Account, UUID>`, `CustomAccountRepository` | `findByDocument()`, `existsByDocument()`, `findByIdForUpdate()` |
 | `TransactionRepository.java` | `JpaRepository<Transaction, UUID>` | `findByIdempotencyKey()`, `existsByIdempotencyKey()` |
-| `LedgerEntryRepository.java` | `JpaRepository<LedgerEntry, UUID>` | `findByAccountIdOrderByCreatedAtDesc()`, `calculateBalance()`, `findLatestByAccountId()` |
+| `LedgerEntryRepository.java` | `JpaRepository<LedgerEntry, UUID>` | `findByAccountIdOrderByCreatedAtDesc()`, `calculateBalance()`, `getBalance()`, `findLatestBalance()` |
 
 **Custom Repository Implementation:**
 
@@ -135,10 +135,13 @@ Generated implementations are created in `target/generated-sources/annotations/`
 **Key Features:**
 
 - **Pessimistic Locking**: `findByIdForUpdate()` uses `@Lock(LockModeType.PESSIMISTIC_WRITE)` with 5-second timeout
-- **Balance Calculation**: JPQL query calculates `SUM(Credits) - SUM(Debits)` directly from ledger entries
+- **Balance Calculation (Two-Tier Strategy)**:
+  - `getBalance()` / `findLatestBalance()`: **O(log n)** - Uses `balanceAfter` from latest entry (primary/fast path)
+  - `calculateBalance()`: **O(n)** - Full aggregation for reconciliation/audit
 - **Deadlock Prevention**: `findAllByIdForUpdateSorted()` sorts UUIDs before acquiring locks
 - **Idempotency Support**: Index-backed lookups for idempotency keys
 - **Pagination**: `Pageable` support for account statements
+- **Recommended Index**: `CREATE INDEX idx_ledger_entries_account_created ON ledger_entries(account_id, created_at DESC)`
 
 ### 🔧 Fixes Applied During Implementation
 

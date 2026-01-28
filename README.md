@@ -22,7 +22,7 @@ In modern fintech environments, data integrity is non-negotiable. This service s
 | 2. Infrastructure | ✅ Complete | Docker, PostgreSQL, Flyway migrations |
 | 3. Domain Entities | ✅ Complete | Enums, JPA entities (Account, Transaction, LedgerEntry) |
 | 4. DTOs & Mappers | ✅ Complete | Request/Response DTOs, MapStruct mappers |
-| 5. Repositories | ⏳ Pending | Data access layer with custom queries |
+| 5. Repositories | ✅ Complete | Data access layer with custom queries, optimized balance reads |
 | 6. Services | ⏳ Pending | Business logic, transfer service |
 | 7. Controllers | ⏳ Pending | REST API endpoints |
 | 8. Exception Handling | ⏳ Pending | Custom exceptions, global handler |

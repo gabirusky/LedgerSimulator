@@ -89,6 +89,7 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 - [x] **TASK-038**: Add index on `transactions.idempotency_key` column
 - [x] **TASK-039**: Add index on `ledger_entries.account_id` column
 - [x] **TASK-040**: Add index on `ledger_entries.transaction_id` column
+- [x] **TASK-040.1**: Create `V4__add_balance_query_index.sql` - composite index on (account_id, created_at DESC) for O(log n) balance queries
 
 ---
 
@@ -250,6 +251,8 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
   BigDecimal calculateBalance(@Param("accountId") UUID accountId);
   ```
 - [x] **TASK-114**: Add `findLatestByAccountId(UUID accountId)` for last entry
+- [x] **TASK-114.1**: Add `findLatestBalance(UUID accountId)` for O(log n) balance reads
+- [x] **TASK-114.2**: Add `getBalance(UUID accountId)` default method for fast balance with zero default
 
 ### Custom Repository Implementations
 

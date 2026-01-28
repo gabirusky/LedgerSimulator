@@ -95,4 +95,38 @@ public interface LedgerEntryRepository extends JpaRepository<LedgerEntry, UUID> 
      * @return the count of entries
      */
     long countByAccountId(UUID accountId);
+
+    // ============================================================
+    // Fast-path balance methods (O(log n) with proper indexing)
+    // ============================================================
+
+    /**
+     * Retrieves the balance from the most recent ledger entry for an account.
+     * <p>
+     * This is the PRIMARY/FAST method for reading account balances.
+     * Time complexity: O(log n) with index on (account_id, created_at)
+     * <p>
+     * Note: Requires proper database index for optimal performance:
+     * CREATE INDEX idx_ledger_entries_account_created 
+     *   ON ledger_entries(account_id, created_at DESC);
+     *
+     * @param accountId the account ID
+     * @return Optional containing the latest balance, empty for accounts with no entries
+     */
+    @Query("SELECT e.balanceAfter FROM LedgerEntry e WHERE e.accountId = :accountId " +
+           "ORDER BY e.createdAt DESC LIMIT 1")
+    Optional<BigDecimal> findLatestBalance(@Param("accountId") UUID accountId);
+
+    /**
+     * Convenience method for getting the current balance with a default of zero.
+     * <p>
+     * Use this for fast balance reads in normal operations.
+     * Use {@link #calculateBalance(UUID)} for reconciliation/auditing.
+     *
+     * @param accountId the account ID
+     * @return the current balance, or ZERO for accounts with no entries
+     */
+    default BigDecimal getBalance(UUID accountId) {
+        return findLatestBalance(accountId).orElse(BigDecimal.ZERO);
+    }
 }
