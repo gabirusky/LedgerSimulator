@@ -21,7 +21,7 @@ In modern fintech environments, data integrity is non-negotiable. This service s
 | 1. Project Setup | ✅ Complete | Maven, dependencies, application config |
 | 2. Infrastructure | ✅ Complete | Docker, PostgreSQL, Flyway migrations |
 | 3. Domain Entities | ✅ Complete | Enums, JPA entities (Account, Transaction, LedgerEntry) |
-| 4. DTOs & Mappers | ⏳ Pending | Request/Response DTOs, mappers |
+| 4. DTOs & Mappers | ✅ Complete | Request/Response DTOs, MapStruct mappers |
 | 5. Repositories | ⏳ Pending | Data access layer with custom queries |
 | 6. Services | ⏳ Pending | Business logic, transfer service |
 | 7. Controllers | ⏳ Pending | REST API endpoints |
@@ -42,7 +42,7 @@ In modern fintech environments, data integrity is non-negotiable. This service s
 | Hibernate | - | JPA Implementation |
 | Flyway | - | Database Migrations |
 | Jakarta Validation | - | Bean Validation |
-| Lombok | 1.18.30 | Boilerplate Reduction |
+| MapStruct | 1.5.5.Final | Entity↔DTO Mapping |
 | JUnit 5 | - | Unit Testing |
 | Testcontainers | - | Integration Testing |
 | AssertJ | - | Fluent Assertions |
@@ -309,7 +309,8 @@ sequenceDiagram
 
 ## 💡 Roadmap & Extensions
 
-- [ ] Complete API implementation (Phases 4-8)
+- [x] DTOs and MapStruct mappers (Phase 4)
+- [ ] Complete API implementation (Phases 5-8)
 - [ ] Full test coverage (Phases 9-11)
 - [ ] Dockerization and CI/CD Pipeline (GitHub Actions)
 - [ ] Integration with a Mock Central Bank API
