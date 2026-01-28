@@ -115,6 +115,31 @@ MapStruct is configured with `@Mapper(componentModel = "spring")` for automatic 
 
 Generated implementations are created in `target/generated-sources/annotations/` during compilation and registered as Spring `@Component` beans.
 
+### ✅ Phase 5: Repositories (Complete)
+
+**Repository Interfaces (`repository/`):**
+
+| File | Extends | Key Methods |
+|------|---------|-------------|
+| `AccountRepository.java` | `JpaRepository<Account, UUID>`, `CustomAccountRepository` | `findByDocument()`, `existsByDocument()`, `findByIdForUpdate()` |
+| `TransactionRepository.java` | `JpaRepository<Transaction, UUID>` | `findByIdempotencyKey()`, `existsByIdempotencyKey()` |
+| `LedgerEntryRepository.java` | `JpaRepository<LedgerEntry, UUID>` | `findByAccountIdOrderByCreatedAtDesc()`, `calculateBalance()`, `findLatestByAccountId()` |
+
+**Custom Repository Implementation:**
+
+| File | Purpose |
+|------|---------|
+| `CustomAccountRepository.java` | Interface for batch locking operations |
+| `CustomAccountRepositoryImpl.java` | Sorted pessimistic locking for deadlock prevention |
+
+**Key Features:**
+
+- **Pessimistic Locking**: `findByIdForUpdate()` uses `@Lock(LockModeType.PESSIMISTIC_WRITE)` with 5-second timeout
+- **Balance Calculation**: JPQL query calculates `SUM(Credits) - SUM(Debits)` directly from ledger entries
+- **Deadlock Prevention**: `findAllByIdForUpdateSorted()` sorts UUIDs before acquiring locks
+- **Idempotency Support**: Index-backed lookups for idempotency keys
+- **Pagination**: `Pageable` support for account statements
+
 ### 🔧 Fixes Applied During Implementation
 
 1. **Removed invalid `flyway-database-postgresql:9.22.3`** - Not compatible with Flyway 9.x in Spring Boot 3.2

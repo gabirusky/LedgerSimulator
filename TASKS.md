@@ -214,51 +214,51 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### AccountRepository
 
-- [ ] **TASK-096**: Create `repository` package
-- [ ] **TASK-097**: Create `AccountRepository.java` interface
-- [ ] **TASK-098**: Extend `JpaRepository<Account, UUID>`
-- [ ] **TASK-099**: Add `findByDocument(String document)` method
-- [ ] **TASK-100**: Add `existsByDocument(String document)` method
-- [ ] **TASK-101**: Add `findByIdForUpdate(UUID id)` with pessimistic lock
+- [x] **TASK-096**: Create `repository` package
+- [x] **TASK-097**: Create `AccountRepository.java` interface
+- [x] **TASK-098**: Extend `JpaRepository<Account, UUID>`
+- [x] **TASK-099**: Add `findByDocument(String document)` method
+- [x] **TASK-100**: Add `existsByDocument(String document)` method
+- [x] **TASK-101**: Add `findByIdForUpdate(UUID id)` with pessimistic lock
   ```java
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   @Query("SELECT a FROM Account a WHERE a.id = :id")
   Optional<Account> findByIdForUpdate(@Param("id") UUID id);
   ```
-- [ ] **TASK-102**: Add `@QueryHints` for lock timeout configuration
+- [x] **TASK-102**: Add `@QueryHints` for lock timeout configuration
 
 ### TransactionRepository
 
-- [ ] **TASK-103**: Create `TransactionRepository.java` interface
-- [ ] **TASK-104**: Extend `JpaRepository<Transaction, UUID>`
-- [ ] **TASK-105**: Add `findByIdempotencyKey(String key)` method
-- [ ] **TASK-106**: Add `existsByIdempotencyKey(String key)` method
-- [ ] **TASK-107**: Add index hint for idempotency key lookup
+- [x] **TASK-103**: Create `TransactionRepository.java` interface
+- [x] **TASK-104**: Extend `JpaRepository<Transaction, UUID>`
+- [x] **TASK-105**: Add `findByIdempotencyKey(String key)` method
+- [x] **TASK-106**: Add `existsByIdempotencyKey(String key)` method
+- [x] **TASK-107**: Add index hint for idempotency key lookup
 
 ### LedgerEntryRepository
 
-- [ ] **TASK-108**: Create `LedgerEntryRepository.java` interface
-- [ ] **TASK-109**: Extend `JpaRepository<LedgerEntry, UUID>`
-- [ ] **TASK-110**: Add `findByAccountIdOrderByCreatedAtDesc(UUID accountId)` method
-- [ ] **TASK-111**: Add paginated version with `Pageable` parameter
-- [ ] **TASK-112**: Add `findByTransactionId(UUID transactionId)` method
-- [ ] **TASK-113**: Add balance calculation query:
+- [x] **TASK-108**: Create `LedgerEntryRepository.java` interface
+- [x] **TASK-109**: Extend `JpaRepository<LedgerEntry, UUID>`
+- [x] **TASK-110**: Add `findByAccountIdOrderByCreatedAtDesc(UUID accountId)` method
+- [x] **TASK-111**: Add paginated version with `Pageable` parameter
+- [x] **TASK-112**: Add `findByTransactionId(UUID transactionId)` method
+- [x] **TASK-113**: Add balance calculation query:
   ```java
   @Query("SELECT COALESCE(SUM(CASE WHEN e.entryType = 'CREDIT' THEN e.amount ELSE 0 END) - " +
          "SUM(CASE WHEN e.entryType = 'DEBIT' THEN e.amount ELSE 0 END), 0) " +
          "FROM LedgerEntry e WHERE e.accountId = :accountId")
   BigDecimal calculateBalance(@Param("accountId") UUID accountId);
   ```
-- [ ] **TASK-114**: Add `findLatestByAccountId(UUID accountId)` for last entry
+- [x] **TASK-114**: Add `findLatestByAccountId(UUID accountId)` for last entry
 
 ### Custom Repository Implementations
 
-- [ ] **TASK-115**: Create `CustomAccountRepository.java` interface
-- [ ] **TASK-116**: Create `CustomAccountRepositoryImpl.java` class
-- [ ] **TASK-117**: Implement batch account locking method
-- [ ] **TASK-118**: Add `@PersistenceContext` for EntityManager injection
-- [ ] **TASK-119**: Implement sorted lock acquisition for deadlock prevention
-- [ ] **TASK-120**: Make AccountRepository extend CustomAccountRepository
+- [x] **TASK-115**: Create `CustomAccountRepository.java` interface
+- [x] **TASK-116**: Create `CustomAccountRepositoryImpl.java` class
+- [x] **TASK-117**: Implement batch account locking method
+- [x] **TASK-118**: Add `@PersistenceContext` for EntityManager injection
+- [x] **TASK-119**: Implement sorted lock acquisition for deadlock prevention
+- [x] **TASK-120**: Make AccountRepository extend CustomAccountRepository
 
 ---
 
