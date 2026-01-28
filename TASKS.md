@@ -23,7 +23,7 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 - [x] **TASK-004**: Add `spring-boot-starter-validation` dependency
 - [x] **TASK-005**: Add `postgresql` JDBC driver dependency
 - [x] **TASK-006**: Add `flyway-core` dependency for migrations
-- [x] **TASK-007**: Add `lombok` dependency (optional, for boilerplate reduction)
+- [x] **TASK-007**: Add `mapstruct` dependency (for type-safe bean mapping)
 - [x] **TASK-008**: Add `spring-boot-starter-test` dependency
 - [x] **TASK-009**: Add `testcontainers-postgresql` dependency
 - [x] **TASK-010**: Add `junit-jupiter` dependency
