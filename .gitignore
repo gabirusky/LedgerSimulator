@@ -1,0 +1,88 @@
+# ===========================
+# Maven Build Output
+# ===========================
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# ===========================
+# IDE - VS Code
+# ===========================
+.vscode/
+*.code-workspace
+
+# ===========================
+# OS Generated Files
+# ===========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ===========================
+# Java Compiled Files
+# ===========================
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# ===========================
+# Log Files
+# ===========================
+*.log
+logs/
+
+# ===========================
+# Package/Dependency Files
+# ===========================
+hs_err_pid*
+replay_pid*
+
+# ===========================
+# Environment & Secrets
+# ===========================
+.env
+.env.local
+.env.*.local
+!.env.example
+application-local.properties
+application-local.yml
+
+# ===========================
+# Spring Boot
+# ===========================
+HELP.md
+.spring/
+
+# ===========================
+# Docker
+# ===========================
+docker-compose.override.yml
+
+# ===========================
+# Test Coverage & Reports
+# ===========================
+coverage/
+jacoco.exec
+*.exec
+
+# ===========================
+# Temporary Files
+# ===========================
+*.tmp
+*.temp
+*.swp
+*~
+
+# ===========================
+# MapStruct Generated Sources
+# ===========================
+# (Keep these in target/, already ignored)
+
