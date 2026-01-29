@@ -24,7 +24,7 @@ In modern fintech environments, data integrity is non-negotiable. This service s
 | 4. DTOs & Mappers | ✅ Complete | Request/Response DTOs, MapStruct mappers |
 | 5. Repositories | ✅ Complete | Data access layer with cursor-based pagination, optimized balance reads |
 | 6. Services | ✅ Complete | AccountService, TransferService, LedgerService with exception handling |
-| 7. Controllers | ⏳ Pending | REST API endpoints |
+| 7. Controllers | ✅ Complete | REST API endpoints with OpenAPI/Swagger documentation |
 | 8. Exception Handling | ⏳ Pending | Global exception handler |
 | 9-11. Tests | ⏳ Pending | Unit, integration, concurrency tests |
 | 12-13. DevOps & Docs | ⏳ Pending | CI/CD, documentation |
@@ -43,6 +43,7 @@ In modern fintech environments, data integrity is non-negotiable. This service s
 | Flyway | - | Database Migrations |
 | Jakarta Validation | - | Bean Validation |
 | MapStruct | 1.5.5.Final | Entity↔DTO Mapping |
+| SpringDoc OpenAPI | 2.3.0 | API Documentation (Swagger UI) |
 | JUnit 5 | - | Unit Testing |
 | Testcontainers | - | Integration Testing |
 | AssertJ | - | Fluent Assertions |

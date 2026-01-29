@@ -307,6 +307,31 @@ CREATE INDEX idx_ledger_entries_transaction ON ledger_entries(transaction_id);
 
 ---
 
+## Controllers
+
+### AccountController
+
+| Method | Signature | Complexity | Description |
+|--------|-----------|------------|-------------|
+| `createAccount` | `POST /api/v1/accounts` | **O(log n)** | Creates account via AccountService |
+| `getAccount` | `GET /api/v1/accounts/{id}` | **O(log n + log m)** | Retrieves account with balance |
+| `getAllAccounts` | `GET /api/v1/accounts` | **O(page × log m)** | Paginated account list |
+
+### TransferController
+
+| Method | Signature | Complexity | Description |
+|--------|-----------|------------|-------------|
+| `executeTransfer` | `POST /api/v1/transfers` | **O(log n + log m)** | Executes atomic transfer with idempotency |
+| `getTransfer` | `GET /api/v1/transfers/{id}` | **O(log n)** | Retrieves transfer by ID |
+
+### LedgerController
+
+| Method | Signature | Complexity | Description |
+|--------|-----------|------------|-------------|
+| `getAccountStatement` | `GET /api/v1/ledger/{accountId}` | **O(log n + log m + page)** | Paginated account statement |
+
+---
+
 ## Method Count Summary
 
 | Layer | Files | Methods |
@@ -315,10 +340,12 @@ CREATE INDEX idx_ledger_entries_transaction ON ledger_entries(transaction_id);
 | Entities | 3 | 51 |
 | Repositories | 5 | 15 |
 | **Services** | **6** | **10** |
+| **Controllers** | **3** | **6** |
 | Mappers | 3 | 5 |
 | Validation | 1 | 2 |
 | Exceptions | 4 | 8 |
-| DTOs (records) | ~6 | ~18 (auto-generated) |
-| **Total** | **~29** | **~110** |
+| DTOs (records) | ~8 | ~24 (auto-generated) |
+| **Total** | **~34** | **~122** |
 
 > **Note**: Package-info files and enums (`EntryType`, `TransactionStatus`) excluded as they contain no methods.
+

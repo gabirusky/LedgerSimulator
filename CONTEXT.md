@@ -182,6 +182,45 @@ Generated implementations are created in `target/generated-sources/annotations/`
 - **Balance Validation**: Source account balance verified before transfer execution
 - **Fast Balance Lookup**: Uses `getBalance()` (O(log n)) for normal operations
 
+### ✅ Phase 7: Controllers (Complete)
+
+**REST Controllers (`controller/`):**
+
+| File | Base Path | Endpoints |
+|------|-----------|-----------|
+| `AccountController.java` | `/api/v1/accounts` | POST `/`, GET `/{id}`, GET `/` |
+| `TransferController.java` | `/api/v1/transfers` | POST `/`, GET `/{id}` |
+| `LedgerController.java` | `/api/v1/ledger` | GET `/{accountId}` |
+
+**API Endpoints:**
+
+| Method | Path | Description | Response Code |
+|--------|------|-------------|---------------|
+| POST | `/api/v1/accounts` | Create new account | 201 Created |
+| GET | `/api/v1/accounts/{id}` | Get account by ID | 200 OK |
+| GET | `/api/v1/accounts` | List accounts (paginated) | 200 OK |
+| POST | `/api/v1/transfers` | Execute transfer (requires `Idempotency-Key` header) | 201 Created |
+| GET | `/api/v1/transfers/{id}` | Get transfer by ID | 200 OK |
+| GET | `/api/v1/ledger/{accountId}` | Get account statement (paginated) | 200 OK |
+
+**OpenAPI/Swagger Integration:**
+
+- **Dependency**: `springdoc-openapi-starter-webmvc-ui:2.3.0`
+- **Swagger UI**: Available at `/swagger-ui.html`
+- **OpenAPI Spec**: Available at `/v3/api-docs`
+- **Annotations Used**:
+  - `@Tag` - Groups endpoints by controller
+  - `@Operation` - Documents endpoint purpose
+  - `@ApiResponses` / `@ApiResponse` - Documents HTTP status codes
+  - `@Schema` - Documents DTO fields with examples
+
+**Key Features:**
+
+- **Validation**: All request bodies validated with `@Valid`
+- **Idempotency**: `Idempotency-Key` header required for transfers (returns 400 if missing)
+- **Pagination**: `@PageableDefault` used for accounts list and ledger statements
+- **Content Negotiation**: JSON responses with proper content types
+
 ### 🔧 Fixes Applied During Implementation
 
 1. **Removed invalid `flyway-database-postgresql:9.22.3`** - Not compatible with Flyway 9.x in Spring Boot 3.2

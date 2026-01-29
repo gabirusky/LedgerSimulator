@@ -1,6 +1,7 @@
 package com.fintech.ledger.domain.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.Instant;
 import java.util.List;
@@ -18,14 +19,28 @@ import java.util.List;
  * @param timestamp when the error occurred
  * @param errors list of field validation errors (null if not a validation error)
  */
+@Schema(description = "RFC 7807 Problem Details error response")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ErrorResponse(
+        @Schema(description = "URI reference identifying the problem type", example = "about:blank")
         String type,
+
+        @Schema(description = "Short, human-readable summary of the problem", example = "Not Found")
         String title,
+
+        @Schema(description = "HTTP status code", example = "404")
         int status,
+
+        @Schema(description = "Human-readable explanation specific to this occurrence", example = "Account not found with id: 550e8400-e29b-41d4-a716-446655440000")
         String detail,
+
+        @Schema(description = "URI reference identifying this specific occurrence", example = "/api/v1/accounts/550e8400-e29b-41d4-a716-446655440000")
         String instance,
+
+        @Schema(description = "When the error occurred")
         Instant timestamp,
+
+        @Schema(description = "List of field validation errors (only for validation failures)")
         List<FieldError> errors
 ) {
     /**

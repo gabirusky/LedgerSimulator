@@ -67,6 +67,13 @@
             <version>${mapstruct.version}</version>
         </dependency>
 
+        <!-- TASK-196: SpringDoc OpenAPI for Swagger UI -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
         <!-- TASK-015: Spring Boot DevTools (dev scope) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

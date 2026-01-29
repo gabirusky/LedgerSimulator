@@ -330,50 +330,50 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### AccountController
 
-- [ ] **TASK-166**: Create `controller` package
-- [ ] **TASK-167**: Create `AccountController.java` class
-- [ ] **TASK-168**: Add `@RestController` annotation
-- [ ] **TASK-169**: Add `@RequestMapping("/api/v1/accounts")` annotation
-- [ ] **TASK-170**: Inject AccountService
-- [ ] **TASK-171**: Implement `POST /` - create account endpoint
-- [ ] **TASK-172**: Add `@Valid` to request body
-- [ ] **TASK-173**: Return `ResponseEntity<AccountResponse>` with 201 status
-- [ ] **TASK-174**: Implement `GET /{id}` - get account endpoint
-- [ ] **TASK-175**: Parse UUID from path variable
-- [ ] **TASK-176**: Implement `GET /` - list accounts endpoint
-- [ ] **TASK-177**: Add pagination parameters (@PageableDefault)
-- [ ] **TASK-178**: Return `Page<AccountResponse>`
+- [x] **TASK-166**: Create `controller` package
+- [x] **TASK-167**: Create `AccountController.java` class
+- [x] **TASK-168**: Add `@RestController` annotation
+- [x] **TASK-169**: Add `@RequestMapping("/api/v1/accounts")` annotation
+- [x] **TASK-170**: Inject AccountService
+- [x] **TASK-171**: Implement `POST /` - create account endpoint
+- [x] **TASK-172**: Add `@Valid` to request body
+- [x] **TASK-173**: Return `ResponseEntity<AccountResponse>` with 201 status
+- [x] **TASK-174**: Implement `GET /{id}` - get account endpoint
+- [x] **TASK-175**: Parse UUID from path variable
+- [x] **TASK-176**: Implement `GET /` - list accounts endpoint
+- [x] **TASK-177**: Add pagination parameters (@PageableDefault)
+- [x] **TASK-178**: Return `Page<AccountResponse>`
 
 ### TransferController
 
-- [ ] **TASK-179**: Create `TransferController.java` class
-- [ ] **TASK-180**: Add `@RestController` and `@RequestMapping("/api/v1/transfers")`
-- [ ] **TASK-181**: Inject TransferService
-- [ ] **TASK-182**: Implement `POST /` - execute transfer endpoint
-- [ ] **TASK-183**: Extract `Idempotency-Key` from header
-- [ ] **TASK-184**: Validate Idempotency-Key is present (return 400 if missing)
-- [ ] **TASK-185**: Add `@Valid` to TransferRequest body
-- [ ] **TASK-186**: Return 201 Created for new transactions
-- [ ] **TASK-187**: Return 200 OK for idempotent retries
-- [ ] **TASK-188**: Implement `GET /{id}` - get transfer endpoint
-- [ ] **TASK-189**: Map response to TransferResponse DTO
+- [x] **TASK-179**: Create `TransferController.java` class
+- [x] **TASK-180**: Add `@RestController` and `@RequestMapping("/api/v1/transfers")`
+- [x] **TASK-181**: Inject TransferService
+- [x] **TASK-182**: Implement `POST /` - execute transfer endpoint
+- [x] **TASK-183**: Extract `Idempotency-Key` from header
+- [x] **TASK-184**: Validate Idempotency-Key is present (return 400 if missing)
+- [x] **TASK-185**: Add `@Valid` to TransferRequest body
+- [x] **TASK-186**: Return 201 Created for new transactions
+- [x] **TASK-187**: Return 200 OK for idempotent retries
+- [x] **TASK-188**: Implement `GET /{id}` - get transfer endpoint
+- [x] **TASK-189**: Map response to TransferResponse DTO
 
 ### LedgerController
 
-- [ ] **TASK-190**: Create `LedgerController.java` class
-- [ ] **TASK-191**: Add `@RestController` and `@RequestMapping("/api/v1/ledger")`
-- [ ] **TASK-192**: Inject LedgerService
-- [ ] **TASK-193**: Implement `GET /{accountId}` - get account statement
-- [ ] **TASK-194**: Add pagination support
-- [ ] **TASK-195**: Return AccountStatementResponse
+- [x] **TASK-190**: Create `LedgerController.java` class
+- [x] **TASK-191**: Add `@RestController` and `@RequestMapping("/api/v1/ledger")`
+- [x] **TASK-192**: Inject LedgerService
+- [x] **TASK-193**: Implement `GET /{accountId}` - get account statement
+- [x] **TASK-194**: Add pagination support
+- [x] **TASK-195**: Return AccountStatementResponse
 
 ### API Documentation
 
-- [ ] **TASK-196**: Add `springdoc-openapi-starter-webmvc-ui` dependency
-- [ ] **TASK-197**: Add `@Tag` annotations to controllers
-- [ ] **TASK-198**: Add `@Operation` annotations to endpoints
-- [ ] **TASK-199**: Add `@ApiResponse` annotations for HTTP statuses
-- [ ] **TASK-200**: Add `@Schema` annotations to DTOs
+- [x] **TASK-196**: Add `springdoc-openapi-starter-webmvc-ui` dependency
+- [x] **TASK-197**: Add `@Tag` annotations to controllers
+- [x] **TASK-198**: Add `@Operation` annotations to endpoints
+- [x] **TASK-199**: Add `@ApiResponse` annotations for HTTP statuses
+- [x] **TASK-200**: Add `@Schema` annotations to DTOs
 
 ---
 
