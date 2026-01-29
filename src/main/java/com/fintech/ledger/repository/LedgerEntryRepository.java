@@ -1,6 +1,7 @@
 package com.fintech.ledger.repository;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,27 +25,59 @@ import com.fintech.ledger.domain.entity.LedgerEntry;
 @Repository
 public interface LedgerEntryRepository extends JpaRepository<LedgerEntry, UUID> {
 
-    /**
-     * Finds all ledger entries for an account, ordered by creation time (newest first).
-     * <p>
-     * Used for generating account statements and transaction history.
-     *
-     * @param accountId the account ID
-     * @return list of ledger entries ordered by creation time descending
-     */
-    List<LedgerEntry> findByAccountIdOrderByCreatedAtDesc(UUID accountId);
+    // ============================================================
+    // Entry History Methods (Cursor-Based Pagination)
+    // ============================================================
 
     /**
-     * Finds ledger entries for an account with pagination support.
+     * Finds ledger entries for an account with offset-based pagination.
      * <p>
-     * Used for large account histories where loading all entries
-     * would be impractical.
+     * Note: For deep pagination (offset > 1000), prefer cursor-based methods
+     * as offset pagination degrades to O(offset + limit).
      *
      * @param accountId the account ID
      * @param pageable pagination parameters
      * @return paginated list of ledger entries
      */
     Page<LedgerEntry> findByAccountIdOrderByCreatedAtDesc(UUID accountId, Pageable pageable);
+
+    /**
+     * Cursor-based pagination for account entries (RECOMMENDED).
+     * <p>
+     * Performance: O(log m + limit) - constant time regardless of pagination depth.
+     * Uses the composite index on (account_id, created_at DESC).
+     * <p>
+     * For the first page, pass {@code Instant.now()} as the cursor.
+     * For subsequent pages, use the {@code createdAt} of the last entry from the previous page.
+     *
+     * @param accountId the account ID
+     * @param cursor entries before this timestamp (exclusive). Use Instant.now() for first page
+     * @param limit maximum number of entries to return
+     * @return list of entries before the cursor, ordered by creation time descending
+     */
+    @Query("SELECT e FROM LedgerEntry e WHERE e.accountId = :accountId " +
+           "AND e.createdAt < :cursor ORDER BY e.createdAt DESC LIMIT :limit")
+    List<LedgerEntry> findByAccountIdWithCursor(
+        @Param("accountId") UUID accountId,
+        @Param("cursor") Instant cursor,
+        @Param("limit") int limit
+    );
+
+    /**
+     * Gets the first page of entries for an account (convenience method).
+     * <p>
+     * Equivalent to {@code findByAccountIdWithCursor(accountId, Instant.now(), limit)}.
+     *
+     * @param accountId the account ID
+     * @param limit maximum number of entries to return
+     * @return list of most recent entries, ordered by creation time descending
+     */
+    @Query("SELECT e FROM LedgerEntry e WHERE e.accountId = :accountId " +
+           "ORDER BY e.createdAt DESC LIMIT :limit")
+    List<LedgerEntry> findRecentByAccountId(
+        @Param("accountId") UUID accountId,
+        @Param("limit") int limit
+    );
 
     /**
      * Finds all ledger entries associated with a specific transaction.
