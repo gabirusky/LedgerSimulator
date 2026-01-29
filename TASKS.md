@@ -272,57 +272,57 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### AccountService
 
-- [ ] **TASK-121**: Create `service` package
-- [ ] **TASK-122**: Create `AccountService.java` interface
-- [ ] **TASK-123**: Define `createAccount(CreateAccountRequest)` method
-- [ ] **TASK-124**: Define `getAccount(UUID id)` method
-- [ ] **TASK-125**: Define `getAccountBalance(UUID id)` method
-- [ ] **TASK-126**: Define `getAllAccounts(Pageable)` method
-- [ ] **TASK-127**: Create `AccountServiceImpl.java` class
-- [ ] **TASK-128**: Inject AccountRepository dependency
-- [ ] **TASK-129**: Inject LedgerEntryRepository dependency
-- [ ] **TASK-130**: Inject AccountMapper dependency
-- [ ] **TASK-131**: Implement `createAccount` with duplicate check
-- [ ] **TASK-132**: Add `@Transactional` to createAccount
-- [ ] **TASK-133**: Implement `getAccount` with balance calculation
-- [ ] **TASK-134**: Throw `AccountNotFoundException` for missing accounts
-- [ ] **TASK-135**: Implement `getAccountBalance` method
-- [ ] **TASK-136**: Implement `getAllAccounts` with pagination
+- [x] **TASK-121**: Create `service` package
+- [x] **TASK-122**: Create `AccountService.java` interface
+- [x] **TASK-123**: Define `createAccount(CreateAccountRequest)` method
+- [x] **TASK-124**: Define `getAccount(UUID id)` method
+- [x] **TASK-125**: Define `getAccountBalance(UUID id)` method
+- [x] **TASK-126**: Define `getAllAccounts(Pageable)` method
+- [x] **TASK-127**: Create `AccountServiceImpl.java` class
+- [x] **TASK-128**: Inject AccountRepository dependency
+- [x] **TASK-129**: Inject LedgerEntryRepository dependency
+- [x] **TASK-130**: Inject AccountMapper dependency
+- [x] **TASK-131**: Implement `createAccount` with duplicate check
+- [x] **TASK-132**: Add `@Transactional` to createAccount
+- [x] **TASK-133**: Implement `getAccount` with balance calculation
+- [x] **TASK-134**: Throw `AccountNotFoundException` for missing accounts
+- [x] **TASK-135**: Implement `getAccountBalance` method
+- [x] **TASK-136**: Implement `getAllAccounts` with pagination
 
 ### TransferService
 
-- [ ] **TASK-137**: Create `TransferService.java` interface
-- [ ] **TASK-138**: Define `executeTransfer(TransferRequest, String idempotencyKey)` method
-- [ ] **TASK-139**: Define `getTransfer(UUID transactionId)` method
-- [ ] **TASK-140**: Create `TransferServiceImpl.java` class
-- [ ] **TASK-141**: Inject all required repositories
-- [ ] **TASK-142**: Add `@Transactional` annotation to class level
-- [ ] **TASK-143**: Implement idempotency check at start of transfer
-- [ ] **TASK-144**: Implement account ID sorting for deadlock prevention
-- [ ] **TASK-145**: Implement pessimistic lock acquisition
-- [ ] **TASK-146**: Implement balance validation (source >= amount)
-- [ ] **TASK-147**: Create Transaction entity with PENDING status
-- [ ] **TASK-148**: Create DEBIT LedgerEntry for source account
-- [ ] **TASK-149**: Create CREDIT LedgerEntry for target account
-- [ ] **TASK-150**: Calculate and store balanceAfter for each entry
-- [ ] **TASK-151**: Update Transaction status to COMPLETED
-- [ ] **TASK-152**: Handle `InsufficientFundsException`
-- [ ] **TASK-153**: Handle `AccountNotFoundException` for source/target
-- [ ] **TASK-154**: Add logging for transaction start/complete
-- [ ] **TASK-155**: Implement `getTransfer` method
+- [x] **TASK-137**: Create `TransferService.java` interface
+- [x] **TASK-138**: Define `executeTransfer(TransferRequest, String idempotencyKey)` method
+- [x] **TASK-139**: Define `getTransfer(UUID transactionId)` method
+- [x] **TASK-140**: Create `TransferServiceImpl.java` class
+- [x] **TASK-141**: Inject all required repositories
+- [x] **TASK-142**: Add `@Transactional` annotation to class level
+- [x] **TASK-143**: Implement idempotency check at start of transfer
+- [x] **TASK-144**: Implement account ID sorting for deadlock prevention
+- [x] **TASK-145**: Implement pessimistic lock acquisition
+- [x] **TASK-146**: Implement balance validation (source >= amount)
+- [x] **TASK-147**: Create Transaction entity with PENDING status
+- [x] **TASK-148**: Create DEBIT LedgerEntry for source account
+- [x] **TASK-149**: Create CREDIT LedgerEntry for target account
+- [x] **TASK-150**: Calculate and store balanceAfter for each entry
+- [x] **TASK-151**: Update Transaction status to COMPLETED
+- [x] **TASK-152**: Handle `InsufficientFundsException`
+- [x] **TASK-153**: Handle `AccountNotFoundException` for source/target
+- [x] **TASK-154**: Add logging for transaction start/complete
+- [x] **TASK-155**: Implement `getTransfer` method
 
 ### LedgerService
 
-- [ ] **TASK-156**: Create `LedgerService.java` interface
-- [ ] **TASK-157**: Define `getAccountStatement(UUID accountId)` method
-- [ ] **TASK-158**: Define `getAccountStatement(UUID, Pageable)` method
-- [ ] **TASK-159**: Create `LedgerServiceImpl.java` class
-- [ ] **TASK-160**: Inject LedgerEntryRepository
-- [ ] **TASK-161**: Inject AccountRepository (for validation)
-- [ ] **TASK-162**: Implement unpaginated statement retrieval
-- [ ] **TASK-163**: Implement paginated statement retrieval
-- [ ] **TASK-164**: Validate account exists before fetching entries
-- [ ] **TASK-165**: Map entries to response DTOs
+- [x] **TASK-156**: Create `LedgerService.java` interface
+- [x] **TASK-157**: Define `getAccountStatement(UUID accountId)` method
+- [x] **TASK-158**: Define `getAccountStatement(UUID, Pageable)` method
+- [x] **TASK-159**: Create `LedgerServiceImpl.java` class
+- [x] **TASK-160**: Inject LedgerEntryRepository
+- [x] **TASK-161**: Inject AccountRepository (for validation)
+- [x] **TASK-162**: Implement unpaginated statement retrieval
+- [x] **TASK-163**: Implement paginated statement retrieval
+- [x] **TASK-164**: Validate account exists before fetching entries
+- [x] **TASK-165**: Map entries to response DTOs
 
 ---
 

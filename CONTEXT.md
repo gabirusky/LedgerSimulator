@@ -146,6 +146,42 @@ Generated implementations are created in `target/generated-sources/annotations/`
 - **Pagination**: Cursor-based (preferred) and offset-based (`Pageable`) support for account statements
 - **Recommended Index**: `CREATE INDEX idx_ledger_entries_account_created ON ledger_entries(account_id, created_at DESC)`
 
+### ✅ Phase 6: Services (Complete)
+
+**Service Interfaces (`service/`):**
+
+| File | Methods |
+|------|---------|
+| `AccountService.java` | `createAccount()`, `getAccount()`, `getAccountBalance()`, `getAllAccounts()` |
+| `TransferService.java` | `executeTransfer()`, `getTransfer()` |
+| `LedgerService.java` | `getAccountStatement()` (2 overloads: full and paginated) |
+
+**Service Implementations (`service/impl/`):**
+
+| File | Key Features |
+|------|--------------|
+| `AccountServiceImpl.java` | Duplicate document check, fast-path balance lookup, privacy-aware logging |
+| `TransferServiceImpl.java` | Idempotency, sorted locking, double-entry booking, PENDING→COMPLETED status |
+| `LedgerServiceImpl.java` | Cursor-based and offset-based statement retrieval |
+
+**Exception Classes (`exception/`):**
+
+| File | Purpose |
+|------|---------|
+| `AccountNotFoundException.java` | Thrown when account ID lookup fails |
+| `TransactionNotFoundException.java` | Thrown when transaction ID lookup fails |
+| `DuplicateDocumentException.java` | Thrown when creating account with existing document |
+| `InsufficientFundsException.java` | Thrown when transfer amount exceeds available balance |
+
+**Key Features:**
+
+- **Transactional Boundaries**: All write operations use `@Transactional`; read operations use `@Transactional(readOnly = true)`
+- **Double-Entry Bookkeeping**: Every transfer creates exactly 2 ledger entries (DEBIT + CREDIT)
+- **Idempotency**: Duplicate transfer requests with same key return cached response
+- **Deadlock Prevention**: Account locks acquired in sorted UUID order
+- **Balance Validation**: Source account balance verified before transfer execution
+- **Fast Balance Lookup**: Uses `getBalance()` (O(log n)) for normal operations
+
 ### 🔧 Fixes Applied During Implementation
 
 1. **Removed invalid `flyway-database-postgresql:9.22.3`** - Not compatible with Flyway 9.x in Spring Boot 3.2

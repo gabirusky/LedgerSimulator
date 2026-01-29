@@ -23,9 +23,9 @@ In modern fintech environments, data integrity is non-negotiable. This service s
 | 3. Domain Entities | ✅ Complete | Enums, JPA entities (Account, Transaction, LedgerEntry) |
 | 4. DTOs & Mappers | ✅ Complete | Request/Response DTOs, MapStruct mappers |
 | 5. Repositories | ✅ Complete | Data access layer with cursor-based pagination, optimized balance reads |
-| 6. Services | ⏳ Pending | Business logic, transfer service |
+| 6. Services | ✅ Complete | AccountService, TransferService, LedgerService with exception handling |
 | 7. Controllers | ⏳ Pending | REST API endpoints |
-| 8. Exception Handling | ⏳ Pending | Custom exceptions, global handler |
+| 8. Exception Handling | ⏳ Pending | Global exception handler |
 | 9-11. Tests | ⏳ Pending | Unit, integration, concurrency tests |
 | 12-13. DevOps & Docs | ⏳ Pending | CI/CD, documentation |
 
@@ -127,7 +127,7 @@ UUID secondId = sourceId.compareTo(targetId) < 0 ? targetId : sourceId;
 | ID | Requirement | Status |
 |----|-------------|--------|
 | NFR-01 | ACID compliance using PostgreSQL | ✅ |
-| NFR-02 | Pessimistic locking for concurrency control | ⏳ |
+| NFR-02 | Pessimistic locking for concurrency control | ✅ |
 | NFR-03 | Immutable append-only ledger | ✅ |
 | NFR-04 | BigDecimal for monetary precision | ✅ |
 | NFR-05 | RFC 7807 error responses | ⏳ |
@@ -136,8 +136,8 @@ UUID secondId = sourceId.compareTo(targetId) < 0 ? targetId : sourceId;
 
 | ID | Rule | Status |
 |----|------|--------|
-| BR-01 | Conservation of Value - Debits = Credits | ⏳ |
-| BR-02 | No Overdraft - Balance cannot go negative | ⏳ |
+| BR-01 | Conservation of Value - Debits = Credits | ✅ |
+| BR-02 | No Overdraft - Balance cannot go negative | ✅ |
 
 ---
 
@@ -310,7 +310,10 @@ sequenceDiagram
 ## 💡 Roadmap & Extensions
 
 - [x] DTOs and MapStruct mappers (Phase 4)
-- [ ] Complete API implementation (Phases 5-8)
+- [x] Repositories with optimized balance queries (Phase 5)
+- [x] Services with idempotency and deadlock prevention (Phase 6)
+- [ ] REST Controllers (Phase 7)
+- [ ] Global exception handling (Phase 8)
 - [ ] Full test coverage (Phases 9-11)
 - [ ] Dockerization and CI/CD Pipeline (GitHub Actions)
 - [ ] Integration with a Mock Central Bank API

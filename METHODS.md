@@ -223,6 +223,57 @@ Comprehensive analysis of all methods in the codebase with Big O complexity nota
 
 ---
 
+## Services
+
+### AccountService / AccountServiceImpl
+
+| Method | Signature | Complexity | Description |
+|--------|-----------|------------|-------------|
+| `createAccount` | `createAccount(CreateAccountRequest)` | **O(log n)** | Checks duplicate + saves account. Dominated by DB operations |
+| `getAccount` | `getAccount(UUID id)` | **O(log n + log m)** | Account lookup + fast balance query |
+| `getAccountBalance` | `getAccountBalance(UUID id)` | **O(log n + log m)** | Account exists check + fast balance query |
+| `getAllAccounts` | `getAllAccounts(Pageable)` | **O(page × log m)** | Paginated accounts with balance for each |
+
+> **Note**: `n` = number of accounts, `m` = number of ledger entries for an account
+
+### TransferService / TransferServiceImpl
+
+| Method | Signature | Complexity | Description |
+|--------|-----------|------------|-------------|
+| `executeTransfer` | `executeTransfer(TransferRequest, String)` | **O(log n + log m)** | Idempotency check, lock 2 accounts, validate balance, create 2 entries |
+| `getTransfer` | `getTransfer(UUID)` | **O(log n)** | Transaction lookup by primary key |
+
+**Transfer Flow Breakdown:**
+1. Idempotency check: O(log n)
+2. Sort account IDs: O(1)
+3. Lock 2 accounts: O(2 log n)
+4. Fast balance read: O(log m)
+5. Create Transaction: O(log n)
+6. Create 2 LedgerEntries: O(2 log n)
+7. Update Transaction status: O(1)
+
+### LedgerService / LedgerServiceImpl
+
+| Method | Signature | Complexity | Description |
+|--------|-----------|------------|-------------|
+| `getAccountStatement` | `getAccountStatement(UUID)` | **O(log n + log m + limit)** | Account lookup + balance + limited entries |
+| `getAccountStatement` | `getAccountStatement(UUID, Pageable)` | **O(log n + log m + offset + page)** | Paginated version; offset degrades for deep pages |
+
+---
+
+## Exceptions
+
+### Custom Exception Classes
+
+| Exception | Fields | Description |
+|-----------|--------|-------------|
+| `AccountNotFoundException` | `accountId: UUID` | Thrown when account ID lookup fails |
+| `TransactionNotFoundException` | `transactionId: UUID` | Thrown when transaction ID lookup fails |
+| `DuplicateDocumentException` | `document: String` | Thrown when creating account with existing document |
+| `InsufficientFundsException` | `accountId, available, requested` | Thrown when transfer amount exceeds balance |
+
+---
+
 ## Performance Summary
 
 ### Critical Paths
@@ -236,6 +287,8 @@ Comprehensive analysis of all methods in the codebase with Big O complexity nota
 | **Pessimistic lock (single)** | O(log n) | 5s timeout configured |
 | **Pessimistic lock (batch)** | O(k log k + k log n) | Sorted for deadlock prevention |
 | **Idempotency check** | O(log n) | Unique index on `idempotency_key` |
+| **Execute transfer** | O(log n + log m) | Full atomic transfer operation |
+| **Create account** | O(log n) | Duplicate check + insert |
 
 ### Required Database Indexes
 
@@ -261,9 +314,11 @@ CREATE INDEX idx_ledger_entries_transaction ON ledger_entries(transaction_id);
 | Application | 1 | 1 |
 | Entities | 3 | 51 |
 | Repositories | 5 | 15 |
+| **Services** | **6** | **10** |
 | Mappers | 3 | 5 |
 | Validation | 1 | 2 |
+| Exceptions | 4 | 8 |
 | DTOs (records) | ~6 | ~18 (auto-generated) |
-| **Total** | **~19** | **~92** |
+| **Total** | **~29** | **~110** |
 
 > **Note**: Package-info files and enums (`EntryType`, `TransactionStatus`) excluded as they contain no methods.
