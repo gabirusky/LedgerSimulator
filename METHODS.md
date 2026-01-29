@@ -136,7 +136,6 @@ Comprehensive analysis of all methods in the codebase with Big O complexity nota
 
 | Method | Signature | Complexity | Description |
 |--------|-----------|------------|-------------|
-| ~~`findByAccountIdOrderByCreatedAtDesc(UUID)`~~ | ⚠️ **DEPRECATED** | **O(m)** | Loads ALL entries. Use `findByAccountIdWithCursor` instead |
 | `findByAccountIdOrderByCreatedAtDesc(UUID, Pageable)` | Offset pagination | **O(log m + page)** | Offset-based pagination. For deep pagination prefer cursor-based |
 | `findByAccountIdWithCursor(UUID, Instant, int)` | **Cursor pagination** | **O(log m + limit)** | **RECOMMENDED** - Constant time at any depth. Uses composite index |
 | `findRecentByAccountId(UUID, int)` | First page query | **O(log m + limit)** | Convenience method for first page of entries |

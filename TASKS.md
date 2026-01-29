@@ -240,10 +240,10 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 - [x] **TASK-108**: Create `LedgerEntryRepository.java` interface
 - [x] **TASK-109**: Extend `JpaRepository<LedgerEntry, UUID>`
-- [x] **TASK-110**: Add `findByAccountIdOrderByCreatedAtDesc(UUID accountId)` method (**DEPRECATED** - marked for removal)
+- [x] **TASK-110**: ~~Add `findByAccountIdOrderByCreatedAtDesc(UUID accountId)` method~~ (REMOVED - O(m) anti-pattern)
 - [x] **TASK-110.1**: Add `findByAccountIdWithCursor(UUID, Instant, int)` cursor-based pagination (O(log m + limit))
 - [x] **TASK-110.2**: Add `findRecentByAccountId(UUID, int)` convenience method for first page
-- [x] **TASK-110.3**: Deprecate `findByAccountIdOrderByCreatedAtDesc(UUID)` with `@Deprecated(forRemoval = true)`
+- [-] **TASK-110.3**: ~~Deprecate method~~ (Skipped - method removed entirely)
 - [x] **TASK-111**: Add paginated version with `Pageable` parameter
 - [x] **TASK-112**: Add `findByTransactionId(UUID transactionId)` method
 - [x] **TASK-113**: Add balance calculation query:

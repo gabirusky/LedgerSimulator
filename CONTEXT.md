@@ -141,7 +141,6 @@ Generated implementations are created in `target/generated-sources/annotations/`
 - **Cursor-Based Pagination (RECOMMENDED)**:
   - `findByAccountIdWithCursor(accountId, cursor, limit)`: **O(log m + limit)** - Constant time at any depth
   - `findRecentByAccountId(accountId, limit)`: **O(log m + limit)** - First page convenience method
-  - `findByAccountIdOrderByCreatedAtDesc(accountId)`: **DEPRECATED** - **O(m)** - Do not use in production
 - **Deadlock Prevention**: `findAllByIdForUpdateSorted()` sorts UUIDs before acquiring locks
 - **Idempotency Support**: Index-backed lookups for idempotency keys
 - **Pagination**: Cursor-based (preferred) and offset-based (`Pageable`) support for account statements
