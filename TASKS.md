@@ -381,34 +381,34 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### Custom Exceptions
 
-- [ ] **TASK-201**: Create `exception` package
-- [ ] **TASK-202**: Create `AccountNotFoundException.java` (extends RuntimeException)
-- [ ] **TASK-203**: Add constructor with accountId parameter
-- [ ] **TASK-204**: Create `InsufficientFundsException.java`
-- [ ] **TASK-205**: Add fields: accountId, available, requested
-- [ ] **TASK-206**: Create `DuplicateDocumentException.java`
-- [ ] **TASK-207**: Create `TransferToSelfException.java`
-- [ ] **TASK-208**: Create `TransactionNotFoundException.java`
-- [ ] **TASK-209**: Create `InvalidIdempotencyKeyException.java`
-- [ ] **TASK-210**: Create `MissingIdempotencyKeyException.java`
+- [x] **TASK-201**: Create `exception` package
+- [x] **TASK-202**: Create `AccountNotFoundException.java` (extends RuntimeException)
+- [x] **TASK-203**: Add constructor with accountId parameter
+- [x] **TASK-204**: Create `InsufficientFundsException.java`
+- [x] **TASK-205**: Add fields: accountId, available, requested
+- [x] **TASK-206**: Create `DuplicateDocumentException.java`
+- [x] **TASK-207**: Create `TransferToSelfException.java`
+- [x] **TASK-208**: Create `TransactionNotFoundException.java`
+- [x] **TASK-209**: Create `InvalidIdempotencyKeyException.java`
+- [x] **TASK-210**: Create `MissingIdempotencyKeyException.java`
 
 ### Global Exception Handler
 
-- [ ] **TASK-211**: Create `GlobalExceptionHandler.java` class
-- [ ] **TASK-212**: Add `@RestControllerAdvice` annotation
-- [ ] **TASK-213**: Handle `AccountNotFoundException` → 404
-- [ ] **TASK-214**: Handle `InsufficientFundsException` → 422
-- [ ] **TASK-215**: Handle `DuplicateDocumentException` → 409
-- [ ] **TASK-216**: Handle `TransferToSelfException` → 400
-- [ ] **TASK-217**: Handle `MissingIdempotencyKeyException` → 400
-- [ ] **TASK-218**: Handle `MethodArgumentNotValidException` → 400
-- [ ] **TASK-219**: Handle `ConstraintViolationException` → 400
-- [ ] **TASK-220**: Handle generic `Exception` → 500
-- [ ] **TASK-221**: Format all errors as RFC 7807 Problem Details
-- [ ] **TASK-222**: Add `type` URI for each error category
-- [ ] **TASK-223**: Include `instance` (request URI) in responses
-- [ ] **TASK-224**: Add timestamp to all error responses
-- [ ] **TASK-225**: Log all exceptions at appropriate levels
+- [x] **TASK-211**: Create `GlobalExceptionHandler.java` class
+- [x] **TASK-212**: Add `@RestControllerAdvice` annotation
+- [x] **TASK-213**: Handle `AccountNotFoundException` → 404
+- [x] **TASK-214**: Handle `InsufficientFundsException` → 422
+- [x] **TASK-215**: Handle `DuplicateDocumentException` → 409
+- [x] **TASK-216**: Handle `TransferToSelfException` → 400
+- [x] **TASK-217**: Handle `MissingIdempotencyKeyException` → 400
+- [x] **TASK-218**: Handle `MethodArgumentNotValidException` → 400
+- [x] **TASK-219**: Handle `ConstraintViolationException` → 400
+- [x] **TASK-220**: Handle generic `Exception` → 500
+- [x] **TASK-221**: Format all errors as RFC 7807 Problem Details
+- [x] **TASK-222**: Add `type` URI for each error category
+- [x] **TASK-223**: Include `instance` (request URI) in responses
+- [x] **TASK-224**: Add timestamp to all error responses
+- [x] **TASK-225**: Log all exceptions at appropriate levels
 
 ---
 

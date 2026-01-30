@@ -221,6 +221,46 @@ Generated implementations are created in `target/generated-sources/annotations/`
 - **Pagination**: `@PageableDefault` used for accounts list and ledger statements
 - **Content Negotiation**: JSON responses with proper content types
 
+### ✅ Phase 8: Exception Handling (Complete)
+
+**Exception Classes (`exception/`):**
+
+| File | HTTP Status | Purpose |
+|------|-------------|---------|
+| `AccountNotFoundException.java` | 404 | Account ID lookup fails |
+| `TransactionNotFoundException.java` | 404 | Transaction ID lookup fails |
+| `DuplicateDocumentException.java` | 409 | Creating account with existing document |
+| `InsufficientFundsException.java` | 422 | Transfer amount exceeds available balance |
+| `TransferToSelfException.java` | 400 | Source and target account IDs are the same |
+| `InvalidIdempotencyKeyException.java` | 400 | Invalid idempotency key format |
+| `MissingIdempotencyKeyException.java` | 400 | Missing Idempotency-Key header |
+
+**Global Exception Handler (`GlobalExceptionHandler.java`):**
+
+`@RestControllerAdvice` class that provides centralized exception handling:
+
+| Exception | HTTP Status | Type URI |
+|-----------|-------------|----------|
+| `AccountNotFoundException` | 404 | `/errors/account-not-found` |
+| `TransactionNotFoundException` | 404 | `/errors/transaction-not-found` |
+| `InsufficientFundsException` | 422 | `/errors/insufficient-funds` |
+| `DuplicateDocumentException` | 409 | `/errors/duplicate-document` |
+| `TransferToSelfException` | 400 | `/errors/transfer-to-self` |
+| `MissingIdempotencyKeyException` | 400 | `/errors/missing-idempotency-key` |
+| `InvalidIdempotencyKeyException` | 400 | `/errors/invalid-idempotency-key` |
+| `MethodArgumentNotValidException` | 400 | `/errors/validation-failed` |
+| `ConstraintViolationException` | 400 | `/errors/constraint-violation` |
+| Generic `Exception` | 500 | `/errors/internal-error` |
+
+**Key Features:**
+
+- **RFC 7807 Problem Details**: All errors formatted as standard Problem Details
+- **Type URIs**: Each error category has a unique type URI prefix
+- **Instance Field**: Request URI included in all error responses
+- **Timestamps**: All responses include `Instant.now()` timestamp
+- **Logging**: WARN level for 4xx errors, ERROR level for 5xx errors
+- **Privacy Protection**: Document numbers masked in logs
+
 ### 🔧 Fixes Applied During Implementation
 
 1. **Removed invalid `flyway-database-postgresql:9.22.3`** - Not compatible with Flyway 9.x in Spring Boot 3.2
