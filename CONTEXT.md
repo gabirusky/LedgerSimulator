@@ -261,6 +261,31 @@ Generated implementations are created in `target/generated-sources/annotations/`
 - **Logging**: WARN level for 4xx errors, ERROR level for 5xx errors
 - **Privacy Protection**: Document numbers masked in logs
 
+### ✅ Phase 9: Unit Tests (Complete)
+
+**Unit Test Package (`test/java/com/fintech/ledger/unit/`):**
+
+| Directory | Test Class | Test Count | Coverage |
+|-----------|-----------|------------|----------|
+| `domain/` | `AccountTest.java` | 11 | Entity equals/hashCode, creation |
+| `service/` | `AccountServiceTest.java` | 7 | Create, get, balance, pagination |
+| `service/` | `TransferServiceTest.java` | 11 | Execute, idempotency, locking, ledger entries |
+| `service/` | `LedgerServiceTest.java` | 5 | Statement retrieval (paginated/unpaginated) |
+| `mapper/` | `AccountMapperTest.java` | 5 | toEntity, toResponse, null handling |
+| `mapper/` | `TransactionMapperTest.java` | 6 | Field mapping, status enum conversion |
+| `mapper/` | `LedgerEntryMapperTest.java` | 8 | Entry mapping, type conversion, lists |
+| `validation/` | `CreateAccountRequestValidationTest.java` | 10 | Blank/null/size constraints |
+| `validation/` | `TransferRequestValidationTest.java` | 11 | Amount constraints, @DifferentAccounts |
+
+**Total: 74 unit tests - all passing**
+
+**Key Testing Patterns:**
+- **Mockito**: Service tests use `@ExtendWith(MockitoExtension.class)` with `@Mock` and `@InjectMocks`
+- **MapStruct**: Mapper tests use `Mappers.getMapper()` for direct instance creation
+- **Validation**: Uses `jakarta.validation.Validator` from `Validation.buildDefaultValidatorFactory()`
+- **Nested Tests**: `@Nested` classes group related test methods (e.g., by method being tested)
+- **Display Names**: `@DisplayName` annotations provide readable test descriptions
+
 ### 🔧 Fixes Applied During Implementation
 
 1. **Removed invalid `flyway-database-postgresql:9.22.3`** - Not compatible with Flyway 9.x in Spring Boot 3.2

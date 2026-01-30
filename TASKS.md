@@ -412,65 +412,65 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ---
 
-## Phase 9: Unit Tests (Tasks 226-265)
+## Phase 9: Unit Tests (Tasks 226-265) - Completed
 
 ### Domain Tests
 
-- [ ] **TASK-226**: Create `test/java/com/fintech/ledger/unit` package
-- [ ] **TASK-227**: Create `AccountTest.java` class
-- [ ] **TASK-228**: Test Account entity equals/hashCode with same ID
-- [ ] **TASK-229**: Test Account entity equals/hashCode with different ID
-- [ ] **TASK-230**: Test Account entity creation
+- [x] **TASK-226**: Create `test/java/com/fintech/ledger/unit` package
+- [x] **TASK-227**: Create `AccountTest.java` class
+- [x] **TASK-228**: Test Account entity equals/hashCode with same ID
+- [x] **TASK-229**: Test Account entity equals/hashCode with different ID
+- [x] **TASK-230**: Test Account entity creation
 
 ### Service Unit Tests - AccountService
 
-- [ ] **TASK-231**: Create `AccountServiceTest.java` class
-- [ ] **TASK-232**: Mock AccountRepository and LedgerEntryRepository
-- [ ] **TASK-233**: Test `createAccount` happy path
-- [ ] **TASK-234**: Test `createAccount` with duplicate document
-- [ ] **TASK-235**: Test `getAccount` happy path with balance
-- [ ] **TASK-236**: Test `getAccount` with non-existent account
-- [ ] **TASK-237**: Test `getAccountBalance` calculation
+- [x] **TASK-231**: Create `AccountServiceTest.java` class
+- [x] **TASK-232**: Mock AccountRepository and LedgerEntryRepository
+- [x] **TASK-233**: Test `createAccount` happy path
+- [x] **TASK-234**: Test `createAccount` with duplicate document
+- [x] **TASK-235**: Test `getAccount` happy path with balance
+- [x] **TASK-236**: Test `getAccount` with non-existent account
+- [x] **TASK-237**: Test `getAccountBalance` calculation
 
 ### Service Unit Tests - TransferService
 
-- [ ] **TASK-238**: Create `TransferServiceTest.java` class
-- [ ] **TASK-239**: Mock all dependencies
-- [ ] **TASK-240**: Test `executeTransfer` happy path
-- [ ] **TASK-241**: Test transfer with insufficient funds
-- [ ] **TASK-242**: Test transfer with non-existent source account
-- [ ] **TASK-243**: Test transfer with non-existent target account
-- [ ] **TASK-244**: Test idempotency - duplicate key returns cached response
-- [ ] **TASK-245**: Test account ID sorting for lock ordering
-- [ ] **TASK-246**: Test balance calculation after transfer
-- [ ] **TASK-247**: Verify DEBIT entry created for source
-- [ ] **TASK-248**: Verify CREDIT entry created for target
-- [ ] **TASK-249**: Verify Transaction status is COMPLETED
+- [x] **TASK-238**: Create `TransferServiceTest.java` class
+- [x] **TASK-239**: Mock all dependencies
+- [x] **TASK-240**: Test `executeTransfer` happy path
+- [x] **TASK-241**: Test transfer with insufficient funds
+- [x] **TASK-242**: Test transfer with non-existent source account
+- [x] **TASK-243**: Test transfer with non-existent target account
+- [x] **TASK-244**: Test idempotency - duplicate key returns cached response
+- [x] **TASK-245**: Test account ID sorting for lock ordering
+- [x] **TASK-246**: Test balance calculation after transfer
+- [x] **TASK-247**: Verify DEBIT entry created for source
+- [x] **TASK-248**: Verify CREDIT entry created for target
+- [x] **TASK-249**: Verify Transaction status is COMPLETED
 
 ### Service Unit Tests - LedgerService
 
-- [ ] **TASK-250**: Create `LedgerServiceTest.java` class
-- [ ] **TASK-251**: Test `getAccountStatement` happy path
-- [ ] **TASK-252**: Test statement for non-existent account
-- [ ] **TASK-253**: Test statement ordering (newest first)
-- [ ] **TASK-254**: Test empty statement for new account
+- [x] **TASK-250**: Create `LedgerServiceTest.java` class
+- [x] **TASK-251**: Test `getAccountStatement` happy path
+- [x] **TASK-252**: Test statement for non-existent account
+- [x] **TASK-253**: Test statement ordering (newest first)
+- [x] **TASK-254**: Test empty statement for new account
 
 ### Mapper Tests
 
-- [ ] **TASK-255**: Create `AccountMapperTest.java`
-- [ ] **TASK-256**: Test `toResponse` mapping
-- [ ] **TASK-257**: Test `toEntity` mapping
-- [ ] **TASK-258**: Test null handling
-- [ ] **TASK-259**: Create `TransactionMapperTest.java`
-- [ ] **TASK-260**: Create `LedgerEntryMapperTest.java`
+- [x] **TASK-255**: Create `AccountMapperTest.java`
+- [x] **TASK-256**: Test `toResponse` mapping
+- [x] **TASK-257**: Test `toEntity` mapping
+- [x] **TASK-258**: Test null handling
+- [x] **TASK-259**: Create `TransactionMapperTest.java`
+- [x] **TASK-260**: Create `LedgerEntryMapperTest.java`
 
 ### Validation Tests
 
-- [ ] **TASK-261**: Test CreateAccountRequest validation - blank document
-- [ ] **TASK-262**: Test CreateAccountRequest validation - blank name
-- [ ] **TASK-263**: Test TransferRequest validation - null amount
-- [ ] **TASK-264**: Test TransferRequest validation - negative amount
-- [ ] **TASK-265**: Test TransferRequest validation - zero amount
+- [x] **TASK-261**: Test CreateAccountRequest validation - blank document
+- [x] **TASK-262**: Test CreateAccountRequest validation - blank name
+- [x] **TASK-263**: Test TransferRequest validation - null amount
+- [x] **TASK-264**: Test TransferRequest validation - negative amount
+- [x] **TASK-265**: Test TransferRequest validation - zero amount
 
 ---
 

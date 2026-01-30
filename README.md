@@ -25,8 +25,9 @@ In modern fintech environments, data integrity is non-negotiable. This service s
 | 5. Repositories | ✅ Complete | Data access layer with cursor-based pagination, optimized balance reads |
 | 6. Services | ✅ Complete | AccountService, TransferService, LedgerService with exception handling |
 | 7. Controllers | ✅ Complete | REST API endpoints with OpenAPI/Swagger documentation |
-| 8. Exception Handling | ⏳ Pending | Global exception handler |
-| 9-11. Tests | ⏳ Pending | Unit, integration, concurrency tests |
+| 8. Exception Handling | ✅ Complete | Global exception handler with RFC 7807 Problem Details |
+| 9. Unit Tests | ✅ Complete | 74 unit tests covering domain, services, mappers, validation |
+| 10-11. Integration/Concurrency Tests | ⏳ Pending | Integration and concurrency tests |
 | 12-13. DevOps & Docs | ⏳ Pending | CI/CD, documentation |
 
 ---
