@@ -474,68 +474,68 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ---
 
-## Phase 10: Integration Tests (Tasks 266-305)
+## Phase 10: Integration Tests (Tasks 266-305) - Completed
 
 ### Repository Integration Tests
 
-- [ ] **TASK-266**: Create `test/java/com/fintech/ledger/integration` package
-- [ ] **TASK-267**: Create `AbstractIntegrationTest.java` base class
-- [ ] **TASK-268**: Configure Testcontainers PostgreSQL
-- [ ] **TASK-269**: Add `@Testcontainers` annotation
-- [ ] **TASK-270**: Create PostgreSQL container definition
-- [ ] **TASK-271**: Configure dynamic datasource properties
+- [x] **TASK-266**: Create `test/java/com/fintech/ledger/integration` package
+- [x] **TASK-267**: Create `AbstractIntegrationTest.java` base class
+- [x] **TASK-268**: Configure Testcontainers PostgreSQL
+- [x] **TASK-269**: Add `@Testcontainers` annotation
+- [x] **TASK-270**: Create PostgreSQL container definition
+- [x] **TASK-271**: Configure dynamic datasource properties
 
 ### AccountRepository Tests
 
-- [ ] **TASK-272**: Create `AccountRepositoryTest.java` class
-- [ ] **TASK-273**: Extend AbstractIntegrationTest
-- [ ] **TASK-274**: Test `save` and `findById`
-- [ ] **TASK-275**: Test `findByDocument`
-- [ ] **TASK-276**: Test `existsByDocument`
-- [ ] **TASK-277**: Test `findByIdForUpdate` acquires lock
-- [ ] **TASK-278**: Test unique constraint on document
+- [x] **TASK-272**: Create `AccountRepositoryTest.java` class
+- [x] **TASK-273**: Extend AbstractIntegrationTest
+- [x] **TASK-274**: Test `save` and `findById`
+- [x] **TASK-275**: Test `findByDocument`
+- [x] **TASK-276**: Test `existsByDocument`
+- [x] **TASK-277**: Test `findByIdForUpdate` acquires lock
+- [x] **TASK-278**: Test unique constraint on document
 
 ### LedgerEntryRepository Tests
 
-- [ ] **TASK-279**: Create `LedgerEntryRepositoryTest.java` class
-- [ ] **TASK-280**: Test `calculateBalance` with credits only
-- [ ] **TASK-281**: Test `calculateBalance` with debits only
-- [ ] **TASK-282**: Test `calculateBalance` with mixed entries
-- [ ] **TASK-283**: Test `calculateBalance` for new account (returns 0)
-- [ ] **TASK-284**: Test `findByAccountIdOrderByCreatedAtDesc`
+- [x] **TASK-279**: Create `LedgerEntryRepositoryTest.java` class
+- [x] **TASK-280**: Test `calculateBalance` with credits only
+- [x] **TASK-281**: Test `calculateBalance` with debits only
+- [x] **TASK-282**: Test `calculateBalance` with mixed entries
+- [x] **TASK-283**: Test `calculateBalance` for new account (returns 0)
+- [x] **TASK-284**: Test `findByAccountIdOrderByCreatedAtDesc`
 
 ### TransactionRepository Tests
 
-- [ ] **TASK-285**: Create `TransactionRepositoryTest.java` class
-- [ ] **TASK-286**: Test `findByIdempotencyKey`
-- [ ] **TASK-287**: Test `existsByIdempotencyKey`
-- [ ] **TASK-288**: Test unique constraint on idempotency_key
+- [x] **TASK-285**: Create `TransactionRepositoryTest.java` class
+- [x] **TASK-286**: Test `findByIdempotencyKey`
+- [x] **TASK-287**: Test `existsByIdempotencyKey`
+- [x] **TASK-288**: Test unique constraint on idempotency_key
 
 ### Controller Integration Tests
 
-- [ ] **TASK-289**: Create `AccountControllerIT.java` class
-- [ ] **TASK-290**: Use `@SpringBootTest` with random port
-- [ ] **TASK-291**: Use `TestRestTemplate` for HTTP calls
-- [ ] **TASK-292**: Test `POST /api/v1/accounts` - 201 Created
-- [ ] **TASK-293**: Test `POST /api/v1/accounts` - 409 Duplicate
-- [ ] **TASK-294**: Test `POST /api/v1/accounts` - 400 Validation Error
-- [ ] **TASK-295**: Test `GET /api/v1/accounts/{id}` - 200 OK
-- [ ] **TASK-296**: Test `GET /api/v1/accounts/{id}` - 404 Not Found
+- [x] **TASK-289**: Create `AccountControllerIT.java` class
+- [x] **TASK-290**: Use `@SpringBootTest` with random port
+- [x] **TASK-291**: Use `TestRestTemplate` for HTTP calls
+- [x] **TASK-292**: Test `POST /api/v1/accounts` - 201 Created
+- [x] **TASK-293**: Test `POST /api/v1/accounts` - 409 Duplicate
+- [x] **TASK-294**: Test `POST /api/v1/accounts` - 400 Validation Error
+- [x] **TASK-295**: Test `GET /api/v1/accounts/{id}` - 200 OK
+- [x] **TASK-296**: Test `GET /api/v1/accounts/{id}` - 404 Not Found
 
 ### TransferController Integration Tests
 
-- [ ] **TASK-297**: Create `TransferControllerIT.java` class
-- [ ] **TASK-298**: Test `POST /api/v1/transfers` - 201 Created
-- [ ] **TASK-299**: Test `POST /api/v1/transfers` - 422 Insufficient Funds
-- [ ] **TASK-300**: Test `POST /api/v1/transfers` - 400 Missing Idempotency Key
-- [ ] **TASK-301**: Test `POST /api/v1/transfers` - 200 OK (idempotent retry)
-- [ ] **TASK-302**: Test `POST /api/v1/transfers` - 404 Account Not Found
+- [x] **TASK-297**: Create `TransferControllerIT.java` class
+- [x] **TASK-298**: Test `POST /api/v1/transfers` - 201 Created
+- [x] **TASK-299**: Test `POST /api/v1/transfers` - 422 Insufficient Funds
+- [x] **TASK-300**: Test `POST /api/v1/transfers` - 400 Missing Idempotency Key
+- [x] **TASK-301**: Test `POST /api/v1/transfers` - 200 OK (idempotent retry)
+- [x] **TASK-302**: Test `POST /api/v1/transfers` - 404 Account Not Found
 
 ### LedgerController Integration Tests
 
-- [ ] **TASK-303**: Create `LedgerControllerIT.java` class
-- [ ] **TASK-304**: Test `GET /api/v1/ledger/{accountId}` - 200 OK
-- [ ] **TASK-305**: Test `GET /api/v1/ledger/{accountId}` - 404 Not Found
+- [x] **TASK-303**: Create `LedgerControllerIT.java` class
+- [x] **TASK-304**: Test `GET /api/v1/ledger/{accountId}` - 200 OK
+- [x] **TASK-305**: Test `GET /api/v1/ledger/{accountId}` - 404 Not Found
 
 ---
 
