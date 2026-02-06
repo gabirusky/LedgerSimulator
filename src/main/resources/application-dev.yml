@@ -11,7 +11,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/ledger_db
     username: ledger_user
-    password: ledger_pass
+    password: ledger_password
 
   # More verbose JPA for development
   jpa:
