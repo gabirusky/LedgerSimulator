@@ -332,6 +332,40 @@ CREATE INDEX idx_ledger_entries_transaction ON ledger_entries(transaction_id);
 
 ---
 
+## Concurrency Tests (ConcurrentTransferTest)
+
+### ConcurrentWithdrawalTests
+
+| Method | Thread Count | Complexity | Description |
+|--------|--------------|------------|-------------|
+| `test10ConcurrentWithdrawals_NoOverdraft` | 10 | **O(10 × log n)** | Validates no overdraft with 10 concurrent withdrawals |
+| `test50ConcurrentWithdrawals` | 50 | **O(50 × log n)** | Validates throughput with 50 concurrent threads |
+| `test100ConcurrentWithdrawals_Verify422Responses` | 100 | **O(100 × log n)** | Validates all insufficient funds get 422 response |
+
+### ConcurrentTransferTests
+
+| Method | Thread Count | Complexity | Description |
+|--------|--------------|------------|-------------|
+| `testBidirectionalTransfers_NoDeadlock` | 20 | **O(20 × log n)** | A↔B simultaneous transfers, timeout protection |
+| `testConservationOfValue` | 10 | **O(10 × log n)** | Verifies total money unchanged after random transfers |
+| `testCircularTransfers` | 15 | **O(15 × log n)** | A→B→C→A circular transfer pattern |
+| `testAllBalancesNonNegative` | 10 | **O(10 × log n)** | 5 accounts, random transfers, no negative balances |
+
+### StressTests
+
+| Method | Thread Count | Complexity | Description |
+|--------|--------------|------------|-------------|
+| `test100Threads10TransfersEach` | 100 | **O(1000 × log n)** | Stress test with timing measurement |
+| `testWithRandomDelays` | 50 | **O(50 × log n)** | Simulates network latency (0-100ms random delays) |
+| `testTransactionCountMatches` | 20 | **O(20 × log n)** | Validates transaction count accuracy |
+
+> **Key Patterns:**
+> - **Coordinated start**: All threads start simultaneously via `CountDownLatch`
+> - **Timeout protection**: All tests have `@Timeout` annotations (30-120 seconds)
+> - **Thread pool**: `ExecutorService.newFixedThreadPool(threadCount)`
+
+---
+
 ## Method Count Summary
 
 | Layer | Files | Methods |
@@ -345,7 +379,9 @@ CREATE INDEX idx_ledger_entries_transaction ON ledger_entries(transaction_id);
 | Validation | 1 | 2 |
 | Exceptions | 4 | 8 |
 | DTOs (records) | ~8 | ~24 (auto-generated) |
-| **Total** | **~34** | **~122** |
+| **Concurrency Tests** | **1** | **10** |
+| **Total** | **~35** | **~132** |
 
 > **Note**: Package-info files and enums (`EntryType`, `TransactionStatus`) excluded as they contain no methods.
+
 

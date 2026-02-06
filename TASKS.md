@@ -543,35 +543,35 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### Setup
 
-- [ ] **TASK-306**: Create `test/java/com/fintech/ledger/concurrency` package
-- [ ] **TASK-307**: Create `ConcurrentTransferTest.java` class
-- [ ] **TASK-308**: Extend AbstractIntegrationTest
-- [ ] **TASK-309**: Create helper method to seed test accounts with balance
+- [x] **TASK-306**: Create `test/java/com/fintech/ledger/concurrency` package
+- [x] **TASK-307**: Create `ConcurrentTransferTest.java` class
+- [x] **TASK-308**: Extend AbstractIntegrationTest
+- [x] **TASK-309**: Create helper method to seed test accounts with balance
 
 ### Concurrent Withdrawal Tests
 
-- [ ] **TASK-310**: Test 10 concurrent withdrawals from same account
-- [ ] **TASK-311**: Verify no overdraft occurred
-- [ ] **TASK-312**: Verify final balance = initial - (withdrawals that succeeded)
-- [ ] **TASK-313**: Test 50 concurrent withdrawals from same account
-- [ ] **TASK-314**: Test 100 concurrent withdrawals from same account
-- [ ] **TASK-315**: Verify all failed withdrawals got 422 response
+- [x] **TASK-310**: Test 10 concurrent withdrawals from same account
+- [x] **TASK-311**: Verify no overdraft occurred
+- [x] **TASK-312**: Verify final balance = initial - (withdrawals that succeeded)
+- [x] **TASK-313**: Test 50 concurrent withdrawals from same account
+- [x] **TASK-314**: Test 100 concurrent withdrawals from same account
+- [x] **TASK-315**: Verify all failed withdrawals got 422 response
 
 ### Concurrent Transfer Tests
 
-- [ ] **TASK-316**: Test A→B transfer while B→A transfer occurs
-- [ ] **TASK-317**: Verify no deadlock (test completes within timeout)
-- [ ] **TASK-318**: Verify conservation of value (total money unchanged)
-- [ ] **TASK-319**: Test circular transfers: A→B→C→A concurrently
-- [ ] **TASK-320**: Verify all balances are non-negative after test
+- [x] **TASK-316**: Test A→B transfer while B→A transfer occurs
+- [x] **TASK-317**: Verify no deadlock (test completes within timeout)
+- [x] **TASK-318**: Verify conservation of value (total money unchanged)
+- [x] **TASK-319**: Test circular transfers: A→B→C→A concurrently
+- [x] **TASK-320**: Verify all balances are non-negative after test
 
 ### Stress Tests
 
-- [ ] **TASK-321**: Test 100 threads, 10 transfers each
-- [ ] **TASK-322**: Measure and log execution time
-- [ ] **TASK-323**: Verify zero data integrity violations
-- [ ] **TASK-324**: Test with random delays to simulate network latency
-- [ ] **TASK-325**: Add assertions for transaction count matching
+- [x] **TASK-321**: Test 100 threads, 10 transfers each
+- [x] **TASK-322**: Measure and log execution time
+- [x] **TASK-323**: Verify zero data integrity violations
+- [x] **TASK-324**: Test with random delays to simulate network latency
+- [x] **TASK-325**: Add assertions for transaction count matching
 
 ---
 
@@ -675,3 +675,33 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 5. Refer to `PLAN.md` for architecture decisions
 6. Run tests frequently - after every major change
 7. Commit after completing each phase
+
+---
+
+## 🐛 Bug Fixes Log
+
+### Phase 11 Concurrency Testing (2026-02-06)
+
+| Error | Root Cause | Fix |
+|-------|------------|-----|
+| `PSQLException: relation "idx_ledger_entries_account_created" already exists` | Testcontainers with `withReuse(true)` preserves DB state; `CREATE INDEX` fails on rerun | Added `IF NOT EXISTS` to `V4__add_balance_query_index.sql` |
+| `DataIntegrityViolationException: violates FK constraint "fk_ledger_entries_transaction"` | `seedAccountWithBalance` created LedgerEntry with fake transaction ID | Refactored to create valid Transaction record before LedgerEntry |
+| `NoSuchBeanDefinitionException: AccountMapper not available` | Stale compiled classes; MapStruct-generated impl not recompiled | Run `mvn clean install -DskipTests` to force full recompilation |
+
+### Affected Files
+
+| File | Change |
+|------|--------|
+| `src/main/resources/db/migration/V4__add_balance_query_index.sql` | Added `IF NOT EXISTS` to CREATE INDEX |
+| `src/test/java/com/fintech/ledger/concurrency/ConcurrentTransferTest.java` | Fixed `seedAccountWithBalance` to create valid Transaction before LedgerEntry |
+
+### Commands Used
+
+```powershell
+# Force full recompilation
+mvn clean install -DskipTests
+
+# Run concurrency tests
+mvn failsafe:integration-test "-Dit.test=ConcurrentTransferTest"
+```
+

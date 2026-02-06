@@ -27,7 +27,8 @@ In modern fintech environments, data integrity is non-negotiable. This service s
 | 7. Controllers | ✅ Complete | REST API endpoints with OpenAPI/Swagger documentation |
 | 8. Exception Handling | ✅ Complete | Global exception handler with RFC 7807 Problem Details |
 | 9. Unit Tests | ✅ Complete | 74 unit tests covering domain, services, mappers, validation |
-| 10-11. Integration/Concurrency Tests | ⏳ Pending | Integration and concurrency tests |
+| 10. Integration Tests | ✅ Complete | Repository and controller integration tests with Testcontainers |
+| 11. Concurrency Tests | ✅ Complete | 10 concurrency tests (withdrawal, transfer, stress) |
 | 12-13. DevOps & Docs | ⏳ Pending | CI/CD, documentation |
 
 ---
@@ -314,9 +315,11 @@ sequenceDiagram
 - [x] DTOs and MapStruct mappers (Phase 4)
 - [x] Repositories with optimized balance queries (Phase 5)
 - [x] Services with idempotency and deadlock prevention (Phase 6)
-- [ ] REST Controllers (Phase 7)
-- [ ] Global exception handling (Phase 8)
-- [ ] Full test coverage (Phases 9-11)
+- [x] REST Controllers (Phase 7)
+- [x] Global exception handling (Phase 8)
+- [x] Unit tests - 74 tests (Phase 9)
+- [x] Integration tests with Testcontainers (Phase 10)
+- [x] Concurrency tests - 10 tests (Phase 11)
 - [ ] Dockerization and CI/CD Pipeline (GitHub Actions)
 - [ ] Integration with a Mock Central Bank API
 - [ ] Implementation of Spring Security (OAuth2/JWT)

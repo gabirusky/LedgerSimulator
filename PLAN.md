@@ -261,22 +261,25 @@ volumes:
 
 ## 🧪 Testing Strategy
 
-### Unit Tests
+### Unit Tests ✅
 - Domain logic validation
 - Balance calculation
 - Insufficient funds detection
 - Non-negative amount validation
+- **74 unit tests completed**
 
-### Integration Tests
+### Integration Tests ✅
 - Repository layer with @DataJpaTest
 - Controller layer with @WebMvcTest
 - Full stack with @SpringBootTest + Testcontainers
+- **27 integration tests completed**
 
-### Concurrency Tests
+### Concurrency Tests ✅
 - 100+ concurrent threads withdrawing from same account
 - Verify no lost updates
 - Verify no overdrafts
 - Verify total balance conservation
+- **10 concurrency tests completed**
 
 ### Test Coverage Targets
 - Line coverage: >80%

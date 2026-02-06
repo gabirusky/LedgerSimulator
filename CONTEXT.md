@@ -286,12 +286,109 @@ Generated implementations are created in `target/generated-sources/annotations/`
 - **Nested Tests**: `@Nested` classes group related test methods (e.g., by method being tested)
 - **Display Names**: `@DisplayName` annotations provide readable test descriptions
 
+### ✅ Phase 10: Integration Tests (Complete)
+
+**Integration Test Package (`test/java/com/fintech/ledger/integration/`):**
+
+| Directory | Test Class | Test Count | Coverage |
+|-----------|-----------|------------|----------|
+| `repository/` | `AccountRepositoryTest.java` | 6 | CRUD, findByDocument, pessimistic locking |
+| `repository/` | `LedgerEntryRepositoryTest.java` | 5 | Balance calculation, ordering |
+| `repository/` | `TransactionRepositoryTest.java` | 3 | Idempotency key lookups |
+| `controller/` | `AccountControllerIT.java` | 5 | Create, get, validation errors |
+| `controller/` | `TransferControllerIT.java` | 6 | Execute, insufficient funds, idempotency |
+| `controller/` | `LedgerControllerIT.java` | 2 | Statement retrieval |
+
+**Key Features:**
+- **Testcontainers**: All integration tests use PostgreSQL 16 container
+- **AbstractIntegrationTest**: Base class with container configuration and dynamic properties
+
+### ✅ Phase 11: Concurrency Tests (Complete)
+
+**Concurrency Test Package (`test/java/com/fintech/ledger/concurrency/`):**
+
+| Test Class | Test Count | Coverage |
+|-----------|------------|----------|
+| `ConcurrentTransferTest$ConcurrentWithdrawalTests` | 3 | 10/50/100 concurrent withdrawals |
+| `ConcurrentTransferTest$ConcurrentTransferTests` | 4 | Bidirectional, conservation, circular, non-negative |
+| `ConcurrentTransferTest$StressTests` | 3 | 100 threads, random delays, transaction count |
+
+**Total: 10 concurrency tests - all passing**
+
+**Run Command:**
+```powershell
+mvn failsafe:integration-test "-Dit.test=ConcurrentTransferTest"
+```
+
 ### 🔧 Fixes Applied During Implementation
 
 1. **Removed invalid `flyway-database-postgresql:9.22.3`** - Not compatible with Flyway 9.x in Spring Boot 3.2
 2. **Removed `--enable-preview` compiler flags** - Not needed for Java 21 standard features
 3. **Fixed default DB password** - Matched `.env.example` values in `application.yml`
 4. **Removed Lombok from annotation processor paths** - Project uses Java records for DTOs (no Lombok needed); removed to avoid Java 25 compatibility issues with Lombok's javac integration
+
+### 🐛 Bug Fixes During Concurrency Testing (2026-02-06)
+
+#### Issue 1: Flyway Migration Failure on Reused Containers
+
+**Error:**
+```
+PSQLException: ERROR: relation "idx_ledger_entries_account_created" already exists
+```
+
+**Root Cause:** Testcontainers with `withReuse(true)` preserves database state between test runs. When Flyway attempts to re-run migrations, the `CREATE INDEX` statement fails because the index already exists.
+
+**Fix:** Modified `V4__add_balance_query_index.sql` to use idempotent syntax:
+```sql
+-- Before (breaking)
+CREATE INDEX idx_ledger_entries_account_created ON ledger_entries(account_id, created_at DESC);
+
+-- After (idempotent)
+CREATE INDEX IF NOT EXISTS idx_ledger_entries_account_created ON ledger_entries(account_id, created_at DESC);
+```
+
+#### Issue 2: Foreign Key Constraint Violation in Test Seeding
+
+**Error:**
+```
+DataIntegrityViolationException: violates foreign key constraint "fk_ledger_entries_transaction"
+```
+
+**Root Cause:** The `seedAccountWithBalance` method was creating `LedgerEntry` records with a fake `UUID.randomUUID()` transaction ID that didn't exist in the `transactions` table.
+
+**Fix:** Refactored seeding to create a valid `Transaction` record first:
+```java
+// Create genesis transaction
+Transaction genesisTransaction = new Transaction(
+    "GENESIS-" + UUID.randomUUID(),  // idempotencyKey
+    accountId,  // sourceAccountId
+    accountId,  // targetAccountId (self for genesis)
+    initialBalance,
+    TransactionStatus.COMPLETED
+);
+Transaction savedTransaction = transactionRepository.save(genesisTransaction);
+
+// Create credit entry with valid transaction reference
+LedgerEntry creditEntry = new LedgerEntry(
+    savedTransaction.getId(),  // Valid FK reference
+    accountId,
+    EntryType.CREDIT,
+    initialBalance,
+    initialBalance
+);
+ledgerEntryRepository.save(creditEntry);
+```
+
+#### Issue 3: MapStruct Bean Not Found
+
+**Error:**
+```
+NoSuchBeanDefinitionException: No qualifying bean of type 'com.fintech.ledger.mapper.AccountMapper' available
+```
+
+**Root Cause:** Stale compiled classes after code changes. Maven wasn't recompiling the MapStruct-generated implementation classes.
+
+**Fix:** Run `mvn clean install -DskipTests` to force full recompilation of all annotation-processed classes.
 
 ---
 
