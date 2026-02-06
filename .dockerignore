@@ -1,0 +1,70 @@
+# ================================
+# Docker Build Context Exclusions
+# ================================
+# Reduces build context size and improves build performance
+
+# Git
+.git
+.gitignore
+
+# IDE and Editor files
+.idea
+.vscode
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings
+
+# Build outputs (we build inside container)
+target/
+build/
+out/
+*.jar
+*.war
+*.class
+
+# Maven wrapper (using Alpine's maven package)
+.mvn/
+mvnw
+mvnw.cmd
+
+# Test outputs
+test-results/
+test-output/
+surefire-reports/
+
+# Docker files (prevent recursive inclusion)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Environment files (contain secrets)
+.env
+.env.local
+.env.*.local
+
+# Documentation (not needed in image)
+*.md
+docs/
+LICENSE
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+Jenkinsfile
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,209 @@
+# ================================
+# CI/CD Pipeline for Fintech Ledger Simulator
+# ================================
+# Triggers: push/PR to main and develop branches
+# Jobs: Build, Test (Unit + Integration), Code Coverage
+
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+
+# Cancel in-progress runs for the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: '21'
+  MAVEN_OPTS: '-Xmx1024m'
+
+jobs:
+  # ================================
+  # Build & Unit Tests
+  # ================================
+  build:
+    name: Build & Unit Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Cache Maven Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build with Maven
+        run: mvn clean compile -B -DskipTests
+
+      - name: Run Unit Tests
+        run: mvn test -B
+
+      - name: Upload Unit Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unit-test-results
+          path: target/surefire-reports/
+          retention-days: 7
+
+  # ================================
+  # Integration Tests (Testcontainers)
+  # ================================
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: build
+    
+    services:
+      docker:
+        image: docker:dind
+        options: --privileged
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Cache Maven Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Run Integration Tests
+        run: mvn verify -B -DskipUnitTests -Pfailsafe
+        env:
+          TESTCONTAINERS_RYUK_DISABLED: 'true'
+
+      - name: Upload Integration Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-test-results
+          path: target/failsafe-reports/
+          retention-days: 7
+
+  # ================================
+  # Code Coverage (JaCoCo)
+  # ================================
+  coverage:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Cache Maven Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Generate Coverage Report
+        run: mvn test jacoco:report -B
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: target/site/jacoco/
+          retention-days: 7
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: target/site/jacoco/jacoco.xml
+          fail_ci_if_error: false
+          verbose: true
+
+  # ================================
+  # Docker Build Verification
+  # ================================
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: fintech-ledger-simulator:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ================================
+  # Summary Job
+  # ================================
+  ci-success:
+    name: CI Success
+    runs-on: ubuntu-latest
+    needs: [build, integration-tests, coverage, docker-build]
+    if: always()
+    
+    steps:
+      - name: Check Results
+        run: |
+          if [[ "${{ needs.build.result }}" == "success" && \
+                "${{ needs.integration-tests.result }}" == "success" && \
+                "${{ needs.coverage.result }}" == "success" && \
+                "${{ needs.docker-build.result }}" == "success" ]]; then
+            echo "✅ All CI jobs passed successfully!"
+            exit 0
+          else
+            echo "❌ Some CI jobs failed"
+            echo "Build: ${{ needs.build.result }}"
+            echo "Integration Tests: ${{ needs.integration-tests.result }}"
+            echo "Coverage: ${{ needs.coverage.result }}"
+            echo "Docker Build: ${{ needs.docker-build.result }}"
+            exit 1
+          fi

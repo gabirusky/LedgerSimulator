@@ -320,6 +320,94 @@ Generated implementations are created in `target/generated-sources/annotations/`
 mvn failsafe:integration-test "-Dit.test=ConcurrentTransferTest"
 ```
 
+### ✅ Phase 12: DevOps & CI/CD (Complete)
+
+**Docker Configuration:**
+
+| File | Purpose |
+|------|---------|
+| `Dockerfile` | Multi-stage build with Maven caching and slim JRE runtime |
+| `.dockerignore` | Excludes unnecessary files from Docker build context |
+| `docker-compose.prod.yml` | Production compose with resource limits and health checks |
+| `application-prod.yml` | Production Spring profile with optimized settings |
+
+**Dockerfile Features:**
+- **Stage 1 (Builder)**: Uses `eclipse-temurin:21-jdk-alpine` with Maven for dependency caching
+- **Stage 2 (Runtime)**: Uses `eclipse-temurin:21-jre-alpine` (minimal footprint)
+- **Security**: Runs as non-root user (`ledger:ledger`)
+- **JVM Optimization**: Container-aware memory settings (`MaxRAMPercentage=75.0`)
+- **Health Check**: Built-in wget check on `/actuator/health`
+
+**Docker Compose Production (`docker-compose.prod.yml`):**
+- App and PostgreSQL services with health checks
+- Resource limits (2 CPU, 1GB memory for app; 1 CPU, 512MB for database)
+- Network isolation (`ledger-network`)
+- Volume persistence for PostgreSQL data
+- JSON logging with rotation
+
+**GitHub Actions CI Pipeline (`.github/workflows/ci.yml`):**
+
+| Job | Description |
+|-----|-------------|
+| `build` | Compile and run unit tests |
+| `integration-tests` | Run integration tests with Testcontainers |
+| `coverage` | Generate JaCoCo coverage report, upload to Codecov |
+| `docker-build` | Verify Docker image builds successfully |
+| `ci-success` | Summary job checking all previous jobs |
+
+**CI Features:**
+- **Triggers**: Push/PR to `main`, `develop`, `feature/**` branches
+- **Caching**: Maven dependencies cached between runs
+- **Concurrency**: Cancels in-progress runs for same branch
+- **Artifacts**: Test reports and coverage reports uploaded (7-day retention)
+- **Docker**: Uses GitHub Actions cache for layer reuse
+
+**Run Commands:**
+```powershell
+# Build Docker image locally
+docker build -t fintech-ledger-simulator:latest .
+
+# Run production stack
+docker-compose -f docker-compose.prod.yml up -d
+
+# View app logs
+docker-compose -f docker-compose.prod.yml logs -f app
+```
+
+### ✅ Phase 13: Documentation & Polish (Complete)
+
+**Documentation Files Created:**
+
+| File | Purpose |
+|------|---------|
+| `README.md` | Comprehensive project documentation with curl examples, troubleshooting |
+| `CONTRIBUTING.md` | Contribution guidelines for developers |
+| `LICENSE` | MIT License |
+| `CONTEXT.md` | Technical context for AI agents (this file) |
+| `METHODS.md` | Method reference with Big O complexity |
+| `PLAN.md` | Architecture and design decisions |
+| `TASKS.md` | Implementation task tracking |
+
+**API Documentation:**
+- **OpenAPI Spec**: Available at `/v3/api-docs`
+- **Swagger UI**: interactive documentation at `/swagger-ui.html`
+- All controllers annotated with `@Tag`, `@Operation`, `@ApiResponse`
+- All DTOs annotated with `@Schema` and examples
+
+**README Highlights:**
+- Complete curl examples for all endpoints
+- Example request/response JSON
+- Environment variables documentation
+- Troubleshooting section (Docker, Flyway, MapStruct, Port issues)
+- Mermaid sequence diagram for transaction flow
+
+**Test Coverage:**
+- 74 unit tests (100% passing)
+- 27 integration tests (require Docker)
+- 10 concurrency tests (require Docker)
+- Total: 111 tests
+
+
 ### 🔧 Fixes Applied During Implementation
 
 1. **Removed invalid `flyway-database-postgresql:9.22.3`** - Not compatible with Flyway 9.x in Spring Boot 3.2

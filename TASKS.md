@@ -579,32 +579,32 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### Dockerfile
 
-- [ ] **TASK-326**: Create multi-stage `Dockerfile`
-- [ ] **TASK-327**: Stage 1: Maven build with dependency caching
-- [ ] **TASK-328**: Stage 2: Runtime with slim JRE image
-- [ ] **TASK-329**: Configure JVM options for container
-- [ ] **TASK-330**: Add health check endpoint configuration
-- [ ] **TASK-331**: Create `.dockerignore` file
+- [x] **TASK-326**: Create multi-stage `Dockerfile`
+- [x] **TASK-327**: Stage 1: Maven build with dependency caching
+- [x] **TASK-328**: Stage 2: Runtime with slim JRE image
+- [x] **TASK-329**: Configure JVM options for container
+- [x] **TASK-330**: Add health check endpoint configuration
+- [x] **TASK-331**: Create `.dockerignore` file
 
 ### Docker Compose Production
 
-- [ ] **TASK-332**: Create `docker-compose.prod.yml`
-- [ ] **TASK-333**: Configure app service with built image
-- [ ] **TASK-334**: Configure production database settings
-- [ ] **TASK-335**: Add network configuration
-- [ ] **TASK-336**: Add resource limits
+- [x] **TASK-332**: Create `docker-compose.prod.yml`
+- [x] **TASK-333**: Configure app service with built image
+- [x] **TASK-334**: Configure production database settings
+- [x] **TASK-335**: Add network configuration
+- [x] **TASK-336**: Add resource limits
 
 ### GitHub Actions CI
 
-- [ ] **TASK-337**: Create `.github/workflows` directory
-- [ ] **TASK-338**: Create `ci.yml` workflow file
-- [ ] **TASK-339**: Configure Java 21 setup
-- [ ] **TASK-340**: Add Maven cache configuration
-- [ ] **TASK-341**: Run unit tests step
-- [ ] **TASK-342**: Run integration tests step (with Testcontainers)
-- [ ] **TASK-343**: Add test report upload
-- [ ] **TASK-344**: Add code coverage report
-- [ ] **TASK-345**: Configure branch protection triggers
+- [x] **TASK-337**: Create `.github/workflows` directory
+- [x] **TASK-338**: Create `ci.yml` workflow file
+- [x] **TASK-339**: Configure Java 21 setup
+- [x] **TASK-340**: Add Maven cache configuration
+- [x] **TASK-341**: Run unit tests step
+- [x] **TASK-342**: Run integration tests step (with Testcontainers)
+- [x] **TASK-343**: Add test report upload
+- [x] **TASK-344**: Add code coverage report
+- [x] **TASK-345**: Configure branch protection triggers
 
 ---
 
@@ -612,35 +612,35 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### API Documentation
 
-- [ ] **TASK-346**: Verify OpenAPI spec is generated at `/v3/api-docs`
-- [ ] **TASK-347**: Verify Swagger UI accessible at `/swagger-ui.html`
-- [ ] **TASK-348**: Add detailed descriptions to all endpoints
-- [ ] **TASK-349**: Add request/response examples
-- [ ] **TASK-350**: Document all error response codes
+- [x] **TASK-346**: Verify OpenAPI spec is generated at `/v3/api-docs`
+- [x] **TASK-347**: Verify Swagger UI accessible at `/swagger-ui.html`
+- [x] **TASK-348**: Add detailed descriptions to all endpoints
+- [x] **TASK-349**: Add request/response examples
+- [x] **TASK-350**: Document all error response codes
 
 ### README Updates
 
-- [ ] **TASK-351**: Update README with actual endpoint examples
-- [ ] **TASK-352**: Add curl examples for each endpoint
-- [ ] **TASK-353**: Add example responses
-- [ ] **TASK-354**: Document environment variables
-- [ ] **TASK-355**: Add troubleshooting section
+- [x] **TASK-351**: Update README with actual endpoint examples
+- [x] **TASK-352**: Add curl examples for each endpoint
+- [x] **TASK-353**: Add example responses
+- [x] **TASK-354**: Document environment variables
+- [x] **TASK-355**: Add troubleshooting section
 
 ### Code Quality
 
-- [ ] **TASK-356**: Add missing JavaDoc to public methods
-- [ ] **TASK-357**: Run code formatter (google-java-format)
-- [ ] **TASK-358**: Fix any remaining compiler warnings
-- [ ] **TASK-359**: Add `CONTRIBUTING.md` file
-- [ ] **TASK-360**: Add `LICENSE` file (MIT)
+- [x] **TASK-356**: Add missing JavaDoc to public methods
+- [x] **TASK-357**: Run code formatter (google-java-format)
+- [x] **TASK-358**: Fix any remaining compiler warnings
+- [x] **TASK-359**: Add `CONTRIBUTING.md` file
+- [x] **TASK-360**: Add `LICENSE` file (MIT)
 
 ### Final Verification
 
-- [ ] **TASK-361**: Run full test suite locally
-- [ ] **TASK-362**: Verify all tests pass in CI
-- [ ] **TASK-363**: Manual testing of happy paths
-- [ ] **TASK-364**: Manual testing of error scenarios
-- [ ] **TASK-365**: Performance baseline test (optional)
+- [x] **TASK-361**: Run full test suite locally
+- [-] **TASK-362**: Verify all tests pass in CI (Skipped - requires GitHub Actions runner)
+- [x] **TASK-363**: Manual testing of happy paths
+- [x] **TASK-364**: Manual testing of error scenarios
+- [-] **TASK-365**: Performance baseline test (optional - skipped)
 
 ---
 
