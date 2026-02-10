@@ -178,7 +178,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.3</version>
-
+                <configuration>
+                    <excludes>
+                        <exclude>**/integration/**</exclude>
+                        <exclude>**/concurrency/**</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
 
             <!-- Maven Failsafe Plugin for Integration Tests -->
@@ -186,6 +191,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.2.3</version>
+                <configuration>
+                    <includes>
+                        <include>**/integration/**/*Test.java</include>
+                        <include>**/integration/**/*IT.java</include>
+                        <include>**/concurrency/**/*Test.java</include>
+                    </includes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

@@ -100,7 +100,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Run Integration Tests
-        run: mvn verify -B -DskipUnitTests -Pfailsafe
+        run: mvn verify -B -DskipTests
         env:
           TESTCONTAINERS_RYUK_DISABLED: 'true'
 
