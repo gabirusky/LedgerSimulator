@@ -802,19 +802,40 @@ Access lazy collections within `@Transactional` method or use `@EntityGraph`.
 
 ## 📦 Frontend Implementation Progress
 
-### ⬜ Phase 14: Frontend Setup (Not Started)
+### ✅ Phase 14: Frontend Setup (Complete)
 
 | File | Description |
 |------|-------------|
-| `frontend/vite.config.ts` | Vite config with React plugin, `base: '/LedgerSimulator/'`, `@` alias |
-| `frontend/tsconfig.json` | Strict TypeScript, `@/` path alias |
-| `frontend/tailwind.config.ts` | Tailwind CSS v4 config |
-| `frontend/components.json` | shadcn/ui configuration |
-| `frontend/src/lib/utils.ts` | `cn()` class merge helper |
-| `frontend/src/types/api.ts` | TypeScript interfaces matching backend DTOs |
-| `frontend/src/services/ledgerProvider.ts` | API abstraction layer (fetch + error handling) |
-| `frontend/src/main.tsx` | Entry point with React 18 `createRoot` + QueryClient |
-| `frontend/src/App.tsx` | Root component with `HashRouter` routes |
+| `frontend/vite.config.ts` | Vite config with React plugin, Tailwind CSS v4 plugin, `base: '/LedgerSimulator/'`, `@` alias |
+| `frontend/tsconfig.app.json` | Strict TypeScript, `@/` path alias via `baseUrl` + `paths` |
+| `frontend/components.json` | shadcn/ui configuration (neutral theme, lucide icons, `@/` aliases) |
+| `frontend/src/index.css` | Tailwind v4 import, light/dark CSS variables (oklch), shadcn/ui `@theme inline` |
+| `frontend/src/lib/utils.ts` | `cn()` class merge helper (clsx + tailwind-merge) |
+| `frontend/src/types/api.ts` | TypeScript interfaces matching all backend DTOs + `Page<T>` + `HealthStatus` + `ErrorResponse` |
+| `frontend/src/services/ledgerProvider.ts` | API abstraction layer (6 methods, typed responses, `ApiError` class, `VITE_API_URL`) |
+| `frontend/src/vite-env.d.ts` | `VITE_API_URL` env var type declarations |
+| `frontend/src/main.tsx` | Entry point with React 18 `createRoot` |
+| `frontend/src/App.tsx` | Root component with `QueryClientProvider` + `HashRouter` routes |
+| `frontend/src/layouts/AppLayout.tsx` | Shared layout with responsive sidebar/sheet, navigation, mode switch |
+| `frontend/src/layouts/AdminLayout.tsx` | Admin layout wrapper |
+| `frontend/src/layouts/UserLayout.tsx` | User layout wrapper |
+| `frontend/src/pages/NotFoundPage.tsx` | 404 fallback page |
+| `frontend/src/pages/admin/DashboardPage.tsx` | Dashboard skeleton (3 cards) |
+| `frontend/src/pages/admin/LedgerPage.tsx` | Ledger page skeleton |
+| `frontend/src/pages/admin/AccountsPage.tsx` | Accounts page skeleton |
+| `frontend/src/pages/user/WalletPage.tsx` | Wallet page skeleton (balance + transfer cards) |
+| `frontend/src/pages/user/HistoryPage.tsx` | History page skeleton |
+| `frontend/src/components/ui/*.tsx` | 15 shadcn/ui components (Button, Card, Input, Table, Form, Select, Command, ScrollArea, Badge, Separator, Sheet, Tabs, Tooltip, Dialog, Label) |
+| `frontend/public/.nojekyll` | GitHub Pages Jekyll bypass |
+
+**Dependencies Installed:**
+- `tailwindcss`, `@tailwindcss/vite` — Tailwind CSS v4
+- `clsx`, `tailwind-merge` — Class utility merge
+- `class-variance-authority` — Component variants (shadcn/ui)
+- `lucide-react` — Icon library (shadcn/ui)
+- `react-router-dom` — Client-side routing (v6+)
+- `@tanstack/react-query` — Server state management (v5)
+- `recharts` — Data visualization charts
 
 ### ⬜ Phase 15: Admin Panel (Not Started)
 

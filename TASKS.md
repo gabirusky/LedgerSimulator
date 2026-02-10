@@ -648,40 +648,40 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### Project Scaffolding
 
-- [ ] **TASK-366**: Initialize Vite + React + TypeScript project in `frontend/`
-- [ ] **TASK-367**: Configure `tsconfig.json` with strict mode and path aliases (`@/`)
-- [ ] **TASK-368**: Configure `vite.config.ts` with React plugin, `base: '/LedgerSimulator/'`, and `@` alias
-- [ ] **TASK-369**: Install and configure Tailwind CSS v4
-- [ ] **TASK-370**: Initialize shadcn/ui with `components.json` configuration
-- [ ] **TASK-371**: Create `src/lib/utils.ts` with `cn()` helper function
-- [ ] **TASK-372**: Install shadcn/ui core components: `Button`, `Card`, `Input`, `Table`, `Form`, `Select`, `Command`, `ScrollArea`, `Badge`, `Separator`, `Sheet`, `Tabs`, `Tooltip`
-- [ ] **TASK-373**: Create `index.html` entry point with meta tags
-- [ ] **TASK-374**: Create `src/main.tsx` entry point with React 18 `createRoot`
-- [ ] **TASK-375**: Create `public/.nojekyll` empty file for GitHub Pages
+- [x] **TASK-366**: Initialize Vite + React + TypeScript project in `frontend/`
+- [x] **TASK-367**: Configure `tsconfig.json` with strict mode and path aliases (`@/`)
+- [x] **TASK-368**: Configure `vite.config.ts` with React plugin, `base: '/LedgerSimulator/'`, and `@` alias
+- [x] **TASK-369**: Install and configure Tailwind CSS v4
+- [x] **TASK-370**: Initialize shadcn/ui with `components.json` configuration
+- [x] **TASK-371**: Create `src/lib/utils.ts` with `cn()` helper function
+- [x] **TASK-372**: Install shadcn/ui core components: `Button`, `Card`, `Input`, `Table`, `Form`, `Select`, `Command`, `ScrollArea`, `Badge`, `Separator`, `Sheet`, `Tabs`, `Tooltip`
+- [x] **TASK-373**: Create `index.html` entry point with meta tags
+- [x] **TASK-374**: Create `src/main.tsx` entry point with React 18 `createRoot`
+- [x] **TASK-375**: Create `public/.nojekyll` empty file for GitHub Pages
 
 ### Routing & Layout
 
-- [ ] **TASK-376**: Install `react-router-dom` v6+
-- [ ] **TASK-377**: Create `src/App.tsx` with `HashRouter` and route definitions
-- [ ] **TASK-378**: Create shared `Layout.tsx` with sidebar navigation (shadcn/ui `Sheet` + `Separator`)
-- [ ] **TASK-379**: Create admin layout wrapper with navigation (Dashboard, Ledger, Accounts)
-- [ ] **TASK-380**: Create user layout wrapper with navigation (Wallet, History)
-- [ ] **TASK-381**: Create `NotFoundPage.tsx` for 404 fallback route
+- [x] **TASK-376**: Install `react-router-dom` v6+
+- [x] **TASK-377**: Create `src/App.tsx` with `HashRouter` and route definitions
+- [x] **TASK-378**: Create shared `Layout.tsx` with sidebar navigation (shadcn/ui `Sheet` + `Separator`)
+- [x] **TASK-379**: Create admin layout wrapper with navigation (Dashboard, Ledger, Accounts)
+- [x] **TASK-380**: Create user layout wrapper with navigation (Wallet, History)
+- [x] **TASK-381**: Create `NotFoundPage.tsx` for 404 fallback route
 
 ### API Service Layer
 
-- [ ] **TASK-382**: Create `src/types/api.ts` with TypeScript interfaces matching backend DTOs (`Account`, `TransferRequest`, `TransferResponse`, `LedgerEntry`, `AccountStatement`)
-- [ ] **TASK-383**: Create `src/services/ledgerProvider.ts` with `getAccounts()`, `getAccount()`, `createAccount()` methods
-- [ ] **TASK-384**: Add `executeTransfer()` method with `Idempotency-Key` header support to `ledgerProvider.ts`
-- [ ] **TASK-385**: Add `getLedger()` method with paginated ledger entry retrieval to `ledgerProvider.ts`
-- [ ] **TASK-386**: Add `getHealth()` method querying `/actuator/health` to `ledgerProvider.ts`
-- [ ] **TASK-387**: Configure `VITE_API_URL` environment variable with fallback to `http://localhost:8080/api/v1`
+- [x] **TASK-382**: Create `src/types/api.ts` with TypeScript interfaces matching backend DTOs (`Account`, `TransferRequest`, `TransferResponse`, `LedgerEntry`, `AccountStatement`)
+- [x] **TASK-383**: Create `src/services/ledgerProvider.ts` with `getAccounts()`, `getAccount()`, `createAccount()` methods
+- [x] **TASK-384**: Add `executeTransfer()` method with `Idempotency-Key` header support to `ledgerProvider.ts`
+- [x] **TASK-385**: Add `getLedger()` method with paginated ledger entry retrieval to `ledgerProvider.ts`
+- [x] **TASK-386**: Add `getHealth()` method querying `/actuator/health` to `ledgerProvider.ts`
+- [x] **TASK-387**: Configure `VITE_API_URL` environment variable with fallback to `http://localhost:8080/api/v1`
 
 ### State Management
 
-- [ ] **TASK-388**: Install `@tanstack/react-query` v5
-- [ ] **TASK-389**: Create `QueryClient` provider wrapper in `main.tsx` with default `staleTime` and `gcTime`
-- [ ] **TASK-390**: Install `recharts` for data visualization
+- [x] **TASK-388**: Install `@tanstack/react-query` v5
+- [x] **TASK-389**: Create `QueryClient` provider wrapper in `main.tsx` with default `staleTime` and `gcTime`
+- [x] **TASK-390**: Install `recharts` for data visualization
 
 ---
 
