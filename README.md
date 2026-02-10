@@ -349,94 +349,95 @@ All errors follow [RFC 7807 Problem Details](https://datatracker.ietf.org/doc/ht
 
 ### Prerequisites
 
-- Java 21+
-- Docker & Docker Compose
-- Maven 3.9+
+- **Java 21+**
+- **Docker & Docker Compose**
+- **Maven 3.9+** (or use included `mvnw`)
+- **Node.js 20+** (for Frontend)
 
-### Quick Start
+### 1. Database Setup
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/your-username/fintech-ledger-simulator.git
-   cd fintech-ledger-simulator
-   ```
-
-2. **Configure environment:**
-   ```bash
-   cp .env.example .env
-   # Edit .env if needed
-   ```
-
-3. **Start PostgreSQL:**
-   ```bash
-   docker-compose up -d
-   ```
-
-4. **Run the application:**
-   ```bash
-   # Development mode
-   ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
-   
-   # Or with Maven wrapper (Windows)
-   mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=dev"
-   ```
-
-5. **Access the API:**
-   - Application: http://localhost:8080
-   - Swagger UI: http://localhost:8080/swagger-ui.html
-   - Health: http://localhost:8080/actuator/health
-
-### Running Tests
+Start the PostgreSQL database container:
 
 ```bash
-# Unit tests only
-./mvnw test
-
-# Integration tests (requires Docker)
-./mvnw verify
-
-# Concurrency tests only
-./mvnw failsafe:integration-test -Dit.test=ConcurrentTransferTest
-
-# With coverage report
-./mvnw verify jacoco:report
-# Report at: target/site/jacoco/index.html
+docker-compose up -d
 ```
 
-### Docker Production
+Verify it's running:
+```bash
+docker ps
+# Should see 'ledger-postgres' container running on port 5432
+```
+
+### 2. Backend Setup (Spring Boot)
+
+Run the backend API server:
 
 ```bash
-# Build Docker image
+# Using installed Maven (Windows/Linux/Mac)
+mvn spring-boot:run
+
+# OR using Maven Wrapper (Linux/Mac)
+./mvnw spring-boot:run
+
+# OR using Maven Wrapper (Windows Command Prompt)
+mvnw spring-boot:run
+```
+
+The application will start on **port 8080**.
+- **API Base URL:** `http://localhost:8080/api/v1`
+- **Swagger UI:** `http://localhost:8080/swagger-ui.html`
+- **Health Check:** `http://localhost:8080/actuator/health`
+
+### 3. Frontend Setup (React/Vite)
+
+Open a new terminal and navigate to the `frontend` directory:
+
+```bash
+cd frontend
+```
+
+Install dependencies:
+```bash
+npm install
+```
+
+Start the development server:
+```bash
+npm run dev
+```
+
+The frontend will start at **http://localhost:5173/LedgerSimulator/** (see `vite.config.ts` base path). It is configured to communicate with the backend at `http://localhost:8080`.
+
+### 4. Running Tests
+
+#### Backend Tests
+```bash
+# Run unit tests
+mvn test
+
+# Run integration tests (requires Docker)
+mvn verify
+
+# Run concurrency tests
+mvn failsafe:integration-test -Dit.test=ConcurrentTransferTest
+```
+
+#### Frontend Tests
+```bash
+cd frontend
+npm test
+```
+
+### 5. Production Build (Docker)
+
+To run the full stack (App + DB) in production mode:
+
+```bash
+# Build the application image
 docker build -t fintech-ledger-simulator:latest .
 
-# Run production stack
+# Start production stack
 docker-compose -f docker-compose.prod.yml up -d
-
-# View logs
-docker-compose -f docker-compose.prod.yml logs -f app
-
-# Stop
-docker-compose -f docker-compose.prod.yml down
-```
-
-### Frontend Development
-
-```bash
-# Navigate to frontend directory
-cd frontend
-
-# Install dependencies
-npm install
-
-# Start dev server (http://localhost:5173)
-npm run dev
-
-# Run frontend tests
-npm test
-
-# Build for production
-npm run build
-# Output at: frontend/dist/
 ```
 
 ---
