@@ -344,3 +344,308 @@ volumes:
 6. ✅ No data integrity violations under load
 7. ✅ Clean, maintainable code
 8. ✅ Comprehensive documentation
+
+---
+
+## 🖥️ Phase 8: Frontend Solution
+
+A high-performance backend requires a responsive, type-safe frontend. The interface is split into two distinct applications: a **User Simulator** (digital wallet experience) and an **Admin Panel** (ledger oversight dashboard). Both live inside a shared Vite + React monorepo under `frontend/`.
+
+### 8.1 Technology Stack
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| React | 18 | UI framework |
+| Vite | 5+ | Build tooling (ESBuild HMR, fast dev server) |
+| TypeScript | 5+ | Type safety for financial data structures |
+| TanStack Query (React Query) | 5 | Server-state management (caching, re-fetching, optimistic updates) |
+| shadcn/ui | latest | Component library (Radix primitives + Tailwind styling) |
+| Tailwind CSS | 4 | Utility-first CSS (required by shadcn/ui) |
+| Recharts | 2+ | Data visualizations (TPS, volume charts) |
+| React Router | 6+ | Client-side routing (HashRouter for GitHub Pages) |
+
+**Why shadcn/ui?** Unlike opinionated component libraries (MUI, Ant Design), shadcn/ui gives full ownership of component code. Components are copied into the project, allowing deep customization—critical for building both a consumer-grade wallet UI and an enterprise admin dashboard from the same primitives.
+
+**Why TanStack Query over Redux?** Ledger data is inherently server-side state. TanStack Query provides caching, automatic re-fetching, background sync, and optimistic updates without Redux boilerplate.
+
+### 8.2 Frontend Project Structure
+
+```
+frontend/
+├── public/
+│   └── .nojekyll                   # Disable Jekyll on GitHub Pages
+├── src/
+│   ├── main.tsx                    # Entry point
+│   ├── App.tsx                     # Root with HashRouter
+│   ├── lib/
+│   │   └── utils.ts                # cn() helper for shadcn/ui
+│   ├── components/
+│   │   └── ui/                     # shadcn/ui components (Button, Card, Table, etc.)
+│   ├── services/
+│   │   └── ledgerProvider.ts       # API abstraction layer
+│   ├── hooks/
+│   │   ├── useAccounts.ts          # TanStack Query: accounts CRUD
+│   │   ├── useBalance.ts           # TanStack Query: real-time balance polling
+│   │   ├── useTransfers.ts         # TanStack Query: transfer mutations
+│   │   └── useTransactionStream.ts # TanStack Query: paginated ledger entries
+│   ├── pages/
+│   │   ├── admin/
+│   │   │   ├── DashboardPage.tsx   # System Health + Balance Integrity
+│   │   │   ├── LedgerPage.tsx      # General Ledger Data Grid
+│   │   │   └── AccountsPage.tsx    # Account management
+│   │   └── user/
+│   │       ├── WalletPage.tsx      # Wallet Card + balance
+│   │       └── HistoryPage.tsx     # Transaction Stream
+│   ├── features/
+│   │   ├── admin/
+│   │   │   ├── GeneralLedgerGrid.tsx    # Data Grid with cursor pagination
+│   │   │   ├── SystemHealthChart.tsx    # TPS + Volume Recharts
+│   │   │   └── BalanceIntegrityWidget.tsx # sum(credits) - sum(debits) check
+│   │   └── user/
+│   │       ├── WalletCard.tsx           # Balance display with optimistic UI
+│   │       ├── TransferForm.tsx         # Transfer execution form
+│   │       └── TransactionStream.tsx    # User-facing ledger view
+│   └── types/
+│       └── api.ts                  # TypeScript interfaces matching backend DTOs
+├── index.html
+├── vite.config.ts
+├── tailwind.config.ts
+├── tsconfig.json
+├── package.json
+└── components.json                 # shadcn/ui configuration
+```
+
+### 8.3 API Service Layer
+
+The frontend uses a "Service" pattern for all API communication, decoupling components from fetch logic:
+
+```typescript
+// src/services/ledgerProvider.ts
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
+
+export const ledgerProvider = {
+    getAccounts: (page = 0, size = 20) =>
+        fetch(`${API_URL}/accounts?page=${page}&size=${size}`).then(r => r.json()),
+
+    getAccount: (id: string) =>
+        fetch(`${API_URL}/accounts/${id}`).then(r => r.json()),
+
+    createAccount: (data: CreateAccountRequest) =>
+        fetch(`${API_URL}/accounts`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        }).then(r => r.json()),
+
+    executeTransfer: (data: TransferRequest, idempotencyKey: string) =>
+        fetch(`${API_URL}/transfers`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Idempotency-Key': idempotencyKey,
+            },
+            body: JSON.stringify(data),
+        }).then(r => r.json()),
+
+    getLedger: (accountId: string, page = 0, size = 50) =>
+        fetch(`${API_URL}/ledger/${accountId}?page=${page}&size=${size}`).then(r => r.json()),
+};
+```
+
+### 8.4 Component Architecture: Admin Dashboard
+
+The Admin Dashboard is the "God View" of the system, exposing raw ledger data for audit operations.
+
+#### 8.4.1 General Ledger Data Grid
+
+Central component handling high-cardinality data:
+- **Columns**: TransactionID, Timestamp, Source, Destination, Amount, Status
+- **Pagination**: Cursor-based (not offset-based) for consistent performance as ledger grows
+- **Filtering**: Column filters for account ID, date range, amount range, status
+- **Built with**: shadcn/ui `Table` + `DataTable` pattern with `@tanstack/react-table`
+
+#### 8.4.2 System Health & Analytics
+
+- **TPS Chart**: Recharts `LineChart` plotting transactions per second over time
+- **Volume Chart**: Recharts `AreaChart` showing total transfer volume over time
+- **Built with**: shadcn/ui `Card` components for layout
+
+#### 8.4.3 Balance Integrity Widget
+
+Critical audit widget:
+- Queries backend for `sum(all_credits) - sum(all_debits)`
+- Must always equal **zero** (conservation of value)
+- Displays green ✅ when balanced, red 🚨 alert when deviation detected
+- Auto-refreshes every 30 seconds via TanStack Query
+
+### 8.5 Component Architecture: User Simulator
+
+The User Simulator mimics a consumer-grade digital wallet experience.
+
+#### 8.5.1 Wallet Card
+
+Displays user's current holdings:
+- **Real-Time Data**: Short-polling (5-10s) via TanStack Query `refetchInterval`
+- **Optimistic UI**: On transfer initiation, immediately deduct amount from displayed balance; roll back only if API call fails
+- **Built with**: shadcn/ui `Card` with custom styling for the "fintech wallet" look
+
+#### 8.5.2 Transaction Stream
+
+Simplified ledger view relative to a single identity:
+- Shows human-readable descriptions rather than raw Account IDs
+- Color-coded: green for incoming (CREDIT), red for outgoing (DEBIT)
+- Infinite scroll pagination via TanStack Query `useInfiniteQuery`
+- **Built with**: shadcn/ui `ScrollArea` + virtualized list
+
+#### 8.5.3 Transfer Form
+
+- Source/target account selection via shadcn/ui `Select` + `Command` (searchable)
+- Amount input with `BigDecimal`-safe validation (no floating point issues)
+- Auto-generated `Idempotency-Key` (UUID v4) per submission
+- **Built with**: shadcn/ui `Form` + `Input` + `Button` components
+
+### 8.6 TypeScript Interfaces
+
+Strict type-safety matching backend DTOs:
+
+```typescript
+// src/types/api.ts
+export interface Account {
+    id: string;
+    document: string;
+    name: string;
+    balance: number;
+    createdAt: string;
+}
+
+export interface TransferRequest {
+    sourceAccountId: string;
+    targetAccountId: string;
+    amount: number;
+}
+
+export interface TransferResponse {
+    transactionId: string;
+    sourceAccountId: string;
+    targetAccountId: string;
+    amount: number;
+    status: 'PENDING' | 'COMPLETED' | 'FAILED';
+    createdAt: string;
+}
+
+export interface LedgerEntry {
+    id: string;
+    transactionId: string;
+    entryType: 'DEBIT' | 'CREDIT';
+    amount: number;
+    balanceAfter: number;
+    createdAt: string;
+}
+
+export interface AccountStatement {
+    accountId: string;
+    accountName: string;
+    currentBalance: number;
+    entries: LedgerEntry[];
+}
+```
+
+---
+
+## 🚀 Phase 9: CI/CD & GitHub Pages Deployment
+
+### 9.1 The Deployment Challenge: Client-Side Routing
+
+GitHub Pages is a static file host—it does not support server-side routing. If a user navigates to `/transactions` and refreshes, GitHub Pages returns a 404.
+
+**Solutions:**
+1. **HashRouter**: Use `HashRouter` in React Router (e.g., `https://domain.com/#/transactions`). The fragment identifier is handled entirely by client-side JavaScript.
+2. **`.nojekyll` file**: GitHub Pages uses Jekyll by default, which ignores files starting with `_` (like `_assets` from Vite). An empty `.nojekyll` file disables this behavior.
+
+### 9.2 Vite Configuration for Production
+
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import path from 'path'
+
+export default defineConfig({
+    plugins: [react()],
+    base: '/LedgerSimulator/',  // Must match GitHub repo name
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, './src'),
+        },
+    },
+    build: {
+        outDir: 'dist',
+        sourcemap: false,  // Disable for production security
+    },
+})
+```
+
+### 9.3 GitHub Actions Deploy Workflow
+
+```yaml
+# .github/workflows/deploy-frontend.yml
+name: Deploy Frontend to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+    paths: ['frontend/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm test -- --passWithNoTests
+      - run: npm run build
+        env:
+          VITE_API_URL: ${{ vars.API_URL }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+### 9.4 Strategic Recommendations
+
+#### Build vs. Buy
+Building a ledger from scratch (LedgerSimulator pattern) is advisable when extreme customization is needed. For most fintech startups, leveraging battle-tested cores (TigerBeetle for performance, Blnk for features) allows faster time-to-market.
+
+#### Metadata & Reconciliation
+Every transaction should be linkable to an external event via metadata (`{"order_id": "ORD-123"}`). Future work should implement an ingestion interface for standard banking formats (MT940, BAI2, CSV) for automated reconciliation.
+
+#### Frontend Read Amplification
+A highly active ledger produces millions of rows. The Admin Panel uses cursor-based pagination and pre-computed aggregations (daily closing balances) rather than summing transactions on-the-fly. TanStack Query caches expensive reads to reduce backend API load.

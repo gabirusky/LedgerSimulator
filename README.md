@@ -41,10 +41,16 @@ In modern fintech environments, data integrity is non-negotiable. This service s
 | 11. Concurrency Tests | ✅ Complete | 10 concurrency tests (withdrawal, transfer, stress) |
 | 12. DevOps & CI/CD | ✅ Complete | Dockerfile, docker-compose.prod.yml, GitHub Actions CI pipeline |
 | 13. Documentation | ✅ Complete | API documentation, README, curl examples, troubleshooting |
+| 14. Frontend Setup | ⬜ Planned | Vite + React + TypeScript + shadcn/ui scaffold |
+| 15. Admin Panel | ⬜ Planned | General Ledger Data Grid, System Health, Balance Integrity |
+| 16. User Simulator | ⬜ Planned | Wallet Card, Transfer Form, Transaction Stream |
+| 17. Frontend CI/CD | ⬜ Planned | GitHub Pages deployment, Vitest, deploy workflow |
 
 ---
 
 ## 🛠 Tech Stack
+
+### Backend
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
@@ -62,6 +68,21 @@ In modern fintech environments, data integrity is non-negotiable. This service s
 | AssertJ | - | Fluent Assertions |
 | Mockito | - | Mocking |
 | JaCoCo | 0.8.11 | Code Coverage |
+
+### Frontend
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| React | 18 | UI Framework |
+| Vite | 5+ | Build Tooling (ESBuild HMR) |
+| TypeScript | 5+ | Type Safety |
+| shadcn/ui | latest | Component Library (Radix + Tailwind) |
+| Tailwind CSS | 4 | Utility-first Styling |
+| TanStack Query | 5 | Server-state Management |
+| @tanstack/react-table | 8+ | Headless Data Grid |
+| Recharts | 2+ | Data Visualizations |
+| React Router | 6+ | Client-side Routing (HashRouter) |
+| Vitest | latest | Frontend Unit Testing |
 
 ---
 
@@ -398,6 +419,26 @@ docker-compose -f docker-compose.prod.yml logs -f app
 docker-compose -f docker-compose.prod.yml down
 ```
 
+### Frontend Development
+
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start dev server (http://localhost:5173)
+npm run dev
+
+# Run frontend tests
+npm test
+
+# Build for production
+npm run build
+# Output at: frontend/dist/
+```
+
 ---
 
 ## ⚙️ Environment Variables
@@ -602,6 +643,8 @@ mvn verify
 
 ## 📁 Project Structure
 
+### Backend
+
 ```
 src/main/java/com/fintech/ledger/
 ├── LedgerSimulatorApplication.java  # Main application
@@ -621,7 +664,34 @@ src/main/java/com/fintech/ledger/
 ├── exception/                       # Exception handling
 ├── mapper/                          # MapStruct mappers
 └── validation/                      # Custom validators
+```
 
+### Frontend
+
+```
+frontend/
+├── src/
+│   ├── main.tsx                     # Entry point
+│   ├── App.tsx                      # Root with HashRouter
+│   ├── components/ui/               # shadcn/ui components
+│   ├── services/
+│   │   └── ledgerProvider.ts        # API abstraction layer
+│   ├── hooks/                       # TanStack Query hooks
+│   ├── pages/
+│   │   ├── admin/                   # Admin dashboard pages
+│   │   └── user/                    # User wallet pages
+│   ├── features/
+│   │   ├── admin/                   # Admin components (Grid, Charts)
+│   │   └── user/                    # User components (Wallet, Stream)
+│   └── types/api.ts                 # TypeScript interfaces
+├── vite.config.ts                   # Vite + base path config
+├── tailwind.config.ts               # Tailwind CSS v4
+└── components.json                  # shadcn/ui config
+```
+
+### Configuration
+
+```
 src/main/resources/
 ├── application.yml                  # Base configuration
 ├── application-dev.yml              # Development profile
@@ -634,6 +704,7 @@ src/main/resources/
 
 ## 💡 Roadmap
 
+### Backend ✅
 - [x] DTOs and MapStruct mappers
 - [x] Repositories with optimized balance queries
 - [x] Services with idempotency and deadlock prevention
@@ -643,10 +714,22 @@ src/main/resources/
 - [x] Integration tests with Testcontainers (27 tests)
 - [x] Concurrency tests (10 tests)
 - [x] Dockerization and CI/CD Pipeline
+
+### Frontend ⬜
+- [ ] Vite + React + TypeScript + shadcn/ui project scaffold
+- [ ] Admin Panel — General Ledger Data Grid with cursor-based pagination
+- [ ] Admin Panel — System Health (TPS/Volume charts) + Balance Integrity Widget
+- [ ] User Simulator — Wallet Card with optimistic UI + real-time polling
+- [ ] User Simulator — Transfer Form with idempotency + Transaction Stream
+- [ ] GitHub Pages deployment with HashRouter + CI/CD workflow
+- [ ] Frontend unit tests with Vitest
+
+### Future
 - [ ] Integration with Mock Central Bank API
 - [ ] Spring Security (OAuth2/JWT)
 - [ ] Prometheus & Grafana metrics
 - [ ] Rate limiting and circuit breakers
+- [ ] Reconciliation interface (MT940, BAI2, CSV ingestion)
 
 ---
 

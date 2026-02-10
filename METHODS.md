@@ -384,4 +384,70 @@ CREATE INDEX idx_ledger_entries_transaction ON ledger_entries(transaction_id);
 
 > **Note**: Package-info files and enums (`EntryType`, `TransactionStatus`) excluded as they contain no methods.
 
+---
+
+## Frontend Layer
+
+> **Legend (Frontend):**
+> - **n** = number of items in a list/response
+> - **p** = number of pages fetched (infinite scroll)
+
+### API Service Layer (`ledgerProvider.ts`)
+
+| Method | Signature | Complexity | Description |
+|--------|-----------|------------|-------------|
+| `getAccounts` | `(page: number, size: number) => Promise<Page<Account>>` | **O(1)** | Fetch paginated account list from `/api/v1/accounts` |
+| `getAccount` | `(id: string) => Promise<Account>` | **O(1)** | Fetch single account by UUID from `/api/v1/accounts/{id}` |
+| `createAccount` | `(data: CreateAccountRequest) => Promise<Account>` | **O(1)** | POST new account to `/api/v1/accounts` |
+| `executeTransfer` | `(data: TransferRequest, key: string) => Promise<TransferResponse>` | **O(1)** | POST transfer with `Idempotency-Key` header to `/api/v1/transfers` |
+| `getLedger` | `(accountId: string, page: number, size: number) => Promise<AccountStatement>` | **O(1)** | Fetch paginated ledger entries from `/api/v1/ledger/{accountId}` |
+| `getHealth` | `() => Promise<HealthStatus>` | **O(1)** | Fetch health from `/actuator/health` |
+
+---
+
+### TanStack Query Hooks
+
+| Hook | Return Type | Complexity | Description |
+|------|-------------|------------|-------------|
+| `useAccounts` | `UseQueryResult<Page<Account>>` | **O(1)** | Paginated account list with caching |
+| `useAccount` | `UseQueryResult<Account>` | **O(1)** | Single account by ID with caching |
+| `useCreateAccount` | `UseMutationResult<Account>` | **O(1)** | Account creation mutation with cache invalidation |
+| `useBalance` | `UseQueryResult<number>` | **O(1)** | Real-time balance polling (`refetchInterval: 5000ms`) |
+| `useTransfers` | `UseMutationResult<TransferResponse>` | **O(1)** | Transfer mutation with optimistic update + rollback |
+| `useTransactionStream` | `UseInfiniteQueryResult<LedgerEntry[]>` | **O(p)** | Infinite scroll ledger entries (p = pages loaded) |
+| `useUserLedger` | `UseInfiniteQueryResult<AccountStatement>` | **O(p)** | User-facing paginated ledger with metadata parsing |
+
+---
+
+### Admin Components
+
+| Component | Key Methods | Complexity | Description |
+|-----------|-------------|------------|-------------|
+| `GeneralLedgerGrid` | `render(data)`, `handleSort()`, `handleFilter()`, `handlePageChange()` | **O(n)** | Data grid rendering n rows per page, sorting/filtering delegated to server |
+| `SystemHealthChart` | `render(tpsData)`, `render(volumeData)`, `handleRangeChange()` | **O(n)** | Recharts rendering n data points |
+| `BalanceIntegrityWidget` | `render(delta)`, `checkIntegrity()` | **O(1)** | Display balance delta, auto-refresh via `refetchInterval` |
+| `CreateAccountDialog` | `handleSubmit()`, `validate()` | **O(1)** | Form submission with validation |
+
+---
+
+### User Components
+
+| Component | Key Methods | Complexity | Description |
+|-----------|-------------|------------|-------------|
+| `WalletCard` | `render(balance)`, `handleOptimisticUpdate()`, `handleRollback()` | **O(1)** | Balance display with optimistic UI |
+| `TransferForm` | `handleSubmit()`, `validate()`, `generateIdempotencyKey()` | **O(1)** | Transfer form with UUID v4 idempotency key generation |
+| `TransactionStream` | `render(entries)`, `handleLoadMore()`, `parseMetadata()` | **O(n)** | Render n entries with color-coding and infinite scroll |
+
+---
+
+### Frontend Summary
+
+| Layer | Files | Methods/Hooks |
+|-------|-------|---------------|
+| API Service | 1 | 6 |
+| TanStack Hooks | 7 | 7 |
+| Admin Components | 4 | ~12 |
+| User Components | 3 | ~8 |
+| Types | 1 | ~5 (interfaces) |
+| **Frontend Total** | **~16** | **~38** |
 

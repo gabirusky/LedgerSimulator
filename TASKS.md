@@ -644,6 +644,179 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ---
 
+## Phase 14: Frontend Setup (Tasks 366-390)
+
+### Project Scaffolding
+
+- [ ] **TASK-366**: Initialize Vite + React + TypeScript project in `frontend/`
+- [ ] **TASK-367**: Configure `tsconfig.json` with strict mode and path aliases (`@/`)
+- [ ] **TASK-368**: Configure `vite.config.ts` with React plugin, `base: '/LedgerSimulator/'`, and `@` alias
+- [ ] **TASK-369**: Install and configure Tailwind CSS v4
+- [ ] **TASK-370**: Initialize shadcn/ui with `components.json` configuration
+- [ ] **TASK-371**: Create `src/lib/utils.ts` with `cn()` helper function
+- [ ] **TASK-372**: Install shadcn/ui core components: `Button`, `Card`, `Input`, `Table`, `Form`, `Select`, `Command`, `ScrollArea`, `Badge`, `Separator`, `Sheet`, `Tabs`, `Tooltip`
+- [ ] **TASK-373**: Create `index.html` entry point with meta tags
+- [ ] **TASK-374**: Create `src/main.tsx` entry point with React 18 `createRoot`
+- [ ] **TASK-375**: Create `public/.nojekyll` empty file for GitHub Pages
+
+### Routing & Layout
+
+- [ ] **TASK-376**: Install `react-router-dom` v6+
+- [ ] **TASK-377**: Create `src/App.tsx` with `HashRouter` and route definitions
+- [ ] **TASK-378**: Create shared `Layout.tsx` with sidebar navigation (shadcn/ui `Sheet` + `Separator`)
+- [ ] **TASK-379**: Create admin layout wrapper with navigation (Dashboard, Ledger, Accounts)
+- [ ] **TASK-380**: Create user layout wrapper with navigation (Wallet, History)
+- [ ] **TASK-381**: Create `NotFoundPage.tsx` for 404 fallback route
+
+### API Service Layer
+
+- [ ] **TASK-382**: Create `src/types/api.ts` with TypeScript interfaces matching backend DTOs (`Account`, `TransferRequest`, `TransferResponse`, `LedgerEntry`, `AccountStatement`)
+- [ ] **TASK-383**: Create `src/services/ledgerProvider.ts` with `getAccounts()`, `getAccount()`, `createAccount()` methods
+- [ ] **TASK-384**: Add `executeTransfer()` method with `Idempotency-Key` header support to `ledgerProvider.ts`
+- [ ] **TASK-385**: Add `getLedger()` method with paginated ledger entry retrieval to `ledgerProvider.ts`
+- [ ] **TASK-386**: Add `getHealth()` method querying `/actuator/health` to `ledgerProvider.ts`
+- [ ] **TASK-387**: Configure `VITE_API_URL` environment variable with fallback to `http://localhost:8080/api/v1`
+
+### State Management
+
+- [ ] **TASK-388**: Install `@tanstack/react-query` v5
+- [ ] **TASK-389**: Create `QueryClient` provider wrapper in `main.tsx` with default `staleTime` and `gcTime`
+- [ ] **TASK-390**: Install `recharts` for data visualization
+
+---
+
+## Phase 15: Admin Panel (Tasks 391-420)
+
+### TanStack Query Hooks (Admin)
+
+- [ ] **TASK-391**: Create `src/hooks/useAccounts.ts` — `useQuery` for paginated account list
+- [ ] **TASK-392**: Create `src/hooks/useAccount.ts` — `useQuery` for single account by ID
+- [ ] **TASK-393**: Create `src/hooks/useCreateAccount.ts` — `useMutation` for account creation
+- [ ] **TASK-394**: Create `src/hooks/useTransfers.ts` — `useMutation` for transfer execution with idempotency
+- [ ] **TASK-395**: Create `src/hooks/useTransactionStream.ts` — `useInfiniteQuery` for paginated ledger entries
+
+### General Ledger Data Grid
+
+- [ ] **TASK-396**: Install `@tanstack/react-table` for headless table logic
+- [ ] **TASK-397**: Create `src/features/admin/GeneralLedgerGrid.tsx` — column definitions (TransactionID, Timestamp, Source, Destination, Amount, Status)
+- [ ] **TASK-398**: Implement server-side pagination in `GeneralLedgerGrid` using cursor-based approach
+- [ ] **TASK-399**: Add column sorting (by timestamp, amount) to `GeneralLedgerGrid`
+- [ ] **TASK-400**: Add column filtering (account ID, date range, status) to `GeneralLedgerGrid`
+- [ ] **TASK-401**: Style `GeneralLedgerGrid` with shadcn/ui `Table` + `Badge` for status indicators
+- [ ] **TASK-402**: Add loading skeleton with shadcn/ui `Skeleton` component during data fetch
+
+### System Health & Analytics
+
+- [ ] **TASK-403**: Create `src/features/admin/SystemHealthChart.tsx` — Recharts `LineChart` for TPS over time
+- [ ] **TASK-404**: Add Recharts `AreaChart` for total transfer volume over time to `SystemHealthChart`
+- [ ] **TASK-405**: Create time range selector (1h, 6h, 24h, 7d) for chart filtering
+- [ ] **TASK-406**: Style charts inside shadcn/ui `Card` with header and description
+
+### Balance Integrity Widget
+
+- [ ] **TASK-407**: Create `src/features/admin/BalanceIntegrityWidget.tsx` — query `sum(credits) - sum(debits)`
+- [ ] **TASK-408**: Display green ✅ when `delta === 0`, red 🚨 alert when deviation detected
+- [ ] **TASK-409**: Configure auto-refresh every 30 seconds via TanStack Query `refetchInterval`
+- [ ] **TASK-410**: Add timestamp of last check and deviation amount display
+
+### Admin Pages Assembly
+
+- [ ] **TASK-411**: Create `src/pages/admin/DashboardPage.tsx` — compose `SystemHealthChart` + `BalanceIntegrityWidget`
+- [ ] **TASK-412**: Create `src/pages/admin/LedgerPage.tsx` — compose `GeneralLedgerGrid` with page title and filters
+- [ ] **TASK-413**: Create `src/pages/admin/AccountsPage.tsx` — account table with create account dialog
+- [ ] **TASK-414**: Create `CreateAccountDialog.tsx` with shadcn/ui `Dialog` + `Form` components
+
+### Admin Panel Design & Polish
+
+- [ ] **TASK-415**: Design dark-mode admin theme using CSS variables (professional, high-contrast)
+- [ ] **TASK-416**: Add responsive breakpoints for admin layout (desktop-first, tablet fallback)
+- [ ] **TASK-417**: Add hover effects and row highlighting to `GeneralLedgerGrid`
+- [ ] **TASK-418**: Add micro-animations for balance integrity status transitions
+- [ ] **TASK-419**: Add empty states with illustrations for pages with no data
+- [ ] **TASK-420**: Implement keyboard shortcuts for admin navigation (Ctrl+K command palette)
+
+---
+
+## Phase 16: User Simulator (Tasks 421-450)
+
+### TanStack Query Hooks (User)
+
+- [ ] **TASK-421**: Create `src/hooks/useBalance.ts` — `useQuery` with `refetchInterval: 5000` for real-time balance polling
+- [ ] **TASK-422**: Create `src/hooks/useUserLedger.ts` — `useInfiniteQuery` for paginated user-facing ledger entries
+
+### Wallet Card
+
+- [ ] **TASK-423**: Create `src/features/user/WalletCard.tsx` — display current balance with currency formatting
+- [ ] **TASK-424**: Add subtle pulse/glow animation when balance updates in real-time
+- [ ] **TASK-425**: Implement optimistic UI: immediately deduct amount on transfer submission
+- [ ] **TASK-426**: Implement rollback: revert displayed balance if API call fails
+- [ ] **TASK-427**: Add "last updated" timestamp indicator to wallet card
+- [ ] **TASK-428**: Style wallet card with fintech aesthetic (gradient background, glossy effect)
+
+### Transfer Form
+
+- [ ] **TASK-429**: Create `src/features/user/TransferForm.tsx` — shadcn/ui `Form` + `Input` + `Select`
+- [ ] **TASK-430**: Add searchable account selection via shadcn/ui `Command` component
+- [ ] **TASK-431**: Add amount input with `BigDecimal`-safe validation (prevent floating point errors — use string-based input, parse with `toFixed(2)`)
+- [ ] **TASK-432**: Auto-generate `Idempotency-Key` (UUID v4) per submission via `crypto.randomUUID()`
+- [ ] **TASK-433**: Add form validation: source ≠ target, amount > 0, amount ≤ balance
+- [ ] **TASK-434**: Add success/error toast notifications via shadcn/ui `Sonner` or `Toast`
+- [ ] **TASK-435**: Disable submit button during pending mutation to prevent double-spending
+
+### Transaction Stream
+
+- [ ] **TASK-436**: Create `src/features/user/TransactionStream.tsx` — vertical timeline of transactions
+- [ ] **TASK-437**: Color-code entries: green for CREDIT (incoming), red for DEBIT (outgoing)
+- [ ] **TASK-438**: Parse metadata to show human-readable descriptions (e.g., "Payment to John Doe")
+- [ ] **TASK-439**: Implement infinite scroll with shadcn/ui `ScrollArea` + intersection observer
+- [ ] **TASK-440**: Add transaction detail expansion (click to reveal full transaction ID, timestamps)
+- [ ] **TASK-441**: Add loading skeleton for transaction stream items
+
+### User Pages Assembly
+
+- [ ] **TASK-442**: Create `src/pages/user/WalletPage.tsx` — compose `WalletCard` + `TransferForm`
+- [ ] **TASK-443**: Create `src/pages/user/HistoryPage.tsx` — compose `TransactionStream` with filters
+- [ ] **TASK-444**: Add account selector for users with multiple accounts
+
+### User Panel Design & Polish
+
+- [ ] **TASK-445**: Design consumer-grade wallet theme (modern, clean, Revolut/Chime-inspired)
+- [ ] **TASK-446**: Add page transition animations between Wallet and History views
+- [ ] **TASK-447**: Add responsive mobile-first layout for User Simulator
+- [ ] **TASK-448**: Add empty states (no transactions yet, no accounts)
+- [ ] **TASK-449**: Add subtle haptic-style micro-animations on transfer success
+- [ ] **TASK-450**: Add dark/light theme toggle using shadcn/ui theming
+
+---
+
+## Phase 17: Frontend CI/CD & Testing (Tasks 451-465)
+
+### Frontend Testing
+
+- [ ] **TASK-451**: Configure Vitest for unit testing in `frontend/`
+- [ ] **TASK-452**: Write unit tests for `ledgerProvider.ts` (mock fetch, verify URL construction)
+- [ ] **TASK-453**: Write unit tests for `useBalance` hook (verify polling interval, error handling)
+- [ ] **TASK-454**: Write unit tests for `TransferForm` (validation: source ≠ target, amount > 0)
+- [ ] **TASK-455**: Write unit tests for `WalletCard` optimistic UI (deduct on submit, rollback on error)
+- [ ] **TASK-456**: Write unit tests for `BalanceIntegrityWidget` (zero delta → green, non-zero → red)
+
+### GitHub Pages Deployment
+
+- [ ] **TASK-457**: Create `.github/workflows/deploy-frontend.yml` with build + deploy jobs
+- [ ] **TASK-458**: Configure `actions/setup-node@v4` with Node.js 20 and npm caching
+- [ ] **TASK-459**: Add `npm ci`, `npm test`, `npm run build` steps to CI workflow
+- [ ] **TASK-460**: Configure `actions/upload-pages-artifact@v3` for `frontend/dist`
+- [ ] **TASK-461**: Configure `actions/deploy-pages@v4` for deployment job
+- [ ] **TASK-462**: Add `VITE_API_URL` environment variable to CI build step
+
+### Final Verification
+
+- [ ] **TASK-463**: Run `npm run dev` and verify all pages render correctly
+- [ ] **TASK-464**: Verify `npm run build` produces valid production bundle in `dist/`
+- [ ] **TASK-465**: Verify GitHub Pages deployment serves correctly with HashRouter navigation
+
+---
+
 ## 📈 Summary
 
 | Phase | Tasks | Description |
@@ -661,8 +834,12 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 | 11 | 306-325 | Concurrency Tests |
 | 12 | 326-345 | DevOps & CI/CD |
 | 13 | 346-365 | Documentation & Polish |
+| 14 | 366-390 | Frontend Setup |
+| 15 | 391-420 | Admin Panel |
+| 16 | 421-450 | User Simulator |
+| 17 | 451-465 | Frontend CI/CD & Testing |
 
-**Total Tasks: 365**
+**Total Tasks: 465**
 
 ---
 
@@ -675,6 +852,9 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 5. Refer to `PLAN.md` for architecture decisions
 6. Run tests frequently - after every major change
 7. Commit after completing each phase
+8. **Frontend**: Use `npm run dev` for hot-reload development
+9. **Frontend**: Run `npx shadcn@latest add <component>` to add new shadcn/ui components
+10. **Frontend**: Use VITE_API_URL env var for backend URL configuration
 
 ---
 
@@ -704,4 +884,5 @@ mvn clean install -DskipTests
 # Run concurrency tests
 mvn failsafe:integration-test "-Dit.test=ConcurrentTransferTest"
 ```
+
 

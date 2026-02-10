@@ -782,3 +782,171 @@ Access lazy collections within `@Transactional` method or use `@EntityGraph`.
 8. **Keep methods small** - Single responsibility
 9. **Write tests first** - TDD where possible
 10. **Review lock ordering** - Prevent deadlocks
+
+---
+
+## 🖥️ Frontend Stack
+
+- **Framework**: React 18 + Vite 5+
+- **Language**: TypeScript 5+ (strict mode)
+- **UI Library**: shadcn/ui (Radix primitives + Tailwind CSS)
+- **Styling**: Tailwind CSS v4 (utility-first, required by shadcn/ui)
+- **State Management**: TanStack Query (React Query) v5 for server-state
+- **Routing**: React Router v6+ with `HashRouter` (GitHub Pages compatibility)
+- **Charts**: Recharts 2+ for data visualizations
+- **Table**: @tanstack/react-table for headless data grid logic
+- **Testing**: Vitest
+- **Build Target**: GitHub Pages (static deployment)
+
+---
+
+## 📦 Frontend Implementation Progress
+
+### ⬜ Phase 14: Frontend Setup (Not Started)
+
+| File | Description |
+|------|-------------|
+| `frontend/vite.config.ts` | Vite config with React plugin, `base: '/LedgerSimulator/'`, `@` alias |
+| `frontend/tsconfig.json` | Strict TypeScript, `@/` path alias |
+| `frontend/tailwind.config.ts` | Tailwind CSS v4 config |
+| `frontend/components.json` | shadcn/ui configuration |
+| `frontend/src/lib/utils.ts` | `cn()` class merge helper |
+| `frontend/src/types/api.ts` | TypeScript interfaces matching backend DTOs |
+| `frontend/src/services/ledgerProvider.ts` | API abstraction layer (fetch + error handling) |
+| `frontend/src/main.tsx` | Entry point with React 18 `createRoot` + QueryClient |
+| `frontend/src/App.tsx` | Root component with `HashRouter` routes |
+
+### ⬜ Phase 15: Admin Panel (Not Started)
+
+| Feature | Component | Description |
+|---------|-----------|-------------|
+| General Ledger Grid | `GeneralLedgerGrid.tsx` | shadcn/ui `Table` + `@tanstack/react-table` with cursor pagination |
+| System Health | `SystemHealthChart.tsx` | Recharts TPS + Volume charts |
+| Balance Integrity | `BalanceIntegrityWidget.tsx` | `sum(credits) - sum(debits)` check, auto-refresh 30s |
+| Dashboard Page | `DashboardPage.tsx` | Compose health + integrity widgets |
+| Ledger Page | `LedgerPage.tsx` | Full data grid with server-side filtering |
+
+### ⬜ Phase 16: User Simulator (Not Started)
+
+| Feature | Component | Description |
+|---------|-----------|-------------|
+| Wallet Card | `WalletCard.tsx` | Balance display with real-time polling (5s), optimistic UI |
+| Transfer Form | `TransferForm.tsx` | shadcn/ui Form with idempotency support |
+| Transaction Stream | `TransactionStream.tsx` | Vertical timeline, color-coded DEBIT/CREDIT, infinite scroll |
+| Wallet Page | `WalletPage.tsx` | Compose WalletCard + TransferForm |
+| History Page | `HistoryPage.tsx` | Transaction stream with filters |
+
+### ⬜ Phase 17: Frontend CI/CD & Testing (Not Started)
+
+| File | Description |
+|------|-------------|
+| `.github/workflows/deploy-frontend.yml` | Build + deploy to GitHub Pages |
+| Vitest config | Unit tests for hooks, services, and components |
+
+---
+
+## 🖥️ Frontend Conventions
+
+### File Naming
+- **Components**: PascalCase (`WalletCard.tsx`, `GeneralLedgerGrid.tsx`)
+- **Hooks**: camelCase, prefixed with `use` (`useBalance.ts`, `useTransfers.ts`)
+- **Services**: camelCase (`ledgerProvider.ts`)
+- **Types**: PascalCase interfaces in `types/api.ts`
+
+### Component Patterns
+- Feature components in `features/admin/` and `features/user/`
+- Page components in `pages/admin/` and `pages/user/`
+- Shared UI primitives from shadcn/ui in `components/ui/`
+- Hooks in `hooks/` — one hook per file, one query/mutation per hook
+
+### State Management Rules
+- **Server state**: Always use TanStack Query (never `useState` for API data)
+- **Local UI state**: Use `useState` / `useReducer` for form state, modals, toggles
+- **No Redux**: Ledger data is server state; TanStack Query handles caching and sync
+- **Optimistic updates**: Use `useMutation` with `onMutate` for immediate UI feedback
+
+### API Integration
+- All API calls go through `ledgerProvider.ts` — never call `fetch` directly in components
+- Always pass `Idempotency-Key` header for POST/PUT mutations
+- Use `VITE_API_URL` env var for API base URL (fallback: `http://localhost:8080/api/v1`)
+
+---
+
+## 🛠️ Frontend Gotchas
+
+### 1. GitHub Pages Client-Side Routing
+GitHub Pages returns 404 for non-root paths. **Always use `HashRouter`**, not `BrowserRouter`:
+```tsx
+// ✅ Works on GitHub Pages
+<HashRouter>
+  <Routes>...</Routes>
+</HashRouter>
+
+// ❌ Breaks on refresh
+<BrowserRouter>
+  <Routes>...</Routes>
+</BrowserRouter>
+```
+
+### 2. Vite Base Path
+GitHub Pages serves from `/LedgerSimulator/` subdirectory. The `base` in `vite.config.ts` must match:
+```typescript
+base: '/LedgerSimulator/'  // MUST match repo name exactly
+```
+
+### 3. `.nojekyll` File
+Vite outputs files like `_assets/` which Jekyll ignores. Always include an empty `.nojekyll` in `public/`.
+
+### 4. BigDecimal Precision in JavaScript
+JavaScript `number` type uses IEEE 754 floating point — cannot safely represent financial amounts:
+```typescript
+// ❌ Dangerous: 0.1 + 0.2 = 0.30000000000000004
+const total = amount1 + amount2;
+
+// ✅ Safe: Use string-based input, parse with toFixed(2)
+const formattedAmount = parseFloat(inputValue).toFixed(2);
+```
+For display, use `Intl.NumberFormat`. For calculations, keep amounts as strings until submission.
+
+### 5. CORS Configuration
+If frontend runs on `localhost:5173` (Vite dev server) and backend on `localhost:8080`, configure CORS in Spring Boot:
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**")
+            .allowedOrigins("http://localhost:5173")
+            .allowedMethods("GET", "POST");
+    }
+}
+```
+
+### 6. Optimistic UI Rollback
+When using TanStack Query optimistic updates, always implement rollback:
+```typescript
+useMutation({
+    mutationFn: executeTransfer,
+    onMutate: async (newTransfer) => {
+        // Cancel outgoing queries
+        await queryClient.cancelQueries({ queryKey: ['balance'] });
+        // Snapshot previous value
+        const previousBalance = queryClient.getQueryData(['balance']);
+        // Optimistically update
+        queryClient.setQueryData(['balance'], old => old - newTransfer.amount);
+        return { previousBalance };
+    },
+    onError: (err, variables, context) => {
+        // Rollback on error
+        queryClient.setQueryData(['balance'], context.previousBalance);
+    },
+});
+```
+
+### 7. shadcn/ui Installation
+Components are installed individually, not as a package:
+```bash
+# Install from Git Bash (not PowerShell) if execution policy issues
+npx -y shadcn@latest add button card input table form select command scroll-area badge
+```
+
