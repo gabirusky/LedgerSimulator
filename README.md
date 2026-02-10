@@ -41,8 +41,8 @@ In modern fintech environments, data integrity is non-negotiable. This service s
 | 11. Concurrency Tests | ✅ Complete | 10 concurrency tests (withdrawal, transfer, stress) |
 | 12. DevOps & CI/CD | ✅ Complete | Dockerfile, docker-compose.prod.yml, GitHub Actions CI pipeline |
 | 13. Documentation | ✅ Complete | API documentation, README, curl examples, troubleshooting |
-| 14. Frontend Setup | ⬜ Planned | Vite + React + TypeScript + shadcn/ui scaffold |
-| 15. Admin Panel | ⬜ Planned | General Ledger Data Grid, System Health, Balance Integrity |
+| 14. Frontend Setup | ✅ Complete | Vite + React + TypeScript + shadcn/ui scaffold |
+| 15. Admin Panel | ✅ Complete | General Ledger Data Grid, System Health, Balance Integrity |
 | 16. User Simulator | ⬜ Planned | Wallet Card, Transfer Form, Transaction Stream |
 | 17. Frontend CI/CD | ⬜ Planned | GitHub Pages deployment, Vitest, deploy workflow |
 

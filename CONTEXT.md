@@ -837,15 +837,17 @@ Access lazy collections within `@Transactional` method or use `@EntityGraph`.
 - `@tanstack/react-query` — Server state management (v5)
 - `recharts` — Data visualization charts
 
-### ⬜ Phase 15: Admin Panel (Not Started)
+### ✅ Phase 15: Admin Panel (Complete)
 
 | Feature | Component | Description |
 |---------|-----------|-------------|
+| TanStack Hooks | `useAccounts`, `useTransfers` | Typed API hooks with cache invalidation |
 | General Ledger Grid | `GeneralLedgerGrid.tsx` | shadcn/ui `Table` + `@tanstack/react-table` with cursor pagination |
-| System Health | `SystemHealthChart.tsx` | Recharts TPS + Volume charts |
+| System Health | `SystemHealthChart.tsx` | Recharts TPS + Volume charts with time range selector |
 | Balance Integrity | `BalanceIntegrityWidget.tsx` | `sum(credits) - sum(debits)` check, auto-refresh 30s |
 | Dashboard Page | `DashboardPage.tsx` | Compose health + integrity widgets |
 | Ledger Page | `LedgerPage.tsx` | Full data grid with server-side filtering |
+| Accounts Page | `AccountsPage.tsx` | Account list + Create Account dialog |
 
 ### ⬜ Phase 16: User Simulator (Not Started)
 

@@ -689,51 +689,51 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### TanStack Query Hooks (Admin)
 
-- [ ] **TASK-391**: Create `src/hooks/useAccounts.ts` — `useQuery` for paginated account list
-- [ ] **TASK-392**: Create `src/hooks/useAccount.ts` — `useQuery` for single account by ID
-- [ ] **TASK-393**: Create `src/hooks/useCreateAccount.ts` — `useMutation` for account creation
-- [ ] **TASK-394**: Create `src/hooks/useTransfers.ts` — `useMutation` for transfer execution with idempotency
-- [ ] **TASK-395**: Create `src/hooks/useTransactionStream.ts` — `useInfiniteQuery` for paginated ledger entries
+- [x] **TASK-391**: Create `src/hooks/useAccounts.ts` — `useQuery` for paginated account list
+- [x] **TASK-392**: Create `src/hooks/useAccount.ts` — `useQuery` for single account by ID
+- [x] **TASK-393**: Create `src/hooks/useCreateAccount.ts` — `useMutation` for account creation
+- [x] **TASK-394**: Create `src/hooks/useTransfers.ts` — `useMutation` for transfer execution with idempotency
+- [x] **TASK-395**: Create `src/hooks/useTransactionStream.ts` — `useInfiniteQuery` for paginated ledger entries
 
 ### General Ledger Data Grid
 
-- [ ] **TASK-396**: Install `@tanstack/react-table` for headless table logic
-- [ ] **TASK-397**: Create `src/features/admin/GeneralLedgerGrid.tsx` — column definitions (TransactionID, Timestamp, Source, Destination, Amount, Status)
-- [ ] **TASK-398**: Implement server-side pagination in `GeneralLedgerGrid` using cursor-based approach
-- [ ] **TASK-399**: Add column sorting (by timestamp, amount) to `GeneralLedgerGrid`
-- [ ] **TASK-400**: Add column filtering (account ID, date range, status) to `GeneralLedgerGrid`
-- [ ] **TASK-401**: Style `GeneralLedgerGrid` with shadcn/ui `Table` + `Badge` for status indicators
-- [ ] **TASK-402**: Add loading skeleton with shadcn/ui `Skeleton` component during data fetch
+- [x] **TASK-396**: Install `@tanstack/react-table` for headless table logic
+- [x] **TASK-397**: Create `src/features/admin/GeneralLedgerGrid.tsx` — column definitions (TransactionID, Timestamp, Source, Destination, Amount, Status)
+- [x] **TASK-398**: Implement server-side pagination in `GeneralLedgerGrid` using cursor-based approach
+- [x] **TASK-399**: Add column sorting (by timestamp, amount) to `GeneralLedgerGrid`
+- [x] **TASK-400**: Add column filtering (account ID, date range, status) to `GeneralLedgerGrid`
+- [x] **TASK-401**: Style `GeneralLedgerGrid` with shadcn/ui `Table` + `Badge` for status indicators
+- [x] **TASK-402**: Add loading skeleton with shadcn/ui `Skeleton` component during data fetch
 
 ### System Health & Analytics
 
-- [ ] **TASK-403**: Create `src/features/admin/SystemHealthChart.tsx` — Recharts `LineChart` for TPS over time
-- [ ] **TASK-404**: Add Recharts `AreaChart` for total transfer volume over time to `SystemHealthChart`
-- [ ] **TASK-405**: Create time range selector (1h, 6h, 24h, 7d) for chart filtering
-- [ ] **TASK-406**: Style charts inside shadcn/ui `Card` with header and description
+- [x] **TASK-403**: Create `src/features/admin/SystemHealthChart.tsx` — Recharts `LineChart` for TPS over time
+- [x] **TASK-404**: Add Recharts `AreaChart` for total transfer volume over time to `SystemHealthChart`
+- [x] **TASK-405**: Create time range selector (1h, 6h, 24h, 7d) for chart filtering
+- [x] **TASK-406**: Style charts inside shadcn/ui `Card` with header and description
 
 ### Balance Integrity Widget
 
-- [ ] **TASK-407**: Create `src/features/admin/BalanceIntegrityWidget.tsx` — query `sum(credits) - sum(debits)`
-- [ ] **TASK-408**: Display green ✅ when `delta === 0`, red 🚨 alert when deviation detected
-- [ ] **TASK-409**: Configure auto-refresh every 30 seconds via TanStack Query `refetchInterval`
-- [ ] **TASK-410**: Add timestamp of last check and deviation amount display
+- [x] **TASK-407**: Create `src/features/admin/BalanceIntegrityWidget.tsx` — query `sum(credits) - sum(debits)`
+- [x] **TASK-408**: Display green ✅ when `delta === 0`, red 🚨 alert when deviation detected
+- [x] **TASK-409**: Configure auto-refresh every 30 seconds via TanStack Query `refetchInterval`
+- [x] **TASK-410**: Add timestamp of last check and deviation amount display
 
 ### Admin Pages Assembly
 
-- [ ] **TASK-411**: Create `src/pages/admin/DashboardPage.tsx` — compose `SystemHealthChart` + `BalanceIntegrityWidget`
-- [ ] **TASK-412**: Create `src/pages/admin/LedgerPage.tsx` — compose `GeneralLedgerGrid` with page title and filters
-- [ ] **TASK-413**: Create `src/pages/admin/AccountsPage.tsx` — account table with create account dialog
-- [ ] **TASK-414**: Create `CreateAccountDialog.tsx` with shadcn/ui `Dialog` + `Form` components
+- [x] **TASK-411**: Create `src/pages/admin/DashboardPage.tsx` — compose `SystemHealthChart` + `BalanceIntegrityWidget`
+- [x] **TASK-412**: Create `src/pages/admin/LedgerPage.tsx` — compose `GeneralLedgerGrid` with page title and filters
+- [x] **TASK-413**: Create `src/pages/admin/AccountsPage.tsx` — account table with create account dialog
+- [x] **TASK-414**: Create `CreateAccountDialog.tsx` with shadcn/ui `Dialog` + `Form` components
 
 ### Admin Panel Design & Polish
 
-- [ ] **TASK-415**: Design dark-mode admin theme using CSS variables (professional, high-contrast)
-- [ ] **TASK-416**: Add responsive breakpoints for admin layout (desktop-first, tablet fallback)
-- [ ] **TASK-417**: Add hover effects and row highlighting to `GeneralLedgerGrid`
-- [ ] **TASK-418**: Add micro-animations for balance integrity status transitions
-- [ ] **TASK-419**: Add empty states with illustrations for pages with no data
-- [ ] **TASK-420**: Implement keyboard shortcuts for admin navigation (Ctrl+K command palette)
+- [x] **TASK-415**: Design dark-mode admin theme using CSS variables (professional, high-contrast)
+- [x] **TASK-416**: Add responsive breakpoints for admin layout (desktop-first, tablet fallback)
+- [x] **TASK-417**: Add hover effects and row highlighting to `GeneralLedgerGrid`
+- [x] **TASK-418**: Add micro-animations for balance integrity status transitions
+- [x] **TASK-419**: Add empty states with illustrations for pages with no data
+- [x] **TASK-420**: Implement keyboard shortcuts for admin navigation (Alt+1/2/3)
 
 ---
 

@@ -2,75 +2,79 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ── TASK-415: Professional dark-mode admin theme ──────────────────── */
+/* High-contrast, muted palette with emerald/cyan accent system       */
+
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --background: oklch(0.985 0.002 240);
+  --foreground: oklch(0.145 0.005 240);
+  --card: oklch(0.995 0 0);
+  --card-foreground: oklch(0.145 0.005 240);
+  --popover: oklch(0.995 0 0);
+  --popover-foreground: oklch(0.145 0.005 240);
+  --primary: oklch(0.205 0.015 240);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.965 0.003 240);
+  --secondary-foreground: oklch(0.205 0.015 240);
+  --muted: oklch(0.960 0.004 240);
+  --muted-foreground: oklch(0.50 0.01 240);
+  --accent: oklch(0.965 0.003 240);
+  --accent-foreground: oklch(0.205 0.015 240);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.714);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --border: oklch(0.915 0.005 240);
+  --input: oklch(0.915 0.005 240);
+  --ring: oklch(0.55 0.15 200);
+  --chart-1: oklch(0.65 0.18 175);
+  --chart-2: oklch(0.60 0.16 260);
+  --chart-3: oklch(0.70 0.12 50);
+  --chart-4: oklch(0.75 0.14 100);
+  --chart-5: oklch(0.55 0.20 310);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar: oklch(0.975 0.003 240);
+  --sidebar-foreground: oklch(0.145 0.005 240);
+  --sidebar-primary: oklch(0.205 0.015 240);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-accent: oklch(0.955 0.005 240);
+  --sidebar-accent-foreground: oklch(0.205 0.015 240);
+  --sidebar-border: oklch(0.915 0.005 240);
+  --sidebar-ring: oklch(0.55 0.10 200);
 }
 
+/* Dark theme — the primary mode for admin panels */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  --background: oklch(0.12 0.008 250);
+  --foreground: oklch(0.93 0.005 240);
+  --card: oklch(0.155 0.010 250);
+  --card-foreground: oklch(0.93 0.005 240);
+  --popover: oklch(0.155 0.010 250);
+  --popover-foreground: oklch(0.93 0.005 240);
+  --primary: oklch(0.93 0.005 240);
+  --primary-foreground: oklch(0.12 0.008 250);
+  --secondary: oklch(0.20 0.012 250);
+  --secondary-foreground: oklch(0.93 0.005 240);
+  --muted: oklch(0.20 0.012 250);
+  --muted-foreground: oklch(0.58 0.015 240);
+  --accent: oklch(0.22 0.015 250);
+  --accent-foreground: oklch(0.93 0.005 240);
+  --destructive: oklch(0.45 0.18 25);
+  --destructive-foreground: oklch(0.65 0.24 25);
+  --border: oklch(0.22 0.012 250);
+  --input: oklch(0.22 0.012 250);
+  --ring: oklch(0.50 0.15 200);
+  --chart-1: oklch(0.58 0.20 200);
+  --chart-2: oklch(0.62 0.18 160);
+  --chart-3: oklch(0.70 0.15 55);
+  --chart-4: oklch(0.55 0.22 280);
+  --chart-5: oklch(0.60 0.23 340);
+  --sidebar: oklch(0.10 0.010 250);
+  --sidebar-foreground: oklch(0.93 0.005 240);
+  --sidebar-primary: oklch(0.55 0.18 200);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.18 0.012 250);
+  --sidebar-accent-foreground: oklch(0.93 0.005 240);
+  --sidebar-border: oklch(0.18 0.010 250);
+  --sidebar-ring: oklch(0.45 0.10 200);
 }
 
 @theme inline {
@@ -114,10 +118,13 @@
   --animate-accordion-up: accordion-up 0.2s ease-out;
 }
 
+/* ── Keyframe animations ──────────────────────────────────────────── */
+
 @keyframes accordion-down {
   from {
     height: 0;
   }
+
   to {
     height: var(--radix-accordion-content-height);
   }
@@ -127,16 +134,139 @@
   from {
     height: var(--radix-accordion-content-height);
   }
+
   to {
     height: 0;
   }
 }
 
+/* TASK-418: Micro-animations for status transitions */
+@keyframes status-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ── Base layer ───────────────────────────────────────────────────── */
+
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Smooth scrollbar styling for dark mode */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.35 0 0 / 0.5);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.45 0 0 / 0.7);
+  }
+}
+
+/* ── Utility classes ──────────────────────────────────────────────── */
+
+@layer utilities {
+
+  /* Animate in from bottom with fade */
+  .animate-in {
+    animation: slide-up-fade 0.4s ease-out both;
+  }
+
+  /* Staggered children animation delay */
+  .stagger-1 {
+    animation-delay: 50ms;
+  }
+
+  .stagger-2 {
+    animation-delay: 100ms;
+  }
+
+  .stagger-3 {
+    animation-delay: 150ms;
+  }
+
+  .stagger-4 {
+    animation-delay: 200ms;
+  }
+
+  /* Status pulse animation for balance integrity */
+  .status-pulse {
+    animation: status-pulse 2s ease-in-out infinite;
+  }
+
+  /* Subtle gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, var(--foreground), var(--muted-foreground));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* ── TASK-416: Responsive breakpoints ─────────────────────────────── */
+/* Desktop-first with tablet/mobile fallbacks                         */
+
+@media (max-width: 768px) {
+  .recharts-wrapper {
+    font-size: 10px;
+  }
+}
+
+/* ── TASK-417: Row highlighting & hover effects ──────────────────── */
+/* Enhanced via Tailwind classes in components, but base styles here  */
+
+@layer components {
+  .ledger-row-credit {
+    border-left: 2px solid oklch(0.65 0.22 160);
+  }
+
+  .ledger-row-debit {
+    border-left: 2px solid oklch(0.60 0.22 25);
   }
 }
