@@ -61,6 +61,29 @@ function ModeSwitch() {
     const location = useLocation();
     const isAdmin = location.pathname.startsWith('/admin');
 
+    // TASK-450: Dark/light theme toggle
+    const toggleTheme = () => {
+        const html = document.documentElement;
+        const isDark = html.classList.contains('dark');
+        if (isDark) {
+            html.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        } else {
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    };
+
+    // Initialize theme on mount
+    useEffect(() => {
+        const saved = localStorage.getItem('theme');
+        if (saved === 'light') {
+            document.documentElement.classList.remove('dark');
+        } else {
+            document.documentElement.classList.add('dark');
+        }
+    }, []);
+
     return (
         <div className="p-4">
             <Separator className="mb-4 bg-sidebar-border/50" />
@@ -71,6 +94,14 @@ function ModeSwitch() {
                 <span className="text-base">{isAdmin ? '💳' : '🔧'}</span>
                 {isAdmin ? 'User Simulator' : 'Admin Panel'}
             </NavLink>
+            <button
+                type="button"
+                onClick={toggleTheme}
+                className="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            >
+                <span className="text-base">🌓</span>
+                Toggle Theme
+            </button>
             <p className="mt-4 px-2 text-[10px] text-muted-foreground/40 font-mono">
                 v0.1.0 · LedgerSimulator
             </p>

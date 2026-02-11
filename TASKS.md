@@ -741,51 +741,51 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### TanStack Query Hooks (User)
 
-- [ ] **TASK-421**: Create `src/hooks/useBalance.ts` — `useQuery` with `refetchInterval: 5000` for real-time balance polling
-- [ ] **TASK-422**: Create `src/hooks/useUserLedger.ts` — `useInfiniteQuery` for paginated user-facing ledger entries
+- [x] **TASK-421**: Create `src/hooks/useBalance.ts` — `useQuery` with `refetchInterval: 5000` for real-time balance polling
+- [x] **TASK-422**: Create `src/hooks/useUserLedger.ts` — `useInfiniteQuery` for paginated user-facing ledger entries
 
 ### Wallet Card
 
-- [ ] **TASK-423**: Create `src/features/user/WalletCard.tsx` — display current balance with currency formatting
-- [ ] **TASK-424**: Add subtle pulse/glow animation when balance updates in real-time
-- [ ] **TASK-425**: Implement optimistic UI: immediately deduct amount on transfer submission
-- [ ] **TASK-426**: Implement rollback: revert displayed balance if API call fails
-- [ ] **TASK-427**: Add "last updated" timestamp indicator to wallet card
-- [ ] **TASK-428**: Style wallet card with fintech aesthetic (gradient background, glossy effect)
+- [x] **TASK-423**: Create `src/features/user/WalletCard.tsx` — display current balance with currency formatting
+- [x] **TASK-424**: Add subtle pulse/glow animation when balance updates in real-time
+- [x] **TASK-425**: Implement optimistic UI: immediately deduct amount on transfer submission
+- [x] **TASK-426**: Implement rollback: revert displayed balance if API call fails
+- [x] **TASK-427**: Add "last updated" timestamp indicator to wallet card
+- [x] **TASK-428**: Style wallet card with fintech aesthetic (gradient background, glossy effect)
 
 ### Transfer Form
 
-- [ ] **TASK-429**: Create `src/features/user/TransferForm.tsx` — shadcn/ui `Form` + `Input` + `Select`
-- [ ] **TASK-430**: Add searchable account selection via shadcn/ui `Command` component
-- [ ] **TASK-431**: Add amount input with `BigDecimal`-safe validation (prevent floating point errors — use string-based input, parse with `toFixed(2)`)
-- [ ] **TASK-432**: Auto-generate `Idempotency-Key` (UUID v4) per submission via `crypto.randomUUID()`
-- [ ] **TASK-433**: Add form validation: source ≠ target, amount > 0, amount ≤ balance
-- [ ] **TASK-434**: Add success/error toast notifications via shadcn/ui `Sonner` or `Toast`
-- [ ] **TASK-435**: Disable submit button during pending mutation to prevent double-spending
+- [x] **TASK-429**: Create `src/features/user/TransferForm.tsx` — shadcn/ui `Form` + `Input` + `Select`
+- [x] **TASK-430**: Add searchable account selection via shadcn/ui `Command` component
+- [x] **TASK-431**: Add amount input with `BigDecimal`-safe validation (prevent floating point errors — use string-based input, parse with `toFixed(2)`)
+- [x] **TASK-432**: Auto-generate `Idempotency-Key` (UUID v4) per submission via `crypto.randomUUID()`
+- [x] **TASK-433**: Add form validation: source ≠ target, amount > 0, amount ≤ balance
+- [x] **TASK-434**: Add success/error toast notifications via shadcn/ui `Sonner` or `Toast`
+- [x] **TASK-435**: Disable submit button during pending mutation to prevent double-spending
 
 ### Transaction Stream
 
-- [ ] **TASK-436**: Create `src/features/user/TransactionStream.tsx` — vertical timeline of transactions
-- [ ] **TASK-437**: Color-code entries: green for CREDIT (incoming), red for DEBIT (outgoing)
-- [ ] **TASK-438**: Parse metadata to show human-readable descriptions (e.g., "Payment to John Doe")
-- [ ] **TASK-439**: Implement infinite scroll with shadcn/ui `ScrollArea` + intersection observer
-- [ ] **TASK-440**: Add transaction detail expansion (click to reveal full transaction ID, timestamps)
-- [ ] **TASK-441**: Add loading skeleton for transaction stream items
+- [x] **TASK-436**: Create `src/features/user/TransactionStream.tsx` — vertical timeline of transactions
+- [x] **TASK-437**: Color-code entries: green for CREDIT (incoming), red for DEBIT (outgoing)
+- [x] **TASK-438**: Parse metadata to show human-readable descriptions (e.g., "Payment to John Doe")
+- [x] **TASK-439**: Implement infinite scroll with shadcn/ui `ScrollArea` + intersection observer
+- [x] **TASK-440**: Add transaction detail expansion (click to reveal full transaction ID, timestamps)
+- [x] **TASK-441**: Add loading skeleton for transaction stream items
 
 ### User Pages Assembly
 
-- [ ] **TASK-442**: Create `src/pages/user/WalletPage.tsx` — compose `WalletCard` + `TransferForm`
-- [ ] **TASK-443**: Create `src/pages/user/HistoryPage.tsx` — compose `TransactionStream` with filters
-- [ ] **TASK-444**: Add account selector for users with multiple accounts
+- [x] **TASK-442**: Create `src/pages/user/WalletPage.tsx` — compose `WalletCard` + `TransferForm`
+- [x] **TASK-443**: Create `src/pages/user/HistoryPage.tsx` — compose `TransactionStream` with filters
+- [x] **TASK-444**: Add account selector for users with multiple accounts
 
 ### User Panel Design & Polish
 
-- [ ] **TASK-445**: Design consumer-grade wallet theme (modern, clean, Revolut/Chime-inspired)
-- [ ] **TASK-446**: Add page transition animations between Wallet and History views
-- [ ] **TASK-447**: Add responsive mobile-first layout for User Simulator
-- [ ] **TASK-448**: Add empty states (no transactions yet, no accounts)
-- [ ] **TASK-449**: Add subtle haptic-style micro-animations on transfer success
-- [ ] **TASK-450**: Add dark/light theme toggle using shadcn/ui theming
+- [x] **TASK-445**: Design consumer-grade wallet theme (modern, clean, Revolut/Chime-inspired)
+- [x] **TASK-446**: Add page transition animations between Wallet and History views
+- [x] **TASK-447**: Add responsive mobile-first layout for User Simulator
+- [x] **TASK-448**: Add empty states (no transactions yet, no accounts)
+- [x] **TASK-449**: Add subtle haptic-style micro-animations on transfer success
+- [x] **TASK-450**: Add dark/light theme toggle using shadcn/ui theming
 
 ---
 

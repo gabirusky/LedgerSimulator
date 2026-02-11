@@ -849,15 +849,19 @@ Access lazy collections within `@Transactional` method or use `@EntityGraph`.
 | Ledger Page | `LedgerPage.tsx` | Full data grid with server-side filtering |
 | Accounts Page | `AccountsPage.tsx` | Account list + Create Account dialog |
 
-### ⬜ Phase 16: User Simulator (Not Started)
+### ✅ Phase 16: User Simulator (Complete)
 
-| Feature | Component | Description |
-|---------|-----------|-------------|
-| Wallet Card | `WalletCard.tsx` | Balance display with real-time polling (5s), optimistic UI |
-| Transfer Form | `TransferForm.tsx` | shadcn/ui Form with idempotency support |
-| Transaction Stream | `TransactionStream.tsx` | Vertical timeline, color-coded DEBIT/CREDIT, infinite scroll |
-| Wallet Page | `WalletPage.tsx` | Compose WalletCard + TransferForm |
-| History Page | `HistoryPage.tsx` | Transaction stream with filters |
+| File | Description |
+|------|-------------|
+| `src/hooks/useBalance.ts` | `useQuery` with `refetchInterval: 5000` for real-time balance polling |
+| `src/hooks/useUserLedger.ts` | `useInfiniteQuery` for paginated user-facing ledger entries |
+| `src/features/user/WalletCard.tsx` | Fintech-style balance card with gradient bg, pulse animation, optimistic UI, rollback |
+| `src/features/user/TransferForm.tsx` | Transfer form with searchable accounts (Command), BigDecimal-safe validation, idempotency |
+| `src/features/user/TransactionStream.tsx` | Color-coded timeline, infinite scroll (intersection observer), expandable details, skeletons |
+| `src/pages/user/WalletPage.tsx` | Composes WalletCard + TransferForm + mini TransactionStream, account selector |
+| `src/pages/user/HistoryPage.tsx` | Full TransactionStream with filters (All/Credits/Debits), account summary bar |
+| `src/index.css` (updated) | Wallet animations (glow, balance-update, haptic), page transitions, mobile-first layout, theme toggle |
+| `src/layouts/AppLayout.tsx` (updated) | Dark/light theme toggle button in sidebar footer |
 
 ### ⬜ Phase 17: Frontend CI/CD & Testing (Not Started)
 
