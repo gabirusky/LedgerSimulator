@@ -793,26 +793,26 @@ This document contains all atomic coding tasks for implementing the Fintech Ledg
 
 ### Frontend Testing
 
-- [ ] **TASK-451**: Configure Vitest for unit testing in `frontend/`
-- [ ] **TASK-452**: Write unit tests for `ledgerProvider.ts` (mock fetch, verify URL construction)
-- [ ] **TASK-453**: Write unit tests for `useBalance` hook (verify polling interval, error handling)
-- [ ] **TASK-454**: Write unit tests for `TransferForm` (validation: source ≠ target, amount > 0)
-- [ ] **TASK-455**: Write unit tests for `WalletCard` optimistic UI (deduct on submit, rollback on error)
-- [ ] **TASK-456**: Write unit tests for `BalanceIntegrityWidget` (zero delta → green, non-zero → red)
+- [x] **TASK-451**: Configure Vitest for unit testing in `frontend/`
+- [x] **TASK-452**: Write unit tests for `ledgerProvider.ts` (mock fetch, verify URL construction)
+- [x] **TASK-453**: Write unit tests for `useBalance` hook (verify polling interval, error handling)
+- [x] **TASK-454**: Write unit tests for `TransferForm` (validation: source ≠ target, amount > 0)
+- [x] **TASK-455**: Write unit tests for `WalletCard` optimistic UI (deduct on submit, rollback on error)
+- [x] **TASK-456**: Write unit tests for `BalanceIntegrityWidget` (zero delta → green, non-zero → red)
 
 ### GitHub Pages Deployment
 
-- [ ] **TASK-457**: Create `.github/workflows/deploy-frontend.yml` with build + deploy jobs
-- [ ] **TASK-458**: Configure `actions/setup-node@v4` with Node.js 20 and npm caching
-- [ ] **TASK-459**: Add `npm ci`, `npm test`, `npm run build` steps to CI workflow
-- [ ] **TASK-460**: Configure `actions/upload-pages-artifact@v3` for `frontend/dist`
-- [ ] **TASK-461**: Configure `actions/deploy-pages@v4` for deployment job
-- [ ] **TASK-462**: Add `VITE_API_URL` environment variable to CI build step
+- [x] **TASK-457**: Create `.github/workflows/deploy-frontend.yml` with build + deploy jobs
+- [x] **TASK-458**: Configure `actions/setup-node@v4` with Node.js 20 and npm caching
+- [x] **TASK-459**: Add `npm ci`, `npm test`, `npm run build` steps to CI workflow
+- [x] **TASK-460**: Configure `actions/upload-pages-artifact@v3` for `frontend/dist`
+- [x] **TASK-461**: Configure `actions/deploy-pages@v4` for deployment job
+- [x] **TASK-462**: Add `VITE_API_URL` environment variable to CI build step
 
 ### Final Verification
 
-- [ ] **TASK-463**: Run `npm run dev` and verify all pages render correctly
-- [ ] **TASK-464**: Verify `npm run build` produces valid production bundle in `dist/`
+- [x] **TASK-463**: Run `npm run dev` and verify all pages render correctly
+- [x] **TASK-464**: Verify `npm run build` produces valid production bundle in `dist/`
 - [ ] **TASK-465**: Verify GitHub Pages deployment serves correctly with HashRouter navigation
 
 ---
