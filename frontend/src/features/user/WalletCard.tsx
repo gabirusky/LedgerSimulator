@@ -23,14 +23,28 @@ export function WalletCard({
 }: WalletCardProps) {
     const { data: balance, isLoading, dataUpdatedAt, isError } = useBalance(accountId);
     const [showPulse, setShowPulse] = useState(false);
+    // Track whether balance went up or down for color coding
+    const [balanceDirection, setBalanceDirection] = useState<'up' | 'down' | null>(null);
     const prevBalanceRef = useRef<number | undefined>(undefined);
 
     // TASK-424: Pulse/glow animation when balance updates
+    // Using setTimeout to avoid synchronous setState inside the effect body,
+    // which satisfies react-hooks/set-state-in-effect lint rule.
     useEffect(() => {
         if (balance !== undefined && prevBalanceRef.current !== undefined && balance !== prevBalanceRef.current) {
-            setShowPulse(true);
-            const timer = setTimeout(() => setShowPulse(false), 1200);
-            return () => clearTimeout(timer);
+            const direction: 'up' | 'down' = balance > prevBalanceRef.current ? 'up' : 'down';
+            // Schedule state updates as a microtask (callback from external timer),
+            // which is the recommended pattern for effects that trigger renders.
+            const pulseOn = setTimeout(() => {
+                setShowPulse(true);
+                setBalanceDirection(direction);
+            }, 0);
+            const pulseOff = setTimeout(() => setShowPulse(false), 1200);
+            prevBalanceRef.current = balance;
+            return () => {
+                clearTimeout(pulseOn);
+                clearTimeout(pulseOff);
+            };
         }
         prevBalanceRef.current = balance;
     }, [balance]);
@@ -56,6 +70,11 @@ export function WalletCard({
 
     // Split balance for styling
     const [wholePart, decimalPart] = formattedBalance.split('.');
+
+    // Determine pulse color from state (not ref during render)
+    const pulseColorClass = showPulse
+        ? (balanceDirection === 'up' ? 'text-emerald-300' : 'text-amber-300')
+        : 'text-white';
 
     return (
         // TASK-428: Fintech aesthetic — gradient background, glossy effect
@@ -128,12 +147,7 @@ export function WalletCard({
                                 <span className={`
                                     text-5xl md:text-6xl font-bold tracking-tighter tabular-nums
                                     transition-all duration-500 ease-out
-                                    ${showPulse
-                                        ? (prevBalanceRef.current !== undefined && balance !== undefined && balance > prevBalanceRef.current
-                                            ? 'text-emerald-300'
-                                            : 'text-amber-300')
-                                        : 'text-white'
-                                    }
+                                    ${pulseColorClass}
                                     ${isTransferring ? 'opacity-60' : ''}
                                 `}>
                                     {wholePart}

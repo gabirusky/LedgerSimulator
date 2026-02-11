@@ -5,24 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
-
-interface NavItem {
-    label: string;
-    path: string;
-    icon: string;
-    shortcut?: string;
-}
-
-const adminNav: NavItem[] = [
-    { label: 'Dashboard', path: '/admin', icon: '📊', shortcut: '1' },
-    { label: 'General Ledger', path: '/admin/ledger', icon: '📒', shortcut: '2' },
-    { label: 'Accounts', path: '/admin/accounts', icon: '👥', shortcut: '3' },
-];
-
-const userNav: NavItem[] = [
-    { label: 'Wallet', path: '/user', icon: '💳', shortcut: '1' },
-    { label: 'History', path: '/user/history', icon: '📜', shortcut: '2' },
-];
+import type { NavItem } from './nav-config';
 
 function SidebarNav({ items, title }: { items: NavItem[]; title: string }) {
     return (
@@ -185,6 +168,3 @@ export function AppLayout({
         </div>
     );
 }
-
-// Pre-configured layouts for admin and user
-export { adminNav, userNav };

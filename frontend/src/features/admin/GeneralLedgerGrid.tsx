@@ -164,6 +164,7 @@ export function GeneralLedgerGrid({ accountId }: GeneralLedgerGridProps) {
 
     const entries = useMemo(() => statement?.entries ?? [], [statement]);
 
+    // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Table returns mutable functions by design
     const table = useReactTable({
         data: entries,
         columns,

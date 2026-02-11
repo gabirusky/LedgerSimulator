@@ -1,6 +1,5 @@
 // TASK-407 to TASK-410: Balance Integrity Widget
 // Query sum(credits) - sum(debits), green/red status, auto-refresh 30s
-import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ledgerProvider } from '@/services/ledgerProvider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,8 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import type { Account, Page } from '@/types/api';
 
 export function BalanceIntegrityWidget() {
-    const [lastChecked, setLastChecked] = useState<Date>(new Date());
-
     // We derive balance integrity from the account list.
     // In a real system, there would be a dedicated endpoint for sum(credits) - sum(debits).
     // Here we verify: sum of all account balances should match total credits - total debits.
@@ -19,11 +16,8 @@ export function BalanceIntegrityWidget() {
         refetchInterval: 30_000, // TASK-409: Auto-refresh every 30 seconds
     });
 
-    useEffect(() => {
-        if (dataUpdatedAt) {
-            setLastChecked(new Date(dataUpdatedAt));
-        }
-    }, [dataUpdatedAt]);
+    // Derive lastChecked directly from dataUpdatedAt (no setState in effect)
+    const lastChecked = dataUpdatedAt ? new Date(dataUpdatedAt) : new Date();
 
     // Calculate total balance across all accounts
     const totalBalance = accountsData?.content.reduce(
